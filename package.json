@@ -1,0 +1,25 @@
+{
+  "name": "qnnshop",
+  "version": "0.0.1",
+  "private": true,
+  "description": "QNN Shop Application.",
+  "author": "caiguanhao <caiguanhao@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node_modules/.bin/nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qnn/qnnshop.git"
+  },
+  "dependencies": {
+    "express": "3.3.8",
+    "js-yaml": "2.1.0",
+    "less": "1.4.x",
+    "jade": "0.35.x",
+    "connect-assets": "2.5.x"
+  },
+  "devDependencies": {
+    "nodemon": "*"
+  }
+}
