@@ -1,5 +1,6 @@
 var express = require('express');
 var assets  = require('connect-assets');
+var fs      = require('fs');
 var routes  = require('./routes');
 
 var app     = express();
@@ -20,6 +21,19 @@ app.use(function(req, res){
   res.status(404).render('404');
 });
 
+var SOCKET_FILE = __dirname + '/tmp/sockets/node.socket';
+
+if (fs.existsSync(SOCKET_FILE)) {
+  fs.unlinkSync(SOCKET_FILE);
+}
+
+if ('production' == app.get('env')) {
+  app.set('port', SOCKET_FILE);
+}
+
 app.listen(app.get('port'), function(){
+  if (fs.existsSync(SOCKET_FILE)) {
+    fs.chmodSync(SOCKET_FILE, 666); // some system need this to work right;
+  }
   console.log('Express server listening on port ' + app.get('port'));
 });
