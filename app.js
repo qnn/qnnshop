@@ -1,5 +1,6 @@
 var express = require('express');
 var assets  = require('connect-assets');
+var routes  = require('./routes');
 
 var app     = express();
 
@@ -12,6 +13,8 @@ app.use(express.static(app.get('public_dir')));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(assets({ buildDir: './public' }));
+
+routes(app);
 
 app.use(function(req, res){
   res.status(404).render('404');
