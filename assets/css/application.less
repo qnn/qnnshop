@@ -1,0 +1,65 @@
+@import "vendor/reset";
+
+body {
+  font-family: Arial;
+  background: #F5F7FA;
+}
+
+.container {
+  width: 1190px;
+  margin: 0 auto;
+}
+
+.header {
+  position: relative;
+  height: 80px;
+  a.logo {
+    display: block;
+    text-indent: -9999px;
+    background: url(/images/qnn-logo.png) no-repeat;
+    width: 329px;
+    height: 50px;
+    position: absolute;
+    top: 15px;
+    left: 0;
+  }
+}
+
+ul.nav {
+  background: #ff6f3d;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  li {
+    float: left;
+    a {
+      display: block;
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      padding: 13px 13px;
+      &.active, &:hover {
+        color: #fff;
+        text-decoration: none;
+        background: #ed5f30;
+      }
+      &.first {
+        -webkit-border-radius: 4px 0 0 4px;
+        -moz-border-radius: 4px 0 0 4px;
+        border-radius: 4px 0 0 4px;
+      }
+      &.last {
+        -webkit-border-radius: 0 4px 4px 0;
+        -moz-border-radius: 0 4px 4px 0;
+        border-radius: 0 4px 4px 0;
+      }
+      &.products {
+        width: 200px;
+      }
+    }
+    &.clearfix {
+      float: none;
+      clear: both;
+    }
+  }
+}
