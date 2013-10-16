@@ -4,5 +4,51 @@ block variables
 extends layouts/default
 
 block content
-  article.container(role='main')
-    | home
+  .row01
+    ul.sidemenu.row01_l
+      li
+        a(href='/') 产品一
+      li
+        a(href='/') 产品二
+      li
+        a(href='/') 产品三
+      li
+        a(href='/') 产品四
+      li
+        a(href='/') 产品五
+      li
+        a(href='/') 产品六
+      li
+        a(href='/') 产品七
+      li
+        a(href='/') 产品八
+      li
+        a(href='/') 产品九
+    .row01_r
+      #main-slider.sliderkit
+        .sliderkit-panels
+          .sliderkit-btn.sliderkit-go-btn.sliderkit-go-prev
+            a(href='#', title='Previous')
+              span Previous
+          .sliderkit-btn.sliderkit-go-btn.sliderkit-go-next
+            a(href='#', title='Next')
+              span Next
+          .sliderkit-panel
+            a(href='/', title='')
+              img(src='/images/sizes/950x410.png', alt='')
+          .sliderkit-panel
+            a(href='/', title='')
+              img(src='/images/sizes/950x410_i.png', alt='')
+      #cases.row
+        .span3
+          a(href='/')
+            img.img-230-150(alt='', src='/images/sizes/230x150.png')
+        .span3
+          a(href='/')
+            img.img-230-150(alt='', src='/images/sizes/230x150.png')
+        .span3
+          a(href='/')
+            img.img-230-150(alt='', src='/images/sizes/230x150.png')
+        .span3
+          a(href='/')
+            img.img-230-150(alt='', src='/images/sizes/230x150.png')
