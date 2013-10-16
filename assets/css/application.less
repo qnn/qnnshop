@@ -68,5 +68,130 @@ ul.nav {
   }
 }
 
+.footer {
+  background: #fff;
+  padding: 10px;
+  .footer-body {
+    background: #F5F7FA;
+  }
+  .nboxes {
+    @height: 50px;
+    height: (@height + 20);
+    border-bottom: 1px solid #EDEDED;
+    .nbox {
+      float: left;
+      width: 290px;
+      height: @height;
+      border-right: 1px solid #CCD0D9;
+      margin: 10px 0 0 0;
+      .nbox_l {
+        float: left;
+        width: 44%;
+        height: @height;
+        text-align: right;
+        font-size: 30px;
+        padding: 10px 0 0 0;
+        color: #656D78;
+      }
+      .nbox_r {
+        float: left;
+        height: @height;
+        font-size: 14px;
+        padding: 10px 0 0 0;
+        margin-left: 5px;
+        color: #656D78;
+      }
+      &:last-child {
+        border-right: 0;
+      }
+    }
+  }
+  .fc {
+    @height: 105px;
+    height: @height;
+    padding: 10px;
+    .fl {
+      float: left;
+      width: 75%;
+      height: @height;
+    }
+    .fr {
+      float: left;
+      width: 25%;
+      height: @height;
+      .ftel {
+        font-size: 14px;
+        text-align: center;
+        .ftelink {
+          display: block;
+          margin: 0 auto;
+          width: 190px;
+          height: 36px;
+          line-height: 36px;
+          font-size: 24px;
+          text-decoration: none;
+          color: #656D78;
+        }
+        .ci {
+          margin: 4px;
+        }
+      }
+      .fco {
+        padding: 5px;
+        .fcolink {
+          margin: 5px auto;
+          padding: 3px;
+          width: 150px;
+          height: 30px;
+          display: block;
+          background: #85C143;
+          color: #FFF;
+          text-decoration: none;
+          line-height: 30px;
+          border-radius: 5px;
+          font-size: 16px;
+        }
+        .ci {
+          margin: 0 8px;
+        }
+      }
+    }
+  }
+}
+
+.ci {
+  display: block;
+  float: left;
+  background: url(/images/common-icons.png) no-repeat 0 0;
+}
+
+.ci-tel {
+  width: 31px;
+  height: 21px;
+  background-position: -30px 0;
+}
+
+.ci-chat {
+  width: 27px;
+  height: 27px;
+  background-position: 0 0;
+}
+
+.copy {
+  font-size: 13px;
+  text-align: center;
+  padding: 15px 0 30px;
+  color: #656D78;
+  a {
+    font-size: 13px;
+    text-decoration: none;
+    color: #656D78;
+    &:hover {
+      text-decoration: underline;
+      color: #656D78;
+    }
+  }
+}
+
 @import "index";
 @import "vendor/sliderkit-core";
