@@ -15,7 +15,10 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(assets({ buildDir: './public' }));
 
-routes(app);
+require('js-yaml');
+var products = require('./products');
+
+routes(app, products);
 
 app.use(function(req, res){
   res.status(404).render('404');

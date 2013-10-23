@@ -1,0 +1,15 @@
+block variables
+  title = "产品"
+
+extends ../layouts/default
+
+block content
+  - var product = products[category][model];
+  h2= category + model
+  p= '价格：' + product.price
+  form(action='/cart', method='POST')
+    input(type='hidden', name='category', value=category)
+    input(type='hidden', name='model', value=model)
+    | 数量：
+    input(type='number', name='quantity', value='1', min='1', max='9999')
+    button(name='cart', value='yes', type='submit') 放入购物车
