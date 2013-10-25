@@ -14,24 +14,25 @@ html
         a.logo(href='/') 首页
         .user
           a(href='/orders') 查询我的订单
-          &nbsp;|&nbsp;
-          .cartInfo
-            | 购物车（
-            span.simpleCart_quantity 0
-            | ）
-          #cartPopover
-            #triangle
-            .simpleCart_items
-            #cartData.clearfix
-              .left
-                strong 数量：
-                span.simpleCart_quantity
-              .right
-                strong 总价：
-                span.simpleCart_total
-            #popoverButtons.clearfix
-              a.hudbtn.left(href='/cart') 查看详细
-              a.simpleCart_checkout.hudbtn.primary.right(href='javascript:;') 结账
+          - if (!hide_header_cart)
+            &nbsp;|&nbsp;
+            #headerCart.cartInfo
+              | 购物车（
+              span.simpleCart_quantity 0
+              | ）
+            #cartPopover
+              #triangle
+              .simpleCart_items
+              #cartData.clearfix
+                .left
+                  strong 数量：
+                  span.simpleCart_quantity
+                .right
+                  strong 总价：
+                  span.simpleCart_total
+              #popoverButtons.clearfix
+                a.hudbtn.left(href='/cart') 查看详细
+                a.simpleCart_checkout.hudbtn.primary.right(href='javascript:;') 结账
       ul.nav
         li
           a.first.products(href='/') 全能产品库
