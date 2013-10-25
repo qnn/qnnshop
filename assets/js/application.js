@@ -11,19 +11,25 @@ $(function(){
       fastchange: false
     });
   }
+  simpleCart.currency({
+    code: 'CNY',
+    symbol: '¥',
+    name: 'Chinese Yuan'
+  });
   simpleCart({
     checkout: {
-      type: "SendForm",
-      url: "/buy"
+      type: 'SendForm',
+      url: '/buy'
     },
+    currency: "CNY",
     cartColumns: [
       {
         view: function (item, column) {
-          return "<span>" + item.get('quantity') + "</span>" +
-            "<div>" +
-            "<a href='javascript:;' class='simpleCart_increment'><img src='/assets/images/increment.png' title='+1' alt='arrow up'/></a>" +
-            "<a href='javascript:;' class='simpleCart_decrement'><img src='/assets/images/decrement.png' title='-1' alt='arrow down'/></a>" +
-            "</div>";
+          return '<span>' + item.get('quantity') + '</span>' +
+            '<div>' +
+            '<a href="javascript:;" class="simpleCart_increment arrow_up"></a>' +
+            '<a href="javascript:;" class="simpleCart_decrement arrow_down"></a>' +
+            '</div>';
         },
         attr: 'custom'
       },
@@ -33,7 +39,7 @@ $(function(){
       },
       {
         view: 'currency',
-        attr: "total",
+        attr: 'total',
         label: false
       }
     ],
@@ -46,6 +52,20 @@ $(function(){
     } else {
       $("#cartPopover").show();
       $(this).addClass('open');
+    }
+  });
+  $(".addtocartbtn").click(function(e){
+    e.preventDefault();
+    var category = $(this).data('category'), model = $(this).data('model');
+    if (category && model) {
+      $.getJSON('/'+category+'/'+model, function(product){
+        simpleCart.add({ 
+          name: product.name,
+          price: product.price,
+          size: product.size,
+          quantity: 1
+        });
+      });
     }
   });
 });

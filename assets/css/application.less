@@ -80,6 +80,9 @@ body {
   position: relative;
   margin: 0 0 0 10px;
   cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   -webkit-transition: background-color .2s linear;
   &:hover {
     background-color: #e8eaed;
@@ -91,7 +94,7 @@ body {
 
 #cartPopover {
   position: absolute;
-  width: 218px;
+  width: 320px;
   top: 43px;
   right: 0;
   z-index: 9999;
@@ -120,7 +123,7 @@ body {
     border-bottom: 1px solid #2B2D2E;
     border-top: 1px solid #434547;
     padding: 10px;
-    height: 12px;
+    height: 30px;
     div {
       float: left;
     }
@@ -129,31 +132,24 @@ body {
     }
   }
   .item-custom {
-    width: 35px;
+    width: 45px;
     margin-right: 6px;
     span {
       float: left;
-      height: 13px;
+      height: 28px;
       display: inline-block;
-      width: 23px;
-      text-align: right;
+      width: 24px;
+      text-align: center;
     }
     div {
       float: left;
-      height: 13px;
-      margin-left: 3px;
+      height: 20px;
+      margin: 5px 0 0 3px;
     }
-  }
-  .simpleCart_increment, .simpleCart_decrement {
-    line-height: 1;
-    font-size: 1px;
-    display: block;
-    height: 5px;
-    margin-top: 3px;
   }
   .item-name {
     float: left;
-    width: 90px;
+    width: 160px;
     white-space:  nowrap;
     overflow:  hidden;
     text-overflow:  ellipsis;
@@ -166,13 +162,35 @@ body {
 #triangle{
   @size: 10px;
   position: absolute;
-  right: 22%;
+  right: 50px;
   top: -11px;
   width: 0;
   height: 0;
   border-left: @size solid transparent;
   border-right: @size solid transparent;
   border-bottom: @size solid black;
+}
+
+.arrow_up {
+  display: block;
+  margin: 2px 0;
+  @size: 7px;
+  width: 0;
+  height: 0;
+  border-left: @size solid transparent;
+  border-right: @size solid transparent;
+  border-bottom: @size solid white;
+}
+
+.arrow_down {
+  display: block;
+  margin: 2px 0;
+  @size: 7px;
+  width: 0;
+  height: 0;
+  border-left: @size solid transparent;
+  border-right: @size solid transparent;
+  border-top: @size solid white;
 }
 
 #cartData{
@@ -182,6 +200,10 @@ body {
 
 #popoverButtons{
   padding: 10px;
+}
+
+a.hudbtn {
+  display: inline-block;
 }
 
 .hudbtn {

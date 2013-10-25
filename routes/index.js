@@ -16,7 +16,14 @@ module.exports = function(app, products) {
   app.get('/:category/:model', function(req, res, next){
     var category = req.params.category, model = req.params.model;
     if (products[category] && products[category][model]) {
-      res.render('products/show', { products: products, category: category, model: model });
+      res.format({
+        json: function(){
+          res.send(products[category][model]);
+        },
+        html: function(){
+          res.render('products/show', { products: products, category: category, model: model });
+        }
+      });
     } else {
       next();
     }
