@@ -36,7 +36,10 @@ $(function(){
         },
         {
           attr: 'name',
-          label: false
+          label: false,
+          view: function(item, column){
+            return '<a href="' + item.get('path') + '">' + item.get('name') + '</a>';
+          }
         },
         {
           view: 'currency',
