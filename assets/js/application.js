@@ -95,4 +95,15 @@ $(function(){
       });
     }
   });
+  if ($('#pslider').length == 1) {
+    $('#pslider').sliderkit({
+      mousewheel: false,
+      shownavitems: 5,
+      panelbtnshover: false,
+      auto: false,
+      circular: true,
+      navscrollatend: false,
+      navpanelautoswitch: false
+    });
+  }
 });

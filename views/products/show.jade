@@ -5,6 +5,35 @@ extends ../layouts/default
 
 block content
   - var product = products[category][model];
-  h2= category + model
-  p= '价格：' + product.price
-  a.addtocartbtn.hudbtn.primary(href='/cart', data-category=category, data-model=model) 放入购物车
+  .pview
+    #pslider.sliderkit
+      .sliderkit-nav
+        .sliderkit-nav-clip
+          ul
+            - each slide in product.slides
+              li
+                a(href='#', title=product.name)
+                  img(src=slide, alt=product.name)
+      .sliderkit-panels
+        - each slide in product.slides
+          .sliderkit-panel
+            a(href='#d', title=product.name)
+              img(src=slide, alt=product.name)
+        .sliderkit-btn.sliderkit-go-btn.sliderkit-go-prev
+          a(href='#', title='上一张图片')
+            span 上一张图片
+        .sliderkit-btn.sliderkit-go-btn.sliderkit-go-next
+          a(href='#', title='下一张图片')
+            span 下一张图片
+    .pinfo
+      .ptitle
+        h2= product.title
+        h5= product.subtitle
+      .pprice
+          span.item 价格:
+          span.price
+            em= product.price
+            | 元
+      .paction
+        a.addtocartbtn.hudbtn.primary(href='/cart', data-category=category, data-model=model) 放入购物车
+    .clearfix
