@@ -1,5 +1,6 @@
 //= require vendor/jquery-1.10.2.min.js
 //= require vendor/jquery.sliderkit.1.9.2.js
+//= require vendor/jquery.path.js
 //= require vendor/simpleCart.min.js
 $(function(){
   if ($('#main-slider').length == 1) {
@@ -92,6 +93,29 @@ $(function(){
           image: product.image,
           quantity: 1
         });
+        var active_image = $('#pslider .sliderkit-panel-active img');
+        var image = active_image.clone();
+        image.width(active_image.width()).height(active_image.height());
+        image.css({ position: 'absolute', 'z-index': 9999 });
+        image.appendTo('body');
+        image.animate({
+          path: new $.path.bezier({
+            start: {
+              x: active_image.offset().left,
+              y: active_image.offset().top,
+              angle: -90
+            },
+            end: {
+              x: $('#headerCart').offset().left,
+              y: $('#headerCart').offset().top,
+              angle: 180,
+              length: 0.25
+            }
+          })
+        }, 600, function(){
+          $(this).remove();
+        });
+        image.addClass('cartAnimation');
       });
     }
   });

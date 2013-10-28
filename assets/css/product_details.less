@@ -119,6 +119,14 @@
   }
 }
 
+.psimg {
+  @transition: ".3s linear .2s, opacity .8s linear";
+  transition: ~"transform @{transition}";
+  -moz-transition: ~"-moz-transform @{transition}";
+  -webkit-transition: ~"-webkit-transform @{transition}";
+  -o-transition: ~"-o-transform @{transition}";
+}
+
 .pinfo {
   float: left;
   width: 330px;
