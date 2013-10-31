@@ -12,17 +12,39 @@ $(function(){
       fastchange: false
     });
   }
+  var checkout = {
+    type: 'Custom',
+    url: '/checkout'
+  };
   simpleCart.currency({
     code: 'CNY',
     symbol: '¥',
     name: 'Chinese Yuan'
   });
+  simpleCart.extendCheckout({
+    Custom: function (opts) {
+      var data = [];
+      simpleCart.each(function (item, x) {
+        data.push({
+          category: item.get('category'),
+          model: item.get('model'),
+          quantity: item.quantity(),
+          price: item.price()
+        });
+      });
+      return {
+        action: opts.url,
+        method: opts.method === "GET" ? "GET" : "POST",
+        data: { data: JSON.stringify(data) }
+      };
+    }
+  });
+  $('.toCurrency').each(function(){
+    $(this).text(simpleCart.toCurrency($(this).text()));
+  });
   if ($('#headerCart').length == 1) {
     simpleCart({
-      checkout: {
-        type: 'SendForm',
-        url: '/buy'
-      },
+      checkout: checkout,
       currency: 'CNY',
       cartColumns: [
         {
@@ -62,6 +84,7 @@ $(function(){
   }
   if ($('#shopping_cart').length == 1) {
     simpleCart({
+      checkout: checkout,
       currency: 'CNY',
       cartStyle: 'table',
       cartColumns: [
@@ -88,6 +111,8 @@ $(function(){
       $.getJSON('/'+category+'/'+model, function(product){
         simpleCart.add({ 
           name: product.name,
+          category: product.category,
+          model: product.model,
           price: product.price,
           path: product.path,
           image: product.image,
