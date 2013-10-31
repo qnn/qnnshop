@@ -6,4 +6,12 @@ extends layouts/default
 
 block content
   .message
-    | 抱歉，您所提交的购物车内容有误、过时或已发生改变，请返回购物车页面，尝试删除商品并重新购物。
+    - if (errors instanceof Array)
+      | 抱歉，在结账前发生如下错误：
+      br
+      - each error in errors
+        = error
+        br
+      | 请返回购物车页面，尝试删除商品并重新购物。
+    - else
+      | 抱歉，在结账前发生错误。请返回购物车页面，尝试删除商品并重新购物。

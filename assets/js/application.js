@@ -103,6 +103,15 @@ $(function(){
         { view: 'remove', text: '删除', label: false }
       ]
     });
+    simpleCart.bind('beforeRemove', function(item){
+      return confirm('确定要从购物车上删除“' + item.get('name') + '”？')
+    });
+    simpleCart.bind('ready update', function(){
+      if (simpleCart.quantity() == 0) {
+        $('#shopping_cart, .shopping_cart_buttons').addClass('hidden');
+        $('.message').removeClass('hidden');
+      }
+    });
   }
   $(".addtocartbtn").click(function(e){
     e.preventDefault();

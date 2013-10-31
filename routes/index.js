@@ -9,18 +9,18 @@ module.exports = function(app, products) {
   });
 
   app.post('/checkout', function(req, res, next){
-    var data;
-    var data_length = 0;
     var verified = [];
     try {
-      data = JSON.parse(req.body.data);
-    } catch(e) {}
-    if (data instanceof Array) {
-      data_length = data.length;
-      for (var i = 0; i < data.length; i++) {
+      var data = JSON.parse(req.body.data);
+      if (data instanceof Array == false) throw ['购物车上没有商品，无法结账。'];
+
+      var data_length = data.length;
+      if (data_length > 50) throw ['购物车商品种类不应超过50种。'];
+
+      for (var i = 0; i < data_length; i++) {
         var item = data[i];
         var quantity = item.quantity;
-        if (!/^\d+$/.test(quantity) || quantity <= 0 || quantity > 50) continue;
+        if (!/^\d+$/.test(quantity) || quantity <= 0 || quantity > 50) throw ['每种商品购买数量不应超过50件。'];
 
         var category = item.category, model = item.model;
         if (products[category] && products[category][model]) {
@@ -34,11 +34,13 @@ module.exports = function(app, products) {
           verified.push(output);
         }
       }
-    }
-    if (data_length != verified.length) {
-      res.render('checkout_error');
-    } else {
+
+      if (verified.length == 0) throw ['购物车上没有商品，无法结账。'];
+      if (data_length != verified.length) throw ['购物车上至少有一种商品已过时或已发生改变。'];
+
       res.render('checkout', { products: verified });
+    } catch (errors) {
+      res.render('checkout_error', { errors: errors instanceof Array ? errors : null });
     }
   });
 
