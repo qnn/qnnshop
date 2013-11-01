@@ -5,25 +5,46 @@ block variables
 extends layouts/default
 
 block content
-  #shopping_cart.checkout_cart
-    table
-      tbody
-        tr.headerRow
-          th.item-image
-          th.item-name 商品名称
-          th.item-quantity 数量
-          th.item-price 单价
-          th.item-total 合计
-        - each product in products
-          tr.itemRow
-            td.item-image
-              a(title=product.title, href=product.path)
-                img(alt=product.title, src=product.image)
-            td.item-name
-              a(href=product.path, title=product.title)= product.name
-            td.item-quantity= product.quantity
-            td.item-price.toCurrency= product.price
-            td.item-total.toCurrency= product.price * product.quantity
-  .shopping_cart_buttons
-    a.hudbtn.left(href='/cart') 返回修改购物车
-    .clearfix
+  form.checkout(action='/confirm_checkout', method='POST')
+    h2.title 购买的产品
+    #shopping_cart.checkout_cart
+      table
+        tbody
+          tr.headerRow
+            th.item-image
+            th.item-name 商品名称
+            th.item-quantity 数量
+            th.item-price 单价
+            th.item-total 合计
+          - each product in products
+            tr.itemRow
+              td.item-image
+                a(title=product.title, href=product.path)
+                  img(alt=product.title, src=product.image)
+              td.item-name
+                a(href=product.path, title=product.title)= product.name
+              td.item-quantity= product.quantity
+              td.item-price.toCurrency= product.price
+              td.item-total.toCurrency= product.price * product.quantity
+    .shopping_cart_buttons
+      a.hudbtn.left(href='/cart') 返回修改购物车
+      .clearfix
+    h2.title 收货信息
+    .form
+      .form-group
+        label(for='shipping_user_name') 收货人
+        input.form-input#shipping_user_name(type='text', name='shipping_user_name')
+      .form-group
+        label(for='shipping_user_phone') 收货人联系电话
+        input.form-input#shipping_user_phone(type='text', name='shipping_user_phone')
+      .form-group
+        label(for='shipping_address') 收货地址
+        #district_selector
+        input.form-input#shipping_address(type='text', name='shipping_address')
+    h2.title 支付
+    .form
+      .form-group
+        | 使用支付宝支付
+    .shopping_cart_buttons
+      button.hudbtn.primary.right(type='submit') 继续
+      .clearfix

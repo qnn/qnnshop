@@ -164,4 +164,36 @@ $(function(){
       navpanelautoswitch: false
     });
   }
+  if ($('#district_selector').length == 1) {
+    $.getJSON('/js/districts.tree.json', function(districts){
+      var province = $('<select />', { name: 'province', class: 'form_select' });
+      province.append('<option value="">请选择地区</option>');
+      $.each(districts, function(a, b){
+        province.append('<option value="' + a + '">' + a + '</option>');
+      });
+      province.change(function(){
+        $('option[value=""]', this).remove();
+        $(this).nextAll().remove();
+        var p = $(this).val();
+        var city = $('<select />', { name: 'city', class: 'form_select' });
+        $.each(districts[p], function(a, b){
+          city.append('<option value="' + a + '">' + a + '</option>');
+        });
+        city.data('province', p);
+        $('#district_selector').append(city);
+        city.change(function(){
+          $(this).nextAll().remove();
+          var p = $(this).data('province'), c = $(this).val();
+          if (districts[p][c] instanceof Array && districts[p][c].length > 0) {
+            var district = $('<select />', { name: 'district', class: 'form_select' });
+            $.each(districts[p][c], function(a, b){
+              district.append('<option value="' + b + '">' + b + '</option>');
+            });
+            $('#district_selector').append(district);
+          }
+        }).trigger('change');
+      });
+      $('#district_selector').append(province);
+    });
+  }
 });
