@@ -16,7 +16,10 @@ block content
             th.item-quantity 数量
             th.item-price 单价
             th.item-total 合计
+          - grandTotal = 0
           - each product in products
+            - total = product.price * product.quantity
+            - grandTotal += total
             tr.itemRow
               td.item-image
                 a(title=product.title, href=product.path)
@@ -25,7 +28,13 @@ block content
                 a(href=product.path, title=product.title)= product.name
               td.item-quantity= product.quantity
               td.item-price.toCurrency= product.price
-              td.item-total.toCurrency= product.price * product.quantity
+              td.item-total.toCurrency= total
+          tr
+            td
+            td
+            td
+            td.item-price 总计
+            td.item-total.toCurrency= grandTotal
     .shopping_cart_buttons
       a.hudbtn.left(href='/cart') 返回修改购物车
       .clearfix
@@ -44,7 +53,10 @@ block content
     h2.title 支付
     .form
       .form-group
-        | 使用支付宝支付
+        input#payment_alipay(type='radio', name='payment', value='alipay', checked)
+        label.option(for='payment_alipay')
+          img(src='/images/alipay.gif', alt='支付宝', width=96, height=37)
+          | 使用支付宝支付
     .shopping_cart_buttons
       button.hudbtn.primary.right(type='submit') 继续
       .clearfix
