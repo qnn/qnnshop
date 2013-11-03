@@ -4,6 +4,45 @@ module.exports = function(app, products) {
     res.render('index');
   });
 
+  app.get('/login', function(req, res){
+    res.render('login');
+  });
+
+  var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
+  passport.use(new LocalStrategy({
+      usernameField: 'user_name',
+      passwordField: 'user_phone'
+    },
+    function(username, userphone, done) {
+      var User = require('../models/user');
+      User.findOne({ name: username, phone: userphone }, function(err, user){
+        if (err) return done(err);
+        if (!user) return done(null, false);
+        return done(null, user);
+      });
+    }
+  ));
+  passport.serializeUser(function(user, done) {
+    done(null, user.name);
+  });
+  passport.deserializeUser(function(name, done) {
+    var User = require('../models/user');
+    User.findOne({ name: name }, function(err, user) {
+      done(err, user);
+    });
+  });
+
+  app.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login' }));
+
+  app.get('/orders', function(req, res, next){
+    if (req.user) {
+      res.render('orders');
+    } else {
+      req.session.returnTo = '/orders';
+      res.redirect('/login');
+    }
+  });
+
   app.get('/cart', function(req, res, next){
     res.render('cart');
   });
