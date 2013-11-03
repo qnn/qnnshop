@@ -13,6 +13,7 @@
     "url": "https://github.com/qnn/qnnshop.git"
   },
   "dependencies": {
+    "mongoose": "3.8.0",
     "express": "3.3.8",
     "js-yaml": "2.1.0",
     "less": "1.4.x",

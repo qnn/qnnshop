@@ -44,6 +44,63 @@ module.exports = function(app, products) {
     }
   });
 
+  app.post('/confirm_checkout', function(req, res){
+    try {
+      var name = req.body.shipping_user_name;
+      var phone = req.body.shipping_user_phone;
+      var address = req.body.shipping_address;
+      var province = req.body.province;
+      var city = req.body.city;
+      var district = req.body.district;
+      var email = '';
+
+      if (name) name = name.trim();
+      if (phone) phone = phone.trim();
+      if (address) address = address.trim();
+      if (province) province = province.trim();
+      if (city) city = city.trim();
+      if (district) district = district.trim();
+
+      if (!name || !phone || !address) throw ['收货人、联系电话、收货地址均不能为空。'];
+      if (name.length > 10) throw ['收货人名字过长。'];
+      if (phone.length > 20) throw ['收货人联系电话过长。'];
+      if (address.length > 100) throw ['收货人地址过长。'];
+
+      var valid_districts = [];
+
+      if (province != undefined) {
+        var districts = require('../public/js/districts.tree.json');
+        if (!districts.hasOwnProperty(province)) throw ['错误的省份。'];
+        valid_districts.push(province);
+        if (city != undefined) {
+          if (!districts[province].hasOwnProperty(city) && 
+              (districts[province] instanceof Array && districts[province].indexOf(city) == -1)) throw ['错误的城市。'];
+          valid_districts.push(city);
+          if (district != undefined) {
+            if (!districts[province][city].hasOwnProperty(district) && 
+                (districts[province][city] instanceof Array && districts[province][city].indexOf(district) == -1)) throw ['错误的城区。'];
+            valid_districts.push(district);
+          }
+        }
+      }
+
+      var User = require('../models/user');
+      var new_user = new User({
+        name: name,
+        phone: phone,
+        districts: valid_districts,
+        address: address,
+        email: email
+      });
+      new_user.save(function (error) {
+        if (error) throw ['创建用户时出错。'];
+        res.send(200);
+      });
+    } catch (errors) {
+      res.render('checkout_error', { errors: errors instanceof Array ? errors : null });
+    }
+  });
+
   app.get('/:category/:model', function(req, res, next){
     var category = req.params.category, model = req.params.model;
     if (products[category] && products[category][model]) {

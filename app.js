@@ -1,7 +1,10 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var assets  = require('connect-assets');
 var fs      = require('fs');
 var routes  = require('./routes');
+
+mongoose.connect('mongodb://localhost/qnnshop');
 
 var app     = express();
 
