@@ -35,8 +35,12 @@ module.exports = function(app, products) {
   app.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login' }));
 
   app.get('/orders', function(req, res, next){
-    if (req.user) {
-      res.render('orders');
+    var user = req.user;
+    if (user) {
+      var Order = require('../models/order');
+      Order.find({ _user: user._id }).exec(function(error, orders){
+        res.render('orders', { products: products, orders: orders, user: user });
+      });
     } else {
       req.session.returnTo = '/orders';
       res.redirect('/login');
@@ -47,7 +51,7 @@ module.exports = function(app, products) {
     res.render('cart');
   });
 
-  app.post('/checkout', function(req, res, next){
+  var verify_products = function(req, done){
     var verified = [];
     try {
       var data = JSON.parse(req.body.data);
@@ -77,10 +81,16 @@ module.exports = function(app, products) {
       if (verified.length == 0) throw ['购物车上没有商品，无法结账。'];
       if (data_length != verified.length) throw ['购物车上至少有一种商品已过时或已发生改变。'];
 
-      res.render('checkout', { products: verified });
+      done(verified);
     } catch (errors) {
       res.render('checkout_error', { errors: errors instanceof Array ? errors : null });
     }
+  };
+
+  app.post('/checkout', function(req, res, next){
+    verify_products(req, function(verified){
+      res.render('checkout', { products: verified, _data: req.body.data });
+    });
   });
 
   app.post('/confirm_checkout', function(req, res){
@@ -123,17 +133,42 @@ module.exports = function(app, products) {
         }
       }
 
-      var User = require('../models/user');
-      var new_user = new User({
-        name: name,
-        phone: phone,
-        districts: valid_districts,
-        address: address,
-        email: email
-      });
-      new_user.save(function (error) {
-        if (error) throw ['创建用户时出错。'];
-        res.send(200);
+      verify_products(req, function(verified){
+
+        var Order = require('../models/order');
+        var User = require('../models/user');
+
+        var _products = [];
+        for (var i = 0; i < verified.length; i++) {
+          _products.push({
+            title: verified[i].title,
+            category: verified[i].category,
+            model: verified[i].model,
+            price: verified[i].price,
+            quantity: verified[i].quantity
+          });
+        }
+        var new_user = new User({
+          name: name,
+          phone: phone
+        });
+        new_user.save(function (error) {
+          if (error) throw ['创建用户时出错。'];
+          var new_order = new Order({
+            _user: new_user._id,
+            products: _products,
+            username: name,
+            phone: phone,
+            districts: valid_districts,
+            address: address,
+            email: email
+          });
+          new_order.save(function (error) {
+            if (error) throw ['创建订单时出错。'];
+            res.send(200);
+          });
+        });
+
       });
     } catch (errors) {
       res.render('checkout_error', { errors: errors instanceof Array ? errors : null });

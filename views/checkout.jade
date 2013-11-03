@@ -7,7 +7,7 @@ extends layouts/default
 block content
   form.checkout(action='/confirm_checkout', method='POST')
     h2.title 购买的产品
-    #shopping_cart.checkout_cart
+    #shopping_cart.checkout_cart.table_container
       table
         tbody
           tr.headerRow
@@ -58,5 +58,6 @@ block content
           img(src='/images/alipay.gif', alt='支付宝', width=96, height=37)
           | 使用支付宝支付
     .shopping_cart_buttons
+      input(type='hidden', name='data', value=_data)
       button.hudbtn.primary.right(type='submit') 继续
       .clearfix
