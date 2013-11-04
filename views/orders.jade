@@ -13,15 +13,15 @@ block content
             tr
               th.tinfo(colspan=5)
                 .left
-                  | 创建日期：
-                  abbr.timeago(title=order.created_at.toJSON())
+                  | 收货人：#{order.username}（联系电话：#{order.phone}）
                   br
                   | 地址：#{order.districts.join(' ')} #{order.address}
                 .right
-                  | 更新日期：
-                  abbr.timeago(title=order.updated_at.toJSON())
+                  | 创建时间：
+                  abbr.timeago(title=order.created_at.toJSON())
                   br
-                  | 收货人：#{order.username} (联系电话：#{order.phone})
+                  | 更新时间：
+                  abbr.timeago(title=order.updated_at.toJSON())
                 .clearfix
             - grandTotal = 0
             - each product in order.products

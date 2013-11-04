@@ -1,5 +1,11 @@
 module.exports = function(app, products) {
 
+  app.use(function(req, res, next){
+    res.locals.current_user = req.user;
+    res.locals.products = products;
+    next();
+  });
+
   app.get('/', function(req, res){
     res.render('index');
   });
@@ -34,12 +40,17 @@ module.exports = function(app, products) {
 
   app.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login' }));
 
+  app.post('/logout', function(req, res){
+    req.logout();
+    res.send(200);
+  });
+
   app.get('/orders', function(req, res, next){
     var user = req.user;
     if (user) {
       var Order = require('../models/order');
       Order.find({ _user: user._id }).sort('-created_at').exec(function(error, orders){
-        res.render('orders', { products: products, orders: orders, user: user });
+        res.render('orders', { orders: orders, user: user });
       });
     } else {
       req.session.returnTo = '/orders';
@@ -151,6 +162,7 @@ module.exports = function(app, products) {
         var create_new_order = function(user) {
           var new_order = new Order({
             _user: user._id,
+            status: '等待买家付款',
             products: _products,
             username: name,
             phone: phone,
@@ -196,7 +208,7 @@ module.exports = function(app, products) {
           res.send(output);
         },
         html: function(){
-          res.render('products/show', { products: products, category: category, model: model });
+          res.render('products/show', { category: category, model: model });
         }
       });
     } else {

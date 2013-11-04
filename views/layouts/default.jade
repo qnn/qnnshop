@@ -14,6 +14,9 @@ html
         a.logo(href='/') 首页
         .user
           a(href='/orders') 查询我的订单
+          - if (current_user)
+            &nbsp;|&nbsp;
+            a#logout(href='javascript:;') 退出登录
           - if (!hide_header_cart)
             &nbsp;|&nbsp;
             #headerCart.cartInfo

@@ -98,7 +98,12 @@ $(function(){
             return '<a href="' + item.get('path') + '">' + item.get('name') + '</a>';
           }
         },
-        { attr: 'quantity', label: '数量', view: 'input' },
+        { attr: 'quantity', label: '数量', view: function (item, column) {
+            return '<a href="javascript:;" class="simpleCart_increment arrow_up arrow_up_black"></a>' +
+              '<input type="text" value="' + item.get('quantity') + '" class="simpleCart_input">' +
+              '<a href="javascript:;" class="simpleCart_decrement arrow_down arrow_down_black"></a>';
+          }
+        },
         { attr: 'price', label: '单价', view: 'currency' },
         { attr: 'total' , label: '合计', view: 'currency' },
         { view: 'remove', text: '删除', label: false }
@@ -197,5 +202,10 @@ $(function(){
       $('#district_selector').append(province);
     });
   }
-  $("abbr.timeago").timeago();
+  $('abbr.timeago').timeago();
+  $('#logout').click(function(){
+    $.post('/logout', function(){
+      window.location.reload();
+    });
+  });
 });
