@@ -62,7 +62,7 @@ module.exports = function(app, products) {
     res.render('cart');
   });
 
-  var verify_products = function(req, done){
+  var verify_products = function(req, res, done){
     var verified = [];
     try {
       var data = JSON.parse(req.body.data);
@@ -99,7 +99,7 @@ module.exports = function(app, products) {
   };
 
   app.post('/checkout', function(req, res, next){
-    verify_products(req, function(verified){
+    verify_products(req, res, function(verified){
       res.render('checkout', { products: verified, _data: req.body.data });
     });
   });
@@ -144,7 +144,7 @@ module.exports = function(app, products) {
         }
       }
 
-      verify_products(req, function(verified){
+      verify_products(req, res, function(verified){
 
         var Order = require('../models/order');
         var User = require('../models/user');
