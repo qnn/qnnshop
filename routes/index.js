@@ -38,7 +38,7 @@ module.exports = function(app, products) {
     var user = req.user;
     if (user) {
       var Order = require('../models/order');
-      Order.find({ _user: user._id }).exec(function(error, orders){
+      Order.find({ _user: user._id }).sort('-created_at').exec(function(error, orders){
         res.render('orders', { products: products, orders: orders, user: user });
       });
     } else {
@@ -148,14 +148,9 @@ module.exports = function(app, products) {
             quantity: verified[i].quantity
           });
         }
-        var new_user = new User({
-          name: name,
-          phone: phone
-        });
-        new_user.save(function (error) {
-          if (error) throw ['创建用户时出错。'];
+        var create_new_order = function(user) {
           var new_order = new Order({
-            _user: new_user._id,
+            _user: user._id,
             products: _products,
             username: name,
             phone: phone,
@@ -167,8 +162,21 @@ module.exports = function(app, products) {
             if (error) throw ['创建订单时出错。'];
             res.send(200);
           });
+        };
+        User.findOne({ name: name, phone: phone }, function(error, user) {
+          if (error || !user) {
+            var new_user = new User({
+              name: name,
+              phone: phone
+            });
+            new_user.save(function (error) {
+              if (error) throw ['创建用户时出错。'];
+              create_new_order(new_user);
+            });
+          } else {
+            create_new_order(user);
+          }
         });
-
       });
     } catch (errors) {
       res.render('checkout_error', { errors: errors instanceof Array ? errors : null });

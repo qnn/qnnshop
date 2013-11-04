@@ -2,6 +2,7 @@
 //= require vendor/jquery.sliderkit.1.9.2.js
 //= require vendor/jquery.path.js
 //= require vendor/simpleCart.min.js
+//= require vendor/jquery.timeago.js
 $(function(){
   if ($('#main-slider').length == 1) {
     $('#main-slider').sliderkit({
@@ -196,4 +197,5 @@ $(function(){
       $('#district_selector').append(province);
     });
   }
+  $("abbr.timeago").timeago();
 });
