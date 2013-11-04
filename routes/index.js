@@ -64,6 +64,10 @@ module.exports = function(app, products) {
     res.render('cart');
   });
 
+  var render_errors = function(res, errors){
+    res.render('checkout_error', { errors: errors instanceof Array ? errors : null });
+  };
+
   var verify_products = function(req, res, done){
     var verified = [];
     try {
@@ -96,7 +100,7 @@ module.exports = function(app, products) {
 
       done(verified);
     } catch (errors) {
-      res.render('checkout_error', { errors: errors instanceof Array ? errors : null });
+      render_errors(res, errors);
     }
   };
 
@@ -145,63 +149,77 @@ module.exports = function(app, products) {
           }
         }
       }
-
-      verify_products(req, res, function(verified){
-
-        var Order = require('../models/order');
-        var User = require('../models/user');
-
-        var _products = [];
-        for (var i = 0; i < verified.length; i++) {
-          _products.push({
-            title: verified[i].title,
-            category: verified[i].category,
-            model: verified[i].model,
-            price: verified[i].price,
-            quantity: verified[i].quantity
-          });
-        }
-        var create_new_order = function(user) {
-          var new_order = new Order({
-            _user: user._id,
-            status: '等待买家付款',
-            products: _products,
-            username: name,
-            phone: phone,
-            districts: valid_districts,
-            address: address,
-            email: email
-          });
-          new_order.save(function (error) {
-            if (error) throw ['创建订单时出错。'];
-            res.send(200);
-          });
-        };
-        User.findOne({ username: phone }, function(error, user) {
-          if (error || !user) {
-            var bcrypt = require('bcrypt');
-            bcrypt.genSalt(10, function(err, salt) {
-              if (error) throw ['创建用户时出错。'];
-              bcrypt.hash(phone, salt, function(err, hash) {
-                if (error) throw ['创建用户时出错。'];
-                var new_user = new User({
-                  username: phone,
-                  password: hash
-                });
-                new_user.save(function (error) {
-                  if (error) throw ['创建用户时出错。'];
-                  create_new_order(new_user);
-                });
-              });
-            });
+    } catch (errors) {
+      render_errors(res, errors);
+    }
+    verify_products(req, res, function(verified){
+      var Order = require('../models/order');
+      var User = require('../models/user');
+      var _products = [];
+      for (var i = 0; i < verified.length; i++) {
+        _products.push({
+          title: verified[i].title,
+          category: verified[i].category,
+          model: verified[i].model,
+          price: verified[i].price,
+          quantity: verified[i].quantity
+        });
+      }
+      var create_new_order = function(user) {
+        var new_order = new Order({
+          _user: user._id,
+          status: '等待买家付款',
+          products: _products,
+          username: name,
+          phone: phone,
+          districts: valid_districts,
+          address: address,
+          email: email
+        });
+        new_order.save(function (error) {
+          if (error) {
+            render_errors(res, ['创建订单时出错。']);
           } else {
-            create_new_order(user);
+            res.send(200);
           }
         });
-      });
-    } catch (errors) {
-      res.render('checkout_error', { errors: errors instanceof Array ? errors : null });
-    }
+      };
+      var current_user = req.user;
+      if (current_user) {
+        create_new_order(current_user);
+      } else {
+        User.findOne({ username: phone }, function(error, user){
+          if (error || user) {
+            render_errors(res, ['您是注册用户，请先登录。']);
+            return;
+          }
+          var bcrypt = require('bcrypt');
+          bcrypt.genSalt(10, function(error, salt) {
+            if (error) {
+              render_errors(res, ['创建用户时出错。']);
+              return;
+            }
+            bcrypt.hash(phone, salt, function(error, hash) {
+              if (error) {
+                render_errors(res, ['创建用户时出错。']);
+                return;
+              }
+              var new_user = new User({
+                username: phone,
+                password: hash
+              });
+              new_user.save(function (error) {
+                if (error) {
+                  render_errors(res, ['创建用户时出错。']);
+                  return;
+                }
+                create_new_order(new_user);
+              });
+            });
+          });
+        });
+      }
+    });
   });
 
   app.get('/:category/:model', function(req, res, next){
