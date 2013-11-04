@@ -16,24 +16,26 @@ module.exports = function(app, products) {
 
   var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
   passport.use(new LocalStrategy({
-      usernameField: 'user_name',
-      passwordField: 'user_phone'
+      usernameField: 'username',
+      passwordField: 'password'
     },
-    function(username, userphone, done) {
+    function(username, password, done) {
       var User = require('../models/user');
-      User.findOne({ name: username, phone: userphone }, function(err, user){
+      User.findOne({ username: username }, function(err, user){
         if (err) return done(err);
         if (!user) return done(null, false);
+        var bcrypt = require('bcrypt');
+        if (!bcrypt.compareSync(password, user.password)) return done(null, false);
         return done(null, user);
       });
     }
   ));
   passport.serializeUser(function(user, done) {
-    done(null, user.name);
+    done(null, user.username);
   });
-  passport.deserializeUser(function(name, done) {
+  passport.deserializeUser(function(username, done) {
     var User = require('../models/user');
-    User.findOne({ name: name }, function(err, user) {
+    User.findOne({ username: username }, function(err, user) {
       done(err, user);
     });
   });
@@ -175,15 +177,22 @@ module.exports = function(app, products) {
             res.send(200);
           });
         };
-        User.findOne({ name: name, phone: phone }, function(error, user) {
+        User.findOne({ username: phone }, function(error, user) {
           if (error || !user) {
-            var new_user = new User({
-              name: name,
-              phone: phone
-            });
-            new_user.save(function (error) {
+            var bcrypt = require('bcrypt');
+            bcrypt.genSalt(10, function(err, salt) {
               if (error) throw ['创建用户时出错。'];
-              create_new_order(new_user);
+              bcrypt.hash(phone, salt, function(err, hash) {
+                if (error) throw ['创建用户时出错。'];
+                var new_user = new User({
+                  username: phone,
+                  password: hash
+                });
+                new_user.save(function (error) {
+                  if (error) throw ['创建用户时出错。'];
+                  create_new_order(new_user);
+                });
+              });
             });
           } else {
             create_new_order(user);
