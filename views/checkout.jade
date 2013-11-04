@@ -41,15 +41,29 @@ block content
     h2.title 收货信息
     .form
       .form-group
-        label(for='shipping_user_name') 收货人
+        label(for='shipping_user_name')
+          | 收货人
+          span.important *
         input.form-input#shipping_user_name(type='text', name='shipping_user_name')
+        .labeldesc
+          | 可输入中英文和空格。
       .form-group
-        label(for='shipping_user_phone') 收货人联系电话
+        label(for='shipping_user_phone')
+          | 收货人联系电话
+          span.important *
         input.form-input#shipping_user_phone(type='text', name='shipping_user_phone')
+        .labeldesc
+          | 提交订单后系统会为您创建新账户，您可以使用这个电话号码登录查询您的订单。
+          br
+          | 请填写常用的手机号码或固定电话号码，并确保此电话能在发货期间正常使用。
       .form-group
-        label(for='shipping_address') 收货地址
+        label(for='shipping_address')
+          | 收货地址
+          span.important *
         #district_selector
         input.form-input#shipping_address(type='text', name='shipping_address')
+        .labeldesc
+          | 请填写正确的收货地址。
     h2.title 支付
     .form
       .form-group

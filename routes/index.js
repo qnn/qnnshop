@@ -10,6 +10,12 @@ module.exports = function(app, products) {
     res.render('index');
   });
 
+  // for POST-only pages, we don't want it be 404
+  // redirect to home if you click log out link and refresh the page using GET
+  app.get('/:page(logout|checkout|confirm_checkout)', function(req, res){
+    res.redirect('/');
+  });
+
   app.get('/login', function(req, res){
     res.render('login');
   });
@@ -105,9 +111,37 @@ module.exports = function(app, products) {
   };
 
   app.post('/checkout', function(req, res, next){
-    verify_products(req, res, function(verified){
-      res.render('checkout', { products: verified, _data: req.body.data });
-    });
+    var user_logged_in_checkout = function(){
+      verify_products(req, res, function(verified){
+        res.render('checkout', { products: verified, _data: req.body.data });
+      });
+    };
+    var render_login_form = function(){
+      res.render('login_or_not', { _data: req.body.data });
+    };
+    var ignore_login = req.body.new == 'yes';
+    if (req.user || ignore_login) {
+      user_logged_in_checkout();
+    } else {
+      if (req.body.username && req.body.password) {
+        passport.authenticate('local', function(err, user, info) {
+          if (err || !user) {
+            render_login_form();
+            return;
+          }
+          req.logIn(user, function(error){
+            if (error) {
+              render_login_form();
+              return;
+            }
+            res.locals.current_user = req.user;
+            user_logged_in_checkout();
+          });
+        })(req, res, next);
+      } else {
+        render_login_form();
+      }
+    }
   });
 
   app.post('/confirm_checkout', function(req, res){

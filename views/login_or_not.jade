@@ -1,0 +1,23 @@
+block variables
+  title = "登录"
+
+extends layouts/default
+
+block content
+  form.login(action='/checkout', method='POST')
+    input(type='hidden', name='data', value=_data)
+    h2.title 登录
+    .col2-1
+      .form
+        .form-group
+          label(for='username') 手机/电话号码
+          input.form-input#username(type='text', name='username')
+        .form-group
+          label(for='password') 密码
+          input.form-input#password(type='password', name='password', autocomplete='off')
+      .login_buttons
+        button.hudbtn.primary.left(type='submit') 登录
+        .clearfix
+    .col2-2
+      button.hudbtn.primary(type='submit', name='new', value='yes') 我是新客户
+    .clearfix
