@@ -3,6 +3,7 @@
 //= require vendor/jquery.path.js
 //= require vendor/simpleCart.min.js
 //= require vendor/jquery.timeago.js
+//= require vendor/toastr.min.js
 $(function(){
   if ($('#main-slider').length == 1) {
     $('#main-slider').sliderkit({

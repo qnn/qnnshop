@@ -63,6 +63,14 @@ html
           a(href='/') 栏目九
         li.clearfix
       block content
+      - if (messages && messages.length > 0)
+        - var msgs = ''
+        - while (message = messages.pop())
+          - for (msg in message)
+            - if (message[msg])
+              - msgs += 'toastr["' + msg + '"](unescape("' + escape(message[msg]) + '"));'
+        - if (msgs)
+          != '<script>' + msgs + '</script>'
       .footer
         .footer-body
           .nboxes

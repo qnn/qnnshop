@@ -3,6 +3,8 @@ module.exports = function(app, products) {
   app.use(function(req, res, next){
     res.locals.current_user = req.user;
     res.locals.products = products;
+    if (!req.session.messages) req.session.messages = [];
+    res.locals.messages = req.session.messages;
     next();
   });
 
@@ -27,15 +29,22 @@ module.exports = function(app, products) {
   var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
   passport.use(new LocalStrategy({
       usernameField: 'username',
-      passwordField: 'password'
+      passwordField: 'password',
+      passReqToCallback: true
     },
-    function(username, password, done) {
+    function(req, username, password, done) {
       var User = require('../models/user');
       User.findOne({ username: username }, function(err, user){
         if (err) return done(err);
-        if (!user) return done(null, false);
+        if (!user) {
+          req.session.messages.push({ error: '手机/电话号码或密码错误。' });
+          return done(null, false);
+        }
         var bcrypt = require('bcrypt');
-        if (!bcrypt.compareSync(password, user.password)) return done(null, false);
+        if (!bcrypt.compareSync(password, user.password)) {
+          req.session.messages.push({ error: '手机/电话号码或密码错误。' });
+          return done(null, false);
+        }
         if (user.last_logged_in_at instanceof Array) {
           user.last_logged_in_at.unshift(new Date);
           user.last_logged_in_at.splice(3);
@@ -43,6 +52,7 @@ module.exports = function(app, products) {
           user.last_logged_in_at = [new Date];
         }
         user.save();
+        req.session.messages.push({ success: '成功登录。' });
         return done(null, user);
       });
     }
@@ -61,6 +71,7 @@ module.exports = function(app, products) {
 
   app.post('/logout', function(req, res){
     req.logout();
+    req.session.messages.push({ success: '成功退出。' });
     res.send(200);
   });
 
@@ -105,6 +116,23 @@ module.exports = function(app, products) {
       var city = req.body.city;
       var district = req.body.district;
       var email = req.body.shipping_user_email;
+      var password = req.body.password;
+      var new_password = req.body.new_password;
+      var new_password_again = req.body.new_password_again;
+
+      if (password && new_password) {
+        if (new_password !== new_password_again) throw ['新密码输入错误。'];
+        if (!/^[A-Za-z0-9!@#$%^&*]{6,16}$/.test(new_password)) throw ['新密码输入错误。'];
+        var bcrypt = require('bcrypt');
+        if (bcrypt.compareSync(password, user.password)) {
+          var salt = bcrypt.genSaltSync(10);
+          var hash = bcrypt.hashSync(new_password, salt);
+          user.password = hash;
+          user.password_updated_at = new Date();
+        } else {
+          throw ['旧密码错误'];
+        }
+      }
 
       if (alias) alias = alias.trim();
       if (name) name = name.trim();
@@ -136,8 +164,12 @@ module.exports = function(app, products) {
       user.defaults.email = email;
       user.updated_at = new Date();
       user.save();
+
+      req.session.messages.push({ success: '成功更新账户资料。' });
     } catch (errors) {
-      //
+      for (var i = 0; i < errors.length; i++) {
+        req.session.messages.push({ error: errors[i] });
+      }
     }
     res.redirect('/my_account');
   });
