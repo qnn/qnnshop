@@ -16,6 +16,8 @@ html
           a(href='/orders') 查询我的订单
           - if (current_user)
             &nbsp;|&nbsp;
+            a(href='/my_account')= current_user.alias || current_user.username
+            &nbsp;|&nbsp;
             a#logout(href='javascript:;') 退出登录
           - if (!hide_header_cart)
             &nbsp;|&nbsp;

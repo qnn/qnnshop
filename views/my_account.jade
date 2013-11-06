@@ -1,0 +1,79 @@
+block variables
+  title = "我的账户"
+
+extends layouts/default
+
+block content
+  .account
+    h2.title 我的账户
+    form.form(action='/my_account', method='POST')
+      .col2-1
+        .form-group
+          label 登录名（用于登录）
+          .input-like= current_user.username
+        .form-group
+          label(for='alias')
+            | 显示名
+            a.edit-section(href='javascript:;') 编辑
+          .input-like.text= current_user.alias || '(尚未设置)'
+          input.edit.hidden.form-input#alias(type='text', name='alias', value=current_user.alias)
+        .form-group
+          label(for='password')
+            | 密码
+            a.edit-section(href='javascript:;') 编辑
+          .input-like.text
+            | 您的密码在
+            abbr.timeago(title=current_user.password_updated_at.toJSON())
+            | 更改过。
+          .edit.hidden
+            input.form-input#password(type='password', name='password', value='')
+            .labeldesc 您的旧密码。
+            input.form-input#newPassword(type='password', name='new_password', value='')
+            .labeldesc 您的新密码。
+            input.form-input#newPasswordAgain(type='password', name='new_password_again', value='')
+            .labeldesc 重输一遍您的新密码。
+        .form-group
+          label(for='shipping_user_name')
+            | 默认收货人
+            a.edit-section(href='javascript:;') 编辑
+          .input-like.text= current_user.defaults.name || '(尚未设置)'
+          input.edit.hidden.form-input#shipping_user_name(type='text', name='shipping_user_name', value=current_user.defaults.name)
+        .form-group
+          label(for='shipping_user_phone')
+            | 默认收货人联系电话
+            a.edit-section(href='javascript:;') 编辑
+          .input-like.text= current_user.defaults.phone || '(尚未设置)'
+          input.edit.hidden.form-input#shipping_user_phone(type='text', name='shipping_user_phone', value=current_user.defaults.phone)
+        .form-group
+          label(for='shipping_address')
+            | 默认收货地址
+            a.edit-section(href='javascript:;') 编辑
+          .input-like.text= current_user.defaults.address || '(尚未设置)'
+          #district_selector.edit.hidden
+          input.edit.hidden.form-input#shipping_address(type='text', name='shipping_address', value=current_user.defaults.address)
+        .form-group
+          label(for='shipping_user_email')
+            | 默认电邮地址
+            a.edit-section(href='javascript:;') 编辑
+          .input-like.text= current_user.defaults.email || '(尚未设置)'
+          input.edit.hidden.form-input#shipping_user_email(type='text', name='shipping_user_email', value=current_user.defaults.email)
+        .form_buttons.hidden
+          button.hudbtn.primary(type='submit') 保存设置
+      .col2-2
+        .form-group
+          label 账户创建时间
+          .input-like
+            abbr.timeago(title=current_user.created_at.toJSON())
+        .form-group
+          label 账户上次更改时间
+          .input-like
+            abbr.timeago(title=current_user.updated_at.toJSON())
+        .form-group
+          label 账户近期登录时间
+          .input-like
+            ul
+              - if (current_user.last_logged_in_at)
+                - each llia in current_user.last_logged_in_at
+                  li
+                    abbr.timeago(title=llia.toJSON())
+      .clearfix

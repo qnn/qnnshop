@@ -208,4 +208,12 @@ $(function(){
       window.location.reload();
     });
   });
+  if ($('.account').length == 1) {
+    $('.edit-section').click(function(){
+      $(this).parent().siblings('.text').addClass('hidden');
+      $(this).parent().siblings('.edit').removeClass('hidden');
+      $(this).remove();
+      $('.form_buttons').removeClass('hidden');
+    });
+  }
 });

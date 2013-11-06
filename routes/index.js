@@ -17,7 +17,11 @@ module.exports = function(app, products) {
   });
 
   app.get('/login', function(req, res){
-    res.render('login');
+    if (req.user) {
+      res.redirect('/my_account');
+    } else {
+      res.render('login');
+    }
   });
 
   var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
@@ -32,6 +36,13 @@ module.exports = function(app, products) {
         if (!user) return done(null, false);
         var bcrypt = require('bcrypt');
         if (!bcrypt.compareSync(password, user.password)) return done(null, false);
+        if (user.last_logged_in_at instanceof Array) {
+          user.last_logged_in_at.unshift(new Date);
+          user.last_logged_in_at.splice(3);
+        } else {
+          user.last_logged_in_at = [new Date];
+        }
+        user.save();
         return done(null, user);
       });
     }
@@ -51,6 +62,15 @@ module.exports = function(app, products) {
   app.post('/logout', function(req, res){
     req.logout();
     res.send(200);
+  });
+
+  app.get('/my_account', function(req, res){
+    if (req.user) {
+      res.render('my_account');
+    } else {
+      req.session.returnTo = '/my_account';
+      res.redirect('/login');
+    }
   });
 
   app.get('/orders', function(req, res, next){
