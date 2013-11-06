@@ -73,6 +73,75 @@ module.exports = function(app, products) {
     }
   });
 
+  var verify_districts = function(province, city, district) {
+    var valid_districts = [];
+    if (province != undefined) {
+      var districts = require('../public/js/districts.tree.json');
+      if (!districts.hasOwnProperty(province)) throw ['错误的省份。'];
+      valid_districts.push(province);
+      if (city != undefined) {
+        if (!districts[province].hasOwnProperty(city) && 
+            (districts[province] instanceof Array && districts[province].indexOf(city) == -1)) throw ['错误的城市。'];
+        valid_districts.push(city);
+        if (district != undefined) {
+          if (!districts[province][city].hasOwnProperty(district) && 
+              (districts[province][city] instanceof Array && districts[province][city].indexOf(district) == -1)) throw ['错误的城区。'];
+          valid_districts.push(district);
+        }
+      }
+    }
+    return valid_districts;
+  }
+
+  app.post('/my_account', function(req, res, next){
+    var user = req.user;
+    if (!user) return next();
+    try {
+      var alias = req.body.alias;
+      var name = req.body.shipping_user_name;
+      var phone = req.body.shipping_user_phone;
+      var address = req.body.shipping_address;
+      var province = req.body.province;
+      var city = req.body.city;
+      var district = req.body.district;
+      var email = req.body.shipping_user_email;
+
+      if (alias) alias = alias.trim();
+      if (name) name = name.trim();
+      if (phone) phone = phone.trim();
+      if (address) address = address.trim();
+      if (province) province = province.trim();
+      if (city) city = city.trim();
+      if (district) district = district.trim();
+      if (email) email = email.trim();
+
+      if (alias !== '' && !/^[\u4E00-\u9FA5A-Za-z0-9_\-]{1,20}$/.test(alias)) throw ['别名只能由1至20个中英文、数字、下划线和减号组成。'];
+      if (name.length > 10) throw ['收货人名字过长。'];
+      if (phone.length > 20) throw ['收货人联系电话过长。'];
+      if (address.length > 100) throw ['收货人地址过长。'];
+      if (email !== '' && !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) throw ['不是有效的电邮地址。'];
+
+      if (province == '' || city == '' || district == '') {
+        province = undefined;
+        city = undefined;
+        district = undefined;
+      }
+      var valid_districts = verify_districts(province, city, district);
+
+      user.alias = alias;
+      user.defaults.name = name;
+      user.defaults.phone = phone;
+      user.defaults.districts = valid_districts;
+      user.defaults.address = address;
+      user.defaults.email = email;
+      user.updated_at = new Date();
+      user.save();
+    } catch (errors) {
+      //
+    }
+    res.redirect('/my_account');
+  });
+
   app.get('/orders', function(req, res, next){
     var user = req.user;
     if (user) {
@@ -186,23 +255,7 @@ module.exports = function(app, products) {
       if (phone.length > 20) throw ['收货人联系电话过长。'];
       if (address.length > 100) throw ['收货人地址过长。'];
 
-      var valid_districts = [];
-
-      if (province != undefined) {
-        var districts = require('../public/js/districts.tree.json');
-        if (!districts.hasOwnProperty(province)) throw ['错误的省份。'];
-        valid_districts.push(province);
-        if (city != undefined) {
-          if (!districts[province].hasOwnProperty(city) && 
-              (districts[province] instanceof Array && districts[province].indexOf(city) == -1)) throw ['错误的城市。'];
-          valid_districts.push(city);
-          if (district != undefined) {
-            if (!districts[province][city].hasOwnProperty(district) && 
-                (districts[province][city] instanceof Array && districts[province][city].indexOf(district) == -1)) throw ['错误的城区。'];
-            valid_districts.push(district);
-          }
-        }
-      }
+      var valid_districts = verify_districts(province, city, district);
     } catch (errors) {
       render_errors(res, errors);
     }

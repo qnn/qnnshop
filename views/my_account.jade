@@ -48,8 +48,8 @@ block content
           label(for='shipping_address')
             | 默认收货地址
             a.edit-section(href='javascript:;') 编辑
-          .input-like.text= current_user.defaults.address || '(尚未设置)'
-          #district_selector.edit.hidden
+          .input-like.text= current_user.defaults.address ? current_user.defaults.districts.join(' ') + ' ' + current_user.defaults.address : '(尚未设置)'
+          #district_selector.edit.hidden(data-districts=current_user.defaults.districts.join())
           input.edit.hidden.form-input#shipping_address(type='text', name='shipping_address', value=current_user.defaults.address)
         .form-group
           label(for='shipping_user_email')

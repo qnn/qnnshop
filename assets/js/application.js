@@ -171,6 +171,8 @@ $(function(){
     });
   }
   if ($('#district_selector').length == 1) {
+    var defaults = $('#district_selector').data('districts');
+    if (defaults) defaults = defaults.split(',');
     $.getJSON('/js/districts.tree.json', function(districts){
       var province = $('<select />', { name: 'province', class: 'form_select' });
       province.append('<option value="">请选择地区</option>');
@@ -200,6 +202,15 @@ $(function(){
         }).trigger('change');
       });
       $('#district_selector').append(province);
+      if (defaults[0]) {
+        province.val(defaults[0]).trigger('change');
+        if (defaults[1]) {
+          province.next('select').val(defaults[1]).trigger('change');
+          if (defaults[2]) {
+            province.next('select').next('select').val(defaults[2]);
+          }
+        }
+      }
     });
   }
   $('abbr.timeago').timeago();
