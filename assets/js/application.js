@@ -6,6 +6,12 @@
 //= require vendor/toastr.min.js
 //= require account.js
 //= require checkout.js
+toastr.options = {
+  closeButton: true,
+  showDuration: 200,
+  hideDuration: 200,
+  timeOut: 4000
+};
 $(function(){
   if ($('#main-slider').length == 1) {
     $('#main-slider').sliderkit({
@@ -16,10 +22,6 @@ $(function(){
       fastchange: false
     });
   }
-  var checkout = {
-    type: 'Custom',
-    url: '/checkout'
-  };
   simpleCart.currency({
     code: 'CNY',
     symbol: '¥',
@@ -37,9 +39,9 @@ $(function(){
         });
       });
       return {
-        action: opts.url,
-        method: opts.method === "GET" ? "GET" : "POST",
-        data: { data: JSON.stringify(data) }
+        action: '/checkout',
+        method: 'POST',
+        data: { data: JSON.stringify(data), _csrf: window.csrf_token }
       };
     }
   });
@@ -48,7 +50,7 @@ $(function(){
   });
   if ($('#headerCart').length == 1) {
     simpleCart({
-      checkout: checkout,
+      checkout: { type: 'Custom' },
       currency: 'CNY',
       cartColumns: [
         {
@@ -88,7 +90,7 @@ $(function(){
   }
   if ($('#shopping_cart').length == 1) {
     simpleCart({
-      checkout: checkout,
+      checkout: { type: 'Custom' },
       currency: 'CNY',
       cartStyle: 'table',
       cartColumns: [

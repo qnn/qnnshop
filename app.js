@@ -19,6 +19,7 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({ secret: '877G4ec4uEDYHbMW' }));
+app.use(express.csrf());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(assets({ buildDir: './public' }));

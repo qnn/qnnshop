@@ -7,6 +7,7 @@ block content
   .account
     h2.title 我的账户
     form#account_form.form(action='/my_account', method='POST')
+      input(type='hidden', name='_csrf', value=csrf_token)
       .col2-1
         .form-group
           label 登录名（用于登录）

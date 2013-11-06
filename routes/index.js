@@ -1,6 +1,7 @@
 module.exports = function(app, products) {
 
   app.use(function(req, res, next){
+    res.locals.csrf_token = req.csrfToken();
     res.locals.current_user = req.user;
     res.locals.products = products;
     if (!req.session.messages) req.session.messages = [];

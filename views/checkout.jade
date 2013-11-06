@@ -6,6 +6,7 @@ extends layouts/default
 
 block content
   form#checkout_form.checkout(action='/confirm_checkout', method='POST')
+    input(type='hidden', name='_csrf', value=csrf_token)
     h2.title 购买的产品
     #shopping_cart.checkout_cart.table_container
       table

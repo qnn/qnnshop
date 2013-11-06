@@ -5,6 +5,7 @@ extends layouts/default
 
 block content
   form.login(action='/login', method='POST')
+    input(type='hidden', name='_csrf', value=csrf_token)
     h2.title 登录
     .form
       .form-group

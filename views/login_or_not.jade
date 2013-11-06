@@ -5,6 +5,7 @@ extends layouts/default
 
 block content
   form.login(action='/checkout', method='POST')
+    input(type='hidden', name='_csrf', value=csrf_token)
     input(type='hidden', name='data', value=_data)
     h2.title 登录
     .col2-1
