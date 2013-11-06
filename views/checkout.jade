@@ -44,14 +44,14 @@ block content
         label(for='shipping_user_name')
           | 收货人
           span.important *
-        input.form-input#shipping_user_name(type='text', name='shipping_user_name')
+        input.form-input#shipping_user_name(type='text', name='shipping_user_name', value=current_user ? current_user.defaults.name : '')
         .labeldesc
           | 可输入中英文和空格。
       .form-group
         label(for='shipping_user_phone')
           | 收货人联系电话
           span.important *
-        input.form-input#shipping_user_phone(type='text', name='shipping_user_phone')
+        input.form-input#shipping_user_phone(type='text', name='shipping_user_phone', value=current_user ? current_user.defaults.phone : '')
         .labeldesc
           | 提交订单后系统会为您创建新账户，您可以使用这个电话号码登录查询您的订单。
           br
@@ -60,10 +60,16 @@ block content
         label(for='shipping_address')
           | 收货地址
           span.important *
-        #district_selector
-        input.form-input#shipping_address(type='text', name='shipping_address')
+        #district_selector(data-districts=current_user ? current_user.defaults.districts.join() : '')
+        input.form-input#shipping_address(type='text', name='shipping_address', value=current_user ? current_user.defaults.address : '')
         .labeldesc
           | 请填写正确的收货地址。
+      .form-group
+        label(for='shipping_user_email')
+          | 电邮地址
+        input.form-input#shipping_user_email(type='text', name='shipping_user_email', value=current_user ? current_user.defaults.email : '')
+        .labeldesc
+          | 用于接收网站优惠信息。
     h2.title 支付
     .form
       .form-group

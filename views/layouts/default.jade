@@ -19,6 +19,9 @@ html
             a(href='/my_account')= current_user.alias || current_user.username
             &nbsp;|&nbsp;
             a#logout(href='javascript:;') 退出登录
+          - else
+            &nbsp;|&nbsp;
+            a(href='/login') 登录
           - if (!hide_header_cart)
             &nbsp;|&nbsp;
             #headerCart.cartInfo

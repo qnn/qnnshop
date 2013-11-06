@@ -273,7 +273,7 @@ module.exports = function(app, products) {
       var province = req.body.province;
       var city = req.body.city;
       var district = req.body.district;
-      var email = '';
+      var email = req.body.shipping_user_email;
 
       if (name) name = name.trim();
       if (phone) phone = phone.trim();
@@ -281,11 +281,13 @@ module.exports = function(app, products) {
       if (province) province = province.trim();
       if (city) city = city.trim();
       if (district) district = district.trim();
+      if (email) email = email.trim();
 
       if (!name || !phone || !address) throw ['收货人、联系电话、收货地址均不能为空。'];
       if (name.length > 10) throw ['收货人名字过长。'];
       if (phone.length > 20) throw ['收货人联系电话过长。'];
       if (address.length > 100) throw ['收货人地址过长。'];
+      if (email !== '' && !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) throw ['不是有效的电邮地址。'];
 
       var valid_districts = verify_districts(province, city, district);
     } catch (errors) {
@@ -345,7 +347,15 @@ module.exports = function(app, products) {
               }
               var new_user = new User({
                 username: phone,
-                password: hash
+                password: hash,
+                alias: name,
+                defaults: {
+                  name: name,
+                  phone: phone,
+                  districts: valid_districts,
+                  address: address,
+                  email: email
+                }
               });
               new_user.save(function (error) {
                 if (error) {
