@@ -122,7 +122,7 @@ module.exports = function(app, products) {
 
       if (password && new_password) {
         if (new_password !== new_password_again) throw ['新密码输入错误。'];
-        if (!/^[A-Za-z0-9!@#$%^&*]{6,16}$/.test(new_password)) throw ['新密码输入错误。'];
+        if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test(new_password)) throw ['新密码输入错误。'];
         var bcrypt = require('bcrypt');
         if (bcrypt.compareSync(password, user.password)) {
           var salt = bcrypt.genSaltSync(10);
@@ -143,10 +143,10 @@ module.exports = function(app, products) {
       if (district) district = district.trim();
       if (email) email = email.trim();
 
-      if (alias !== '' && !/^[\u4E00-\u9FA5A-Za-z0-9_\-]{1,20}$/.test(alias)) throw ['别名只能由1至20个中英文、数字、下划线和减号组成。'];
-      if (name.length > 10) throw ['收货人名字过长。'];
-      if (phone.length > 20) throw ['收货人联系电话过长。'];
-      if (address.length > 100) throw ['收货人地址过长。'];
+      if (alias !== '' && !/^[\u4E00-\u9FA5A-Za-z0-9_\-]{1,20}$/.test(alias)) throw ['不是有效的显示名。'];
+      if (!/^[\u4E00-\u9FA5A-Za-z\s]{1,20}$/.test(name)) throw ['不是有效的收货人名字。'];
+      if (!/^[0-9+\-]{10,25}$/.test(phone)) throw ['不是有效的收货人联系电话。'];
+      if (!/^[\u4E00-\u9FA5A-Za-z\s0-9\-\(\)]{2,100}$/.test(address)) throw ['不是有效的收货人地址。'];
       if (email !== '' && !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) throw ['不是有效的电邮地址。'];
 
       if (province == '' || city == '' || district == '') {
@@ -284,9 +284,9 @@ module.exports = function(app, products) {
       if (email) email = email.trim();
 
       if (!name || !phone || !address) throw ['收货人、联系电话、收货地址均不能为空。'];
-      if (name.length > 10) throw ['收货人名字过长。'];
-      if (phone.length > 20) throw ['收货人联系电话过长。'];
-      if (address.length > 100) throw ['收货人地址过长。'];
+      if (!/^[\u4E00-\u9FA5A-Za-z\s]{1,20}$/.test(name)) throw ['不是有效的收货人名字。'];
+      if (!/^[0-9+\-]{10,25}$/.test(phone)) throw ['不是有效的收货人联系电话。'];
+      if (!/^[\u4E00-\u9FA5A-Za-z\s0-9\-\(\)]{2,100}$/.test(address)) throw ['不是有效的收货人地址。'];
       if (email !== '' && !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) throw ['不是有效的电邮地址。'];
 
       var valid_districts = verify_districts(province, city, district);

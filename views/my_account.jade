@@ -6,7 +6,7 @@ extends layouts/default
 block content
   .account
     h2.title 我的账户
-    form.form(action='/my_account', method='POST')
+    form#account_form.form(action='/my_account', method='POST')
       .col2-1
         .form-group
           label 登录名（用于登录）
@@ -16,7 +16,10 @@ block content
             | 显示名
             a.edit-section(href='javascript:;') 编辑
           .input-like.text= current_user.alias || '(尚未设置)'
-          input.edit.hidden.form-input#alias(type='text', name='alias', value=current_user.alias)
+          .edit.hidden
+            input.form-input#alias(type='text', name='alias', value=current_user.alias)
+            .labeldesc
+              | 由1至20个中文字、英文字母、数字、下划线或减号组成。
         .form-group
           label(for='password')
             | 密码
@@ -29,7 +32,7 @@ block content
             input.form-input#password(type='password', name='password', value='')
             .labeldesc 您的旧密码。
             input.form-input#newPassword(type='password', name='new_password', value='')
-            .labeldesc 您的新密码。
+            .labeldesc 您的新密码。由6至16个英文字母、数字或特殊字符（!@#$%^&*+-）组成。
             input.form-input#newPasswordAgain(type='password', name='new_password_again', value='')
             .labeldesc 重输一遍您的新密码。
         .form-group
@@ -37,26 +40,38 @@ block content
             | 默认收货人
             a.edit-section(href='javascript:;') 编辑
           .input-like.text= current_user.defaults.name || '(尚未设置)'
-          input.edit.hidden.form-input#shipping_user_name(type='text', name='shipping_user_name', value=current_user.defaults.name)
+          .edit.hidden
+            input.form-input#shipping_user_name(type='text', name='shipping_user_name', value=current_user.defaults.name)
+            .labeldesc
+              | 由1至20个中文字、英文字母或空格组成。
         .form-group
           label(for='shipping_user_phone')
             | 默认收货人联系电话
             a.edit-section(href='javascript:;') 编辑
           .input-like.text= current_user.defaults.phone || '(尚未设置)'
-          input.edit.hidden.form-input#shipping_user_phone(type='text', name='shipping_user_phone', value=current_user.defaults.phone)
+          .edit.hidden
+            input.form-input#shipping_user_phone(type='text', name='shipping_user_phone', value=current_user.defaults.phone)
+            .labeldesc
+              | 由10至25个数字、加号或减号组成。
         .form-group
           label(for='shipping_address')
             | 默认收货地址
             a.edit-section(href='javascript:;') 编辑
           .input-like.text= current_user.defaults.address ? current_user.defaults.districts.join(' ') + ' ' + current_user.defaults.address : '(尚未设置)'
-          #district_selector.edit.hidden(data-districts=current_user.defaults.districts.join())
-          input.edit.hidden.form-input#shipping_address(type='text', name='shipping_address', value=current_user.defaults.address)
+          .edit.hidden
+            #district_selector(data-districts=current_user.defaults.districts.join())
+            input.form-input#shipping_address(type='text', name='shipping_address', value=current_user.defaults.address)
+            .labeldesc
+              | 由1至100个中文字、英文字母、数字、空格、括号、减号组成。
         .form-group
           label(for='shipping_user_email')
             | 默认电邮地址
             a.edit-section(href='javascript:;') 编辑
           .input-like.text= current_user.defaults.email || '(尚未设置)'
-          input.edit.hidden.form-input#shipping_user_email(type='text', name='shipping_user_email', value=current_user.defaults.email)
+          .edit.hidden
+            input.form-input#shipping_user_email(type='text', name='shipping_user_email', value=current_user.defaults.email)
+            .labeldesc
+              | 示例：user@example.com
         .form_buttons.hidden
           button.hudbtn.primary(type='submit') 保存设置
       .col2-2

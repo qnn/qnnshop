@@ -4,6 +4,8 @@
 //= require vendor/simpleCart.min.js
 //= require vendor/jquery.timeago.js
 //= require vendor/toastr.min.js
+//= require account.js
+//= require checkout.js
 $(function(){
   if ($('#main-slider').length == 1) {
     $('#main-slider').sliderkit({
@@ -175,7 +177,7 @@ $(function(){
     var defaults = $('#district_selector').data('districts');
     if (defaults) defaults = defaults.split(',');
     $.getJSON('/js/districts.tree.json', function(districts){
-      var province = $('<select />', { name: 'province', class: 'form_select' });
+      var province = $('<select />', { id: 'province', name: 'province', class: 'form_select' });
       province.append('<option value="">请选择地区</option>');
       $.each(districts, function(a, b){
         province.append('<option value="' + a + '">' + a + '</option>');
@@ -184,7 +186,7 @@ $(function(){
         $('option[value=""]', this).remove();
         $(this).nextAll().remove();
         var p = $(this).val();
-        var city = $('<select />', { name: 'city', class: 'form_select' });
+        var city = $('<select />', { id: 'city', name: 'city', class: 'form_select' });
         $.each(districts[p], function(a, b){
           city.append('<option value="' + a + '">' + a + '</option>');
         });
@@ -194,7 +196,7 @@ $(function(){
           $(this).nextAll().remove();
           var p = $(this).data('province'), c = $(this).val();
           if (districts[p][c] instanceof Array && districts[p][c].length > 0) {
-            var district = $('<select />', { name: 'district', class: 'form_select' });
+            var district = $('<select />', { id: 'district', name: 'district', class: 'form_select' });
             $.each(districts[p][c], function(a, b){
               district.append('<option value="' + b + '">' + b + '</option>');
             });

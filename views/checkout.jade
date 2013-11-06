@@ -5,7 +5,7 @@ block variables
 extends layouts/default
 
 block content
-  form.checkout(action='/confirm_checkout', method='POST')
+  form#checkout_form.checkout(action='/confirm_checkout', method='POST')
     h2.title 购买的产品
     #shopping_cart.checkout_cart.table_container
       table
@@ -46,13 +46,15 @@ block content
           span.important *
         input.form-input#shipping_user_name(type='text', name='shipping_user_name', value=current_user ? current_user.defaults.name : '')
         .labeldesc
-          | 可输入中英文和空格。
+          | 由1至20个中文字、英文字母或空格组成。
       .form-group
         label(for='shipping_user_phone')
           | 收货人联系电话
           span.important *
         input.form-input#shipping_user_phone(type='text', name='shipping_user_phone', value=current_user ? current_user.defaults.phone : '')
         .labeldesc
+          | 由10至25个数字、加号或减号组成。
+          br
           | 提交订单后系统会为您创建新账户，您可以使用这个电话号码登录查询您的订单。
           br
           | 请填写常用的手机号码或固定电话号码，并确保此电话能在发货期间正常使用。
@@ -63,13 +65,13 @@ block content
         #district_selector(data-districts=current_user ? current_user.defaults.districts.join() : '')
         input.form-input#shipping_address(type='text', name='shipping_address', value=current_user ? current_user.defaults.address : '')
         .labeldesc
-          | 请填写正确的收货地址。
+          | 由1至100个中文字、英文字母、数字、空格、括号、减号组成。
       .form-group
         label(for='shipping_user_email')
           | 电邮地址
         input.form-input#shipping_user_email(type='text', name='shipping_user_email', value=current_user ? current_user.defaults.email : '')
         .labeldesc
-          | 用于接收网站优惠信息。
+          | 用于接收网站优惠信息。示例：user@example.com
     h2.title 支付
     .form
       .form-group
