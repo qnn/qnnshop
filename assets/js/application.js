@@ -119,7 +119,7 @@ $(function(){
     });
     simpleCart.bind('ready update', function(){
       if (simpleCart.quantity() == 0) {
-        $('#shopping_cart, .shopping_cart_buttons').addClass('hidden');
+        $('.checkout').addClass('hidden');
         $('.message').removeClass('hidden');
       }
     });
@@ -220,7 +220,7 @@ $(function(){
   }
   $('abbr.timeago').timeago();
   $('#logout').click(function(){
-    $.post('/logout', function(){
+    $.post('/logout', { _csrf: window.csrf_token }, function(){
       window.location.reload();
     });
   });
