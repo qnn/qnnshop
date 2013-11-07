@@ -13,15 +13,14 @@ html
       .header
         a.logo(href='/') 首页
         .user
-          a(href='/orders') 查询我的订单
           - if (current_user)
-            &nbsp;|&nbsp;
             a(href='/my_account')= current_user.alias || current_user.username
+            &nbsp;|&nbsp;
+            a(href='/orders') 我的订单
             &nbsp;|&nbsp;
             a#logout(href='javascript:;') 退出登录
           - else
-            &nbsp;|&nbsp;
-            a(href='/login') 登录
+            a(href='/orders') 登录并查询我的订单
           - if (!hide_header_cart)
             &nbsp;|&nbsp;
             #headerCart.cartInfo

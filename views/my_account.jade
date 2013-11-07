@@ -26,9 +26,12 @@ block content
             | 密码
             a.edit-section(href='javascript:;') 编辑
           .input-like.text
-            | 您的密码在
-            abbr.timeago(title=current_user.password_updated_at.toJSON())
-            | 更改过。
+            - if (Math.floor((current_user.password_updated_at - current_user.created_at) / 1000) > 2)
+              | 您的密码在
+              abbr.timeago(title=current_user.password_updated_at.toJSON())
+              | 更改过。
+            - else
+              | 您还没有更改过密码。请更改一次。
           .edit.hidden
             input.form-input#password(type='password', name='password', value='')
             .labeldesc 您的旧密码。

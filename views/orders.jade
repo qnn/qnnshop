@@ -5,8 +5,13 @@ extends layouts/default
 
 block content
   .orders
-    .breadcrumb
-      a(href='/orders') 所有订单
+    - if (is_single)
+      .breadcrumb
+        | 正在显示订单号为&nbsp;
+        strong=orders[0]._id
+        | &nbsp;的订单。
+        a(href='/orders') 显示所有订单
+        。
     h2.title 我的订单
     - if (!orders || orders.length == 0)
       .message 没有订单。
