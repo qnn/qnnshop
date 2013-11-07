@@ -220,8 +220,10 @@ $(function(){
   }
   $('abbr.timeago').timeago();
   $('#logout').click(function(){
-    $.post('/logout', { _csrf: window.csrf_token }, function(){
+    $.post('/logout', { _csrf: window.csrf_token }).done(function(){
       window.location.reload();
+    }).error(function(){
+      window.location.href = '/';
     });
   });
   if ($('.account').length == 1) {

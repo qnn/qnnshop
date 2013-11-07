@@ -5,43 +5,62 @@ extends layouts/default
 
 block content
   .orders
+    .breadcrumb
+      a(href='/orders') 所有订单
     h2.title 我的订单
-    .table_container.checkout_cart
-      - each order in orders
-        table
-          tbody
-            tr
-              th.tinfo(colspan=5)
-                .left
-                  | 收货人：#{order.username}（联系电话：#{order.phone}）
-                  br
-                  | 地址：#{order.districts.join(' ')} #{order.address}
-                .right
-                  | 创建时间：
-                  abbr.timeago(title=order.created_at.toJSON())
-                  br
-                  | 更新时间：
-                  abbr.timeago(title=order.updated_at.toJSON())
-                .clearfix
-            - grandTotal = 0
-            - each product in order.products
-              - PRODUCT = null
-              - if (products[product.category] && products[product.category][product.model])
-                - PRODUCT = products[product.category][product.model]
-              - total = product.price * product.quantity
-              - grandTotal += total
-              - path = '/' + product.category + '/' + product.model
-              tr.itemRow
-                td.item-image
-                  - if (PRODUCT.images)
-                    a(title=PRODUCT.title, href=path)
-                      img(alt=PRODUCT.title, src=PRODUCT.images[0])
-                td.item-name
-                  a(href=path, title=PRODUCT.title)= PRODUCT.name
-                td.item-quantity= product.quantity
-                td.item-price.toCurrency= product.price
-                td.item-total.toCurrency= total
-            tr
-              th(colspan=3) 状态：#{order.status}
-              th 合计
-              th.toCurrency= grandTotal
+    - if (!orders || orders.length == 0)
+      .message 没有订单。
+    - else
+      .table_container.checkout_cart
+        - each order in orders
+          table
+            tbody
+              tr
+                th.tinfo(colspan=5)
+                  .left
+                    | 订单号：
+                    - if (is_single)
+                      | #{order.id}
+                    else
+                      a(href='/orders/'+order._id)=order._id
+                    br
+                    | 付款方式：#{order.payment || '未指定'}
+                    br
+                    | 状态：#{order.status}
+                  .right
+                    - if (Math.floor((order.updated_at - order.created_at) / 1000) > 2)
+                      | 创建时间：
+                      abbr.timeago(title=order.created_at.toJSON())
+                      | ，更新时间：
+                      abbr.timeago(title=order.updated_at.toJSON())
+                    - else
+                      | 创建时间：
+                      abbr.timeago(title=order.created_at.toJSON())
+                    br
+                    | 收货人：#{order.username}（联系电话：#{order.phone}）
+                    br
+                    | 地址：#{order.districts.join(' ')} #{order.address}
+                  .clearfix
+              - grandTotal = 0
+              - each product in order.products
+                - PRODUCT = null
+                - if (products[product.category] && products[product.category][product.model])
+                  - PRODUCT = products[product.category][product.model]
+                - total = product.price * product.quantity
+                - grandTotal += total
+                - path = '/' + product.category + '/' + product.model
+                tr.itemRow
+                  td.item-image
+                    - if (PRODUCT.images)
+                      a(title=PRODUCT.title, href=path)
+                        img(alt=PRODUCT.title, src=PRODUCT.images[0])
+                  td.item-name
+                    a(href=path, title=PRODUCT.title)= PRODUCT.name
+                  td.item-quantity= product.quantity
+                  td.item-price.toCurrency= product.price
+                  td.item-total.toCurrency= total
+              tr
+                th(colspan=3)
+                  a(href='/orders/'+order._id+'/cancel') 取消订单
+                th 合计
+                th.toCurrency= grandTotal

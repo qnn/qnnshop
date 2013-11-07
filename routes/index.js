@@ -175,15 +175,23 @@ module.exports = function(app, products) {
     res.redirect('/my_account');
   });
 
-  app.get('/orders', function(req, res, next){
+  app.get('/orders/:order_id?', function(req, res, next){
     var user = req.user;
+    var order_id = req.params.order_id;
     if (user) {
+      var find = { _user: user._id };
+      if (order_id) find = { _id: order_id };
       var Order = require('../models/order');
-      Order.find({ _user: user._id }).sort('-created_at').exec(function(error, orders){
-        res.render('orders', { orders: orders, user: user });
+      Order.find(find).sort('-created_at').exec(function(error, orders){
+        if (order_id && !orders) return next();
+        res.render('orders', { orders: orders, user: user, is_single: !!order_id });
       });
     } else {
-      req.session.returnTo = '/orders';
+      if (order_id) {
+        req.session.returnTo = '/orders/' + order_id;
+      } else {
+        req.session.returnTo = '/orders';
+      }
       res.redirect('/login');
     }
   });
@@ -275,6 +283,7 @@ module.exports = function(app, products) {
       var city = req.body.city;
       var district = req.body.district;
       var email = req.body.shipping_user_email;
+      var payment = req.body.payment;
 
       if (name) name = name.trim();
       if (phone) phone = phone.trim();
@@ -291,8 +300,15 @@ module.exports = function(app, products) {
       if (email !== '' && !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) throw ['不是有效的电邮地址。'];
 
       var valid_districts = verify_districts(province, city, district);
+
+      switch (payment) {
+      case 'cod': break;
+      case 'alipay': throw ['此种支付方式已暂停使用。'];
+      default: throw ['请选择支付方式。'];
+      }
     } catch (errors) {
       render_errors(res, errors);
+      return;
     }
     verify_products(req, res, function(verified){
       var Order = require('../models/order');
@@ -308,9 +324,20 @@ module.exports = function(app, products) {
         });
       }
       var create_new_order = function(user) {
+        var payment_method, status;
+        switch (payment) {
+        case 'cod':
+          payment_method = '货到付款';
+          status = '等待发货';
+          break;
+        default:
+          payment_method = '';
+          status = '等待买家付款';
+        }
         var new_order = new Order({
           _user: user._id,
-          status: '等待买家付款',
+          status: status,
+          payment: payment_method,
           products: _products,
           username: name,
           phone: phone,
@@ -322,7 +349,8 @@ module.exports = function(app, products) {
           if (error) {
             render_errors(res, ['创建订单时出错。']);
           } else {
-            res.send(200);
+            req.session.messages.push({ success: '成功创建订单。' });
+            res.redirect('/orders');
           }
         });
       };
