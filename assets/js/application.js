@@ -6,6 +6,7 @@
 //= require vendor/toastr.min.js
 //= require account.js
 //= require checkout.js
+//= require product_details.js
 toastr.options = {
   closeButton: true,
   showDuration: 200,

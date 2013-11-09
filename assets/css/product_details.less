@@ -21,7 +21,7 @@
   .sliderkit-nav {
     left: 0;
     bottom: 0;
-    width: 800px;
+    width: 780px;
     padding: 10px;
     background: #fff;
   }
@@ -168,3 +168,52 @@
   }
 }
 
+.pdetails {
+  background: #fff;
+  padding: 50px 0;
+  .pdpages {
+    margin: 0 20px;
+    .pdpage {
+      padding: 30px;
+      strong {
+        font-weight: bold;
+      }
+      p {
+        font-size: 15px;
+        line-height: 20px;
+        margin: 12px 0;
+      }
+    }
+  }
+  .pdselector {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    background: #E2EEFF;
+    margin: 0 20px;
+    .selects {
+      height: 35px;
+      width: ((100px + 2px * 2) * 3);
+      margin: 0 auto;
+      a {
+        float: left;
+        display: block;
+        width: 100px;
+        height: 30px;
+        font-size: 15px;
+        line-height: 30px;
+        text-align: center;
+        color: #555;
+        text-decoration: none;
+        margin: 5px 2px 0;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        &:hover {
+          background: #F5F7FA;
+        }
+        &.active {
+          background: #fff;
+        }
+      }
+    }
+  }
+}

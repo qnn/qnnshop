@@ -21,7 +21,8 @@
     "js-yaml": "2.1.0",
     "less": "1.4.x",
     "jade": "0.35.x",
-    "connect-assets": "2.5.x"
+    "connect-assets": "2.5.x",
+    "marked": "0.2.10"
   },
   "devDependencies": {
     "nodemon": "*"

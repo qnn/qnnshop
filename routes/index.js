@@ -413,7 +413,8 @@ module.exports = function(app, products) {
           res.send(output);
         },
         html: function(){
-          res.render('products/show', { category: category, model: model });
+          var markdown = require('marked');
+          res.render('products/show', { category: category, model: model, markdown: markdown });
         }
       });
     } else {

@@ -37,3 +37,17 @@ block content
       .paction
         a.addtocartbtn.hudbtn.primary(href='/cart', data-category=category, data-model=model) 放入购物车
     .clearfix
+  .pdetails
+    .pdselector
+      .selects
+        a.active(href='javascript:;') 商品描述
+        a(href='javascript:;') 物流配送
+        a(href='javascript:;') 常见问题
+        .clearfix
+    .pdpages
+      .pdpage
+        != markdown(product.body).replace(/\n/g, '')
+      .pdpage.hidden
+        p 物流配送
+      .pdpage.hidden
+        p 常见问题
