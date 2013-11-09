@@ -179,19 +179,28 @@ module.exports = function(app, products) {
     var user = req.user;
     var order_id = req.params.order_id;
     if (user) {
+      var Order = require('../models/order');
       var find = { _user: user._id };
       if (order_id) find = { _id: order_id };
-      var Order = require('../models/order');
       Order.find(find).sort('-created_at').exec(function(error, orders){
-        if (order_id && !orders) return next();
-        res.render('orders', { orders: orders, user: user, is_single: !!order_id });
+        if (order_id) {
+          if (!orders) return next();
+          res.render('orders', { orders: orders, user: user, is_single: true });
+        } else {
+          var items_per_page = 5;
+          var total_pages = Math.ceil(orders.length / items_per_page);
+          var current_page = 1;
+          if (req.query.page && /^([1-9]|[1-9][0-9]+)$/.test(req.query.page)) {
+            if (req.query.page <= total_pages) current_page = req.query.page;
+          }
+          var start = (current_page - 1) * items_per_page;
+          orders = orders.slice(start, start + items_per_page);
+          res.render('orders', { orders: orders, user: user, is_single: false,
+            current_page: current_page, total_pages: total_pages });
+        }
       });
     } else {
-      if (order_id) {
-        req.session.returnTo = '/orders/' + order_id;
-      } else {
-        req.session.returnTo = '/orders';
-      }
+      req.session.returnTo = '/orders' + (order_id ? '/' + order_id : '');
       res.redirect('/login');
     }
   });

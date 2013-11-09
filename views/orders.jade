@@ -56,11 +56,14 @@ block content
                 - path = '/' + product.category + '/' + product.model
                 tr.itemRow
                   td.item-image
-                    - if (PRODUCT.images)
+                    - if (PRODUCT && PRODUCT.images)
                       a(title=PRODUCT.title, href=path)
                         img(alt=PRODUCT.title, src=PRODUCT.images[0])
                   td.item-name
-                    a(href=path, title=PRODUCT.title)= PRODUCT.name
+                    - if (PRODUCT)
+                      a(href=path, title=PRODUCT.title)= PRODUCT.name
+                    - else
+                      | #{product.category} #{product.model} (商品已不存在)
                   td.item-quantity= product.quantity
                   td.item-price.toCurrency= product.price
                   td.item-total.toCurrency= total
@@ -69,3 +72,21 @@ block content
                   a(href='/orders/'+order._id+'/cancel') 取消订单
                 th 合计
                 th.toCurrency= grandTotal
+
+      - if (!is_single)
+        .pager
+          .pagination
+            a.first(href='#', data-action='first') «
+            a.previous(href='#', data-action='previous') ‹
+            input(type='text', readonly='readonly', data-max-page='40')
+            a.next(href='#', data-action='next') ›
+            a.last(href='#', data-action='last') »
+        script.
+          $('.pagination').jqPagination({
+            current_page: #{current_page},
+            max_page: #{total_pages},
+            page_string: '第{current_page}/{max_page}页',
+            paged: function(page) {
+              window.location.href = '/orders?page=' + page;
+            }
+          });

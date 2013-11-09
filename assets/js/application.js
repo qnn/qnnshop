@@ -4,6 +4,7 @@
 //= require vendor/simpleCart.min.js
 //= require vendor/jquery.timeago.js
 //= require vendor/toastr.min.js
+//= require vendor/jquery.jqpagination.min.js
 //= require account.js
 //= require checkout.js
 //= require product_details.js
