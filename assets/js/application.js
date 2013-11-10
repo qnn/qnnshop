@@ -161,6 +161,7 @@ $(function(){
           })
         }, 600, function(){
           $(this).remove();
+          toastr['success']('成功添加商品到购物车。');
         });
         image.addClass('cartAnimation');
       });
@@ -227,6 +228,10 @@ $(function(){
     }).error(function(){
       window.location.href = '/';
     });
+  });
+  $('.reload_captcha').click(function(){
+    var img = $(this).find('img');
+    img.attr('src', img.attr('src').replace(/\?.*$/,'') + '?' + Math.random());
   });
   if ($('.account').length == 1) {
     $('.edit-section').click(function(){

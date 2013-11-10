@@ -19,6 +19,33 @@ module.exports = function(app, products) {
     res.redirect('/');
   });
 
+  app.get('/captcha.png', function(req, res){
+    var Canvas = require('canvas');
+    var canvas = new Canvas(200, 50);
+    var context = canvas.getContext('2d');
+    context.fillStyle = 'rgb(50,50,50)';
+    context.strokeStyle = context.fillStyle;
+    for (var i = 0; i < 3; i++) {
+      context.moveTo(10, Math.random() * 50);
+      context.bezierCurveTo(70, Math.random() * 50, 130, Math.random() * 50, 190, Math.random() * 50);
+      context.stroke();
+    }
+    var text = Math.random().toString().substr(3, 6);
+    for (i = 0; i < text.length; i++) {
+      context.setTransform(Math.random() * 0.7 + 0.9, Math.random() * 0.4,
+        Math.random() * 0.4, Math.random() * 0.5 + 1, 30 * i + 10, 40);
+      context.font = (Math.random() * 10 > 7 ? 'bold ' : '') + '40px sans';
+      context.fillText(text.charAt(i), 0, 0);
+    }
+    canvas.toBuffer(function(err, buf) {
+      req.session.captcha = text;
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", 0);
+      res.end(buf);
+    });
+  });
+
   app.get('/login', function(req, res){
     if (req.user) {
       res.redirect('/my_account');
@@ -34,18 +61,20 @@ module.exports = function(app, products) {
       passReqToCallback: true
     },
     function(req, username, password, done) {
+      var wrong = function(){
+        req.session.messages.push({ error: '手机/电话号码或密码错误。' });
+        return done(null, false);
+      };
+      if (!req.body.captcha || req.body.captcha != req.session.captcha) {
+        req.session.messages.push({ error: '验证码输入错误。' });
+        return done(null, false);
+      }
       var User = require('../models/user');
       User.findOne({ username: username }, function(err, user){
         if (err) return done(err);
-        if (!user) {
-          req.session.messages.push({ error: '手机/电话号码或密码错误。' });
-          return done(null, false);
-        }
+        if (!user) return wrong();
         var bcrypt = require('bcrypt');
-        if (!bcrypt.compareSync(password, user.password)) {
-          req.session.messages.push({ error: '手机/电话号码或密码错误。' });
-          return done(null, false);
-        }
+        if (!bcrypt.compareSync(password, user.password)) return wrong();
         if (user.last_logged_in_at instanceof Array) {
           user.last_logged_in_at.unshift(new Date);
           user.last_logged_in_at.splice(3);
