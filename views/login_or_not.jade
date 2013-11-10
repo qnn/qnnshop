@@ -7,18 +7,31 @@ block content
   form.login(action='/checkout', method='POST')
     input(type='hidden', name='_csrf', value=csrf_token)
     input(type='hidden', name='data', value=_data)
-    h2.title 登录
     .col2-1
+      h2.title 登录
       .form
         .form-group
           label(for='username') 手机/电话号码
           input.form-input#username(type='text', name='username')
+          .labeldesc
+            | 请输入您曾在本网站上购物时填写的收货人联系电话。
         .form-group
           label(for='password') 密码
           input.form-input#password(type='password', name='password', autocomplete='off')
+          .labeldesc
+            | 如果您未更改密码，初始密码就是您刚才输入的手机/电话号码。
+        .form-group
+          label(for='captcha') 验证码
+          .captcha
+            a.reload_captcha(href='javascript:;')
+              img(src='/captcha.png', width=200, height=50)
+          input.form-input#captcha(type='text', name='captcha', autocomplete='off')
+          .labeldesc
+            | 请输入6位数字的验证码。如果看不清，点击验证码图像更换。
       .login_buttons
         button.hudbtn.primary.left(type='submit') 登录
         .clearfix
     .col2-2
-      button.hudbtn.primary(type='submit', name='new', value='yes') 我是新客户
+      h2.title 没有账户？
+      button.hudbtn.primary.ignore_check(type='submit', name='new', value='yes') 我是新客户
     .clearfix

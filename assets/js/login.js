@@ -1,5 +1,9 @@
 $(function(){
+  $('.ignore_check').click(function(){
+    $(this).addClass('should_ignore_check');
+  });
   $('form.login').submit(function(){
+    if ($(this).find('.should_ignore_check').length > 0) return true;
     var err = [];
     if (!/^[0-9+\-]{10,25}$/.test($('#username').val())) {
       err.push('手机/电话号码');

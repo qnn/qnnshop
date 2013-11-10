@@ -293,7 +293,7 @@ module.exports = function(app, products) {
     if (req.user || ignore_login) {
       user_logged_in_checkout();
     } else {
-      if (req.body.username && req.body.password) {
+      if (req.body.username && req.body.password && req.body.captcha) {
         passport.authenticate('local', function(err, user, info) {
           if (err || !user) {
             render_login_form();
