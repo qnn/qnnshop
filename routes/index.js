@@ -316,6 +316,8 @@ module.exports = function(app, products) {
 
   app.post('/confirm_checkout', function(req, res){
     try {
+      if (!req.body.captcha || req.body.captcha != req.session.captcha) throw ['验证码输入错误。'];
+
       var name = req.body.shipping_user_name;
       var phone = req.body.shipping_user_phone;
       var address = req.body.shipping_address;

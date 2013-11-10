@@ -14,6 +14,9 @@ $(function(){
       if ($('#shipping_user_email').val() !== '' && !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test($('#shipping_user_email').val())) {
         err.push('电邮地址');
       }
+      if (!/^[0-9]{6}/.test($('#captcha').val())) {
+        err.push('验证码');
+      }
       if ($('#province').length == 1 && $('#province').val() == '') {
         err_s.push('省份');
       }
