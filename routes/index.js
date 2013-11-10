@@ -19,6 +19,10 @@ module.exports = function(app, products) {
     res.redirect('/');
   });
 
+  var generate_captcha = function(){
+    return Math.random().toString().substr(3, 6);
+  };
+
   app.get('/captcha.png', function(req, res){
     var Canvas = require('canvas');
     var canvas = new Canvas(200, 50);
@@ -30,7 +34,7 @@ module.exports = function(app, products) {
       context.bezierCurveTo(70, Math.random() * 50, 130, Math.random() * 50, 190, Math.random() * 50);
       context.stroke();
     }
-    var text = Math.random().toString().substr(3, 6);
+    var text = generate_captcha();
     for (i = 0; i < text.length; i++) {
       context.setTransform(Math.random() * 0.7 + 0.9, Math.random() * 0.4,
         Math.random() * 0.4, Math.random() * 0.5 + 1, 30 * i + 10, 40);
@@ -67,6 +71,7 @@ module.exports = function(app, products) {
       };
       if (!req.body.captcha || req.body.captcha != req.session.captcha) {
         req.session.messages.push({ error: '验证码输入错误。' });
+        req.session.captcha = generate_captcha();
         return done(null, false);
       }
       if (!/^[0-9+\-]{10,25}$/.test(username)) return wrong();
@@ -316,7 +321,10 @@ module.exports = function(app, products) {
 
   app.post('/confirm_checkout', function(req, res){
     try {
-      if (!req.body.captcha || req.body.captcha != req.session.captcha) throw ['验证码输入错误。'];
+      if (!req.body.captcha || req.body.captcha != req.session.captcha) {
+        req.session.captcha = generate_captcha();
+        throw ['验证码输入错误。'];
+      }
 
       var name = req.body.shipping_user_name;
       var phone = req.body.shipping_user_phone;
