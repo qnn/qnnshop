@@ -69,6 +69,8 @@ module.exports = function(app, products) {
         req.session.messages.push({ error: '验证码输入错误。' });
         return done(null, false);
       }
+      if (!/^[0-9+\-]{10,25}$/.test(username)) return wrong();
+      if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test(password)) return wrong();
       var User = require('../models/user');
       User.findOne({ username: username }, function(err, user){
         if (err) return done(err);

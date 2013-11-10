@@ -8,6 +8,7 @@
 //= require account.js
 //= require checkout.js
 //= require product_details.js
+//= require login.js
 toastr.options = {
   closeButton: true,
   showDuration: 200,
