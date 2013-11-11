@@ -3,14 +3,15 @@ module.exports = function(app, products, configs) {
   app.use(function(req, res, next){
     res.locals.csrf_token = req.csrfToken();
     res.locals.current_user = (req.user && req.user._id) ? req.user : null;
+    res.locals.current_admin = (req.user && req.user.is_admin) ? req.user : null;
     res.locals.products = products;
     if (!req.session.messages) req.session.messages = [];
     res.locals.messages = req.session.messages;
     next();
   });
 
-  var admin = require('./admin');
-  admin(app, products, configs);
+  require('./admin')(app, products, configs);
+  require('./static')(app, products, configs);
 
   app.get('/', function(req, res){
     res.render('index');

@@ -13,13 +13,16 @@ html
       .header
         a.logo(href='/') 首页
         .user
-          - if (admin)
+          - if (current_admin)
             a#adminlogout(href='javascript:;') 退出登录
       ul.nav
         li
           a.first.products(href='/') 全能产品库
         li
-          a.active(href='/SysAdmin') 后台首页
+          a(href='/SysAdmin') 后台首页
+        - if (current_admin)
+          li
+            a(href='/SysAdmin/orders') 所有订单
         li.clearfix
       block content
       - if (messages && messages.length > 0)

@@ -72,4 +72,35 @@ module.exports = function(app, products, configs) {
     res.send(200);
   });
 
+  app.get('/SysAdmin/orders/:order_id?', function(req, res, next){
+    var order_id = req.params.order_id;
+    var by_user = req.query.user;
+    if (req.user && req.user.is_admin) {
+      var Order = require('../models/order');
+      var User = require('../models/user');
+      var find = {};
+      if (order_id) find = { _id: order_id };
+      if (by_user) find['_user'] = by_user;
+      Order.find(find).populate({ path: '_user', select: 'username alias' }).sort('-created_at').exec(function(error, orders){
+        if (order_id) {
+          if (!orders) return next();
+          res.render('admin/orders', { orders: orders, user: req.user, is_single: true, by_user: !!by_user });
+        } else {
+          var items_per_page = 5;
+          var total_pages = Math.ceil(orders.length / items_per_page);
+          var current_page = 1;
+          if (req.query.page && /^([1-9]|[1-9][0-9]+)$/.test(req.query.page)) {
+            if (req.query.page <= total_pages) current_page = req.query.page;
+          }
+          var start = (current_page - 1) * items_per_page;
+          orders = orders.slice(start, start + items_per_page);
+          res.render('admin/orders', { orders: orders, user: req.user, is_single: false, by_user: !!by_user,
+            current_page: current_page, total_pages: total_pages });
+        }
+      });
+    } else {
+      res.redirect('/SysAdmin/login');
+    }
+  });
+
 };
