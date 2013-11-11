@@ -1,13 +1,16 @@
-module.exports = function(app, products) {
+module.exports = function(app, products, configs) {
 
   app.use(function(req, res, next){
     res.locals.csrf_token = req.csrfToken();
-    res.locals.current_user = req.user;
+    res.locals.current_user = (req.user && req.user._id) ? req.user : null;
     res.locals.products = products;
     if (!req.session.messages) req.session.messages = [];
     res.locals.messages = req.session.messages;
     next();
   });
+
+  var admin = require('./admin');
+  admin(app, products, configs);
 
   app.get('/', function(req, res){
     res.render('index');
@@ -51,7 +54,7 @@ module.exports = function(app, products) {
   });
 
   app.get('/login', function(req, res){
-    if (req.user) {
+    if (req.user && req.user._id) {
       res.redirect('/my_account');
     } else {
       res.render('login');
@@ -113,7 +116,7 @@ module.exports = function(app, products) {
   });
 
   app.get('/my_account', function(req, res){
-    if (req.user) {
+    if (req.user && req.user._id) {
       res.render('my_account');
     } else {
       req.session.returnTo = '/my_account';
@@ -142,8 +145,7 @@ module.exports = function(app, products) {
   }
 
   app.post('/my_account', function(req, res, next){
-    var user = req.user;
-    if (!user) return next();
+    if (!req.user || !req.user._id) return next();
     try {
       var alias = req.body.alias;
       var name = req.body.shipping_user_name;
@@ -161,11 +163,11 @@ module.exports = function(app, products) {
         if (new_password !== new_password_again) throw ['新密码输入错误。'];
         if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test(new_password)) throw ['新密码输入错误。'];
         var bcrypt = require('bcrypt');
-        if (bcrypt.compareSync(password, user.password)) {
+        if (bcrypt.compareSync(password, req.user.password)) {
           var salt = bcrypt.genSaltSync(10);
           var hash = bcrypt.hashSync(new_password, salt);
-          user.password = hash;
-          user.password_updated_at = new Date();
+          req.user.password = hash;
+          req.user.password_updated_at = new Date();
         } else {
           throw ['旧密码错误'];
         }
@@ -193,14 +195,14 @@ module.exports = function(app, products) {
       }
       var valid_districts = verify_districts(province, city, district);
 
-      user.alias = alias;
-      user.defaults.name = name;
-      user.defaults.phone = phone;
-      user.defaults.districts = valid_districts;
-      user.defaults.address = address;
-      user.defaults.email = email;
-      user.updated_at = new Date();
-      user.save();
+      req.user.alias = alias;
+      req.user.defaults.name = name;
+      req.user.defaults.phone = phone;
+      req.user.defaults.districts = valid_districts;
+      req.user.defaults.address = address;
+      req.user.defaults.email = email;
+      req.user.updated_at = new Date();
+      req.user.save();
 
       req.session.messages.push({ success: '成功更新账户资料。' });
     } catch (errors) {
@@ -212,16 +214,15 @@ module.exports = function(app, products) {
   });
 
   app.get('/orders/:order_id?', function(req, res, next){
-    var user = req.user;
     var order_id = req.params.order_id;
-    if (user) {
+    if (req.user && req.user._id) {
       var Order = require('../models/order');
-      var find = { _user: user._id };
+      var find = { _user: req.user._id };
       if (order_id) find = { _id: order_id };
       Order.find(find).sort('-created_at').exec(function(error, orders){
         if (order_id) {
           if (!orders) return next();
-          res.render('orders', { orders: orders, user: user, is_single: true });
+          res.render('orders', { orders: orders, user: req.user, is_single: true });
         } else {
           var items_per_page = 5;
           var total_pages = Math.ceil(orders.length / items_per_page);
@@ -231,7 +232,7 @@ module.exports = function(app, products) {
           }
           var start = (current_page - 1) * items_per_page;
           orders = orders.slice(start, start + items_per_page);
-          res.render('orders', { orders: orders, user: user, is_single: false,
+          res.render('orders', { orders: orders, user: req.user, is_single: false,
             current_page: current_page, total_pages: total_pages });
         }
       });
@@ -295,7 +296,7 @@ module.exports = function(app, products) {
       res.render('login_or_not', { _data: req.body.data });
     };
     var ignore_login = req.body.new == 'yes';
-    if (req.user || ignore_login) {
+    if ((req.user && req.user._id) || ignore_login) {
       user_logged_in_checkout();
     } else {
       if (req.body.username && req.body.password && req.body.captcha) {
@@ -309,7 +310,7 @@ module.exports = function(app, products) {
               render_login_form();
               return;
             }
-            res.locals.current_user = req.user;
+            res.locals.current_user = (req.user && req.user._id) ? req.user : null;
             user_logged_in_checkout();
           });
         })(req, res, next);
@@ -404,9 +405,8 @@ module.exports = function(app, products) {
           }
         });
       };
-      var current_user = req.user;
-      if (current_user) {
-        create_new_order(current_user);
+      if (req.user && req.user._id) {
+        create_new_order(req.user);
       } else {
         User.findOne({ username: phone }, function(error, user){
           if (error || user) {

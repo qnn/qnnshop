@@ -1,0 +1,39 @@
+block variables
+
+doctype 5
+html
+  head
+    meta(charset='UTF-8')
+    title= title
+    != css('application')
+    != js('application')
+    != js('application.admin')
+  body
+    .container
+      .header
+        a.logo(href='/') 首页
+        .user
+          - if (admin)
+            a#adminlogout(href='javascript:;') 退出登录
+      ul.nav
+        li
+          a.first.products(href='/') 全能产品库
+        li
+          a.active(href='/SysAdmin') 后台首页
+        li.clearfix
+      block content
+      - if (messages && messages.length > 0)
+        - var msgs = ''
+        - while (message = messages.pop())
+          - for (msg in message)
+            - if (message[msg])
+              - msgs += 'toastr["' + msg + '"](unescape("' + escape(message[msg]) + '"));'
+        - if (msgs)
+          != '<script>' + msgs + '</script>'
+      != '<script>window.csrf_token="' + csrf_token + '";</script>'
+      .copy
+        | &copy; 1999-2013 广东安能保险柜制造有限公司
+        = ' '
+        a(href='http://www.miitbeian.gov.cn/') 粤ICP备12015444号-1
+        = ' '
+        a(href='/Sitemap.xml') Sitemap

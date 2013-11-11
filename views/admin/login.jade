@@ -1,0 +1,27 @@
+block variables
+  title = "管理员登录"
+
+extends ../layouts/admin
+
+block content
+  form.login(action='/SysAdmin/login', method='POST')
+    input(type='hidden', name='_csrf', value=csrf_token)
+    h2.title 管理员登录
+    .form
+      .form-group
+        label(for='admin_username') 用户名
+        input.form-input#admin_username(type='text', name='admin_username')
+      .form-group
+        label(for='password') 密码
+        input.form-input#password(type='password', name='admin_password', autocomplete='off')
+      .form-group
+        label(for='captcha') 验证码
+        .captcha
+          a.reload_captcha(href='javascript:;')
+            img(src='/captcha.png', width=200, height=50)
+        input.form-input#captcha(type='text', name='captcha', autocomplete='off')
+        .labeldesc
+          | 请输入6位数字的验证码。如果看不清，点击验证码图像更换。
+    .login_buttons
+      button.hudbtn.primary.left(type='submit') 登录
+      .clearfix

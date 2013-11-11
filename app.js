@@ -26,8 +26,9 @@ app.use(assets({ buildDir: './public' }));
 
 require('js-yaml');
 var products = require('./products');
+var configs = require('./configs');
 
-routes(app, products);
+routes(app, products, configs);
 
 app.use(function(req, res){
   res.status(404).render('404');
