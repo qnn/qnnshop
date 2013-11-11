@@ -23,37 +23,34 @@ block content
     - if (!orders || orders.length == 0)
       .message 没有订单。
     - else
-      .table_container.checkout_cart
-        - each order in orders
-          table
-            tbody
+      .orders_table
+        table.table
+          thead.table-head
+            tr
+              th 订单号
+              th 用户
+              th 付款方式
+              th 状态
+              th 收货人
+              th 地址
+              th 联系电话
+              th 创建时间
+          tbody.table-body
+            - each order in orders
               tr
-                th.tinfo(colspan=5)
-                  .left
-                    | 订单号：
-                    - if (is_single)
-                      | #{order.id}
-                    else
-                      a(href='/SysAdmin/orders/'+order._id)=order._id
-                    br
-                    | 用户：
-                    a(href='/SysAdmin/orders?user='+order._user._id)=order._user.alias || order._user.username
-                    br
-                    | 付款方式：#{order.payment || '未指定'}，状态：#{order.status}
-                  .right
-                    - if (Math.floor((order.updated_at - order.created_at) / 1000) > 2)
-                      | 创建时间：
-                      abbr.timeago(title=order.created_at.toJSON())
-                      | ，更新时间：
-                      abbr.timeago(title=order.updated_at.toJSON())
-                    - else
-                      | 创建时间：
-                      abbr.timeago(title=order.created_at.toJSON())
-                    br
-                    | 收货人：#{order.username}（联系电话：#{order.phone}）
-                    br
-                    | 地址：#{order.districts.join(' ')} #{order.address}
-                  .clearfix
+                td
+                  - if (is_single)
+                    span.fw #{order.id}
+                  - else
+                    a.fw(href='/SysAdmin/orders/'+order._id)=order._id
+                td
+                  a.fw(href='/SysAdmin/orders?user='+order._user._id, title=order._user.alias)=order._user.username
+                td #{order.payment || '未指定'}
+                td #{order.status}
+                td #{order.username}
+                td #{order.districts.join(' ')} #{order.address}
+                td #{order.phone}
+                td.fw #{order.created_at.toJSON().replace(/T/, ' ').replace(/\..+/, '')}
               - grandTotal = 0
               - each product in order.products
                 - PRODUCT = null
@@ -62,39 +59,47 @@ block content
                 - total = product.price * product.quantity
                 - grandTotal += total
                 - path = '/' + product.category + '/' + product.model
-                tr.itemRow
-                  td.item-image
-                    - if (PRODUCT && PRODUCT.images)
-                      a(title=PRODUCT.title, href=path)
-                        img(alt=PRODUCT.title, src=PRODUCT.images[0])
-                  td.item-name
+                tr.v
+                  td
+                  td(colspan=3)
                     - if (PRODUCT)
                       a(href=path, title=PRODUCT.title)= PRODUCT.name
                     - else
                       | #{product.category} #{product.model} (商品已不存在)
-                  td.item-quantity= product.quantity
-                  td.item-price.toCurrency= product.price
-                  td.item-total.toCurrency= total
-              tr
-                th(colspan=3)
-                  a(href='/SysAdmin/orders/'+order._id+'/cancel') 取消订单
-                th 合计
-                th.toCurrency= grandTotal
+                  td(colspan=2)
+                    | 单价：
+                    span.toCurrency= product.price
+                  td 数量：#{product.quantity}
+                  td(colspan=2)
+                    | 总价：
+                    span.toCurrency= total
+              tr.v
+                td
+                td(colspan=6)
+                  | 更新时间：#{order.updated_at.toJSON().replace(/T/, ' ').replace(/\..+/, '')}
+                td(colspan=2)
+                  | 合计：
+                  span.toCurrency= grandTotal
+          tfoot.table-foot  
+            tr
+              td(colspan=2)
+                - if (!is_single)
+                  .pager
+                    .pagination
+                      a.first(href='#', data-action='first') «
+                      a.previous(href='#', data-action='previous') ‹
+                      input(type='text', readonly='readonly', data-max-page='40')
+                      a.next(href='#', data-action='next') ›
+                      a.last(href='#', data-action='last') »
+                  script.
+                    $('.pagination').jqPagination({
+                      current_page: #{current_page},
+                      max_page: #{total_pages},
+                      page_string: '第{current_page}/{max_page}页',
+                      paged: function(page) {
+                        window.location.href = '/SysAdmin/orders?!{by_user ? "user=" + by_user + "&" : ""}page=' + page;
+                      }
+                    });
 
-      - if (!is_single)
-        .pager
-          .pagination
-            a.first(href='#', data-action='first') «
-            a.previous(href='#', data-action='previous') ‹
-            input(type='text', readonly='readonly', data-max-page='40')
-            a.next(href='#', data-action='next') ›
-            a.last(href='#', data-action='last') »
-        script.
-          $('.pagination').jqPagination({
-            current_page: #{current_page},
-            max_page: #{total_pages},
-            page_string: '第{current_page}/{max_page}页',
-            paged: function(page) {
-              window.location.href = '/SysAdmin/orders?page=' + page;
-            }
-          });
+              td(colspan=7)
+                a#verbose(href='javascript:;') 显示/隐藏订单包含的商品

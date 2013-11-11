@@ -1,5 +1,9 @@
 module.exports = function(app, products, configs) {
 
+  var generate_captcha = function(){
+    return Math.random().toString().substr(3, 6);
+  };
+
   app.get('/SysAdmin', function(req, res, next){
     if (req.user && req.user.is_admin) {
       res.render('admin/index', { admin: req.user });
@@ -84,9 +88,9 @@ module.exports = function(app, products, configs) {
       Order.find(find).populate({ path: '_user', select: 'username alias' }).sort('-created_at').exec(function(error, orders){
         if (order_id) {
           if (!orders) return next();
-          res.render('admin/orders', { orders: orders, user: req.user, is_single: true, by_user: !!by_user });
+          res.render('admin/orders', { orders: orders, user: req.user, is_single: true, by_user: by_user });
         } else {
-          var items_per_page = 5;
+          var items_per_page = 10;
           var total_pages = Math.ceil(orders.length / items_per_page);
           var current_page = 1;
           if (req.query.page && /^([1-9]|[1-9][0-9]+)$/.test(req.query.page)) {
@@ -94,7 +98,7 @@ module.exports = function(app, products, configs) {
           }
           var start = (current_page - 1) * items_per_page;
           orders = orders.slice(start, start + items_per_page);
-          res.render('admin/orders', { orders: orders, user: req.user, is_single: false, by_user: !!by_user,
+          res.render('admin/orders', { orders: orders, user: req.user, is_single: false, by_user: by_user,
             current_page: current_page, total_pages: total_pages });
         }
       });

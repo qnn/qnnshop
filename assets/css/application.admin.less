@@ -1,0 +1,50 @@
+.orders_table {
+  .table-body > tr {
+    &:nth-child(2n) {
+      background: none;
+    }
+    &:hover {
+      background: none;
+    }
+  }
+  td {
+    white-space: nowrap;
+    border-bottom: 1px solid #eee;
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+  }
+  padding: 20px 0;
+  .fw {
+    letter-spacing: -1px;
+    font-family: monospace;
+  }
+  .pager {
+    width: 206px;
+    height: 22px;
+    margin: 5px auto;
+    line-height: 18px;
+  }
+  .prod {
+    padding: 0;
+    table {
+      width: 100%;
+      td {
+        padding: 10px 30px;
+        vertical-align: middle;
+        border-bottom: 1px solid #ccc;
+        background: #fff;
+      }
+      .item-image {
+        width: 72px;
+      }
+      .item-image img {
+        width: 72px; height: 72px;
+      }
+      .item-name { width: 45%; }
+      .item-quantity, .item-quantity input {
+        width: 30px;
+        text-align: center;
+      }
+      .item-price, .item-subtotal { width: 50px; }
+    }
+  }
+}
