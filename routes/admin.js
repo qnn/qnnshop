@@ -17,10 +17,9 @@ module.exports = function(app, products, configs) {
   });
 
   var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
-  passport.use(new LocalStrategy({
+  passport.use('local-admin', new LocalStrategy({
       usernameField: 'admin_username',
       passwordField: 'admin_password',
-      strategyName: 'local-admin',
       passReqToCallback: true
     },
     function(req, username, password, done) {
