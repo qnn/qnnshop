@@ -48,3 +48,39 @@
     }
   }
 }
+
+@media only print {
+	body.printable {
+	  background: #fff;
+    .header {
+      display: none;
+    }
+    .nav {
+      display: none;
+    }
+    .copy {
+      display: none;
+    }
+    h2.title {
+      width: auto;
+    }
+    table.table {
+      border-collapse: collapse;
+      border-radius: 0;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      .table-head > tr > th {
+        text-shadow: none;
+        background: #fff;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .table-foot {
+        display: none;
+      }
+    }
+    a {
+      color: #000;
+    }
+	}
+}

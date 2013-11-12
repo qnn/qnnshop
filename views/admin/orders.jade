@@ -1,5 +1,6 @@
 block variables
   title = "所有订单"
+  printable = true
 
 extends ../layouts/admin
 
@@ -44,13 +45,13 @@ block content
                   - else
                     a.fw(href='/SysAdmin/orders/'+order._id)=order._id
                 td
-                  a.fw(href='/SysAdmin/orders?user='+order._user._id, title=order._user.alias)=order._user.username
+                  a(href='/SysAdmin/orders?user='+order._user._id, title=order._user.alias)=order._user.username
                 td #{order.payment || '未指定'}
                 td #{order.status}
                 td #{order.username}
                 td #{order.districts.join(' ')} #{order.address}
                 td #{order.phone}
-                td.fw #{order.created_at.toJSON().replace(/T/, ' ').replace(/\..+/, '')}
+                td #{order.created_at.toJSON().replace(/T/, ' ').replace(/\..+/, '')}
               - grandTotal = 0
               - each product in order.products
                 - PRODUCT = null
@@ -59,7 +60,7 @@ block content
                 - total = product.price * product.quantity
                 - grandTotal += total
                 - path = '/' + product.category + '/' + product.model
-                tr.v
+                tr
                   td
                   td(colspan=3)
                     - if (PRODUCT)
@@ -73,7 +74,7 @@ block content
                   td(colspan=2)
                     | 总价：
                     span.toCurrency= total
-              tr.v
+              tr
                 td
                 td(colspan=6)
                   | 更新时间：#{order.updated_at.toJSON().replace(/T/, ' ').replace(/\..+/, '')}
@@ -102,4 +103,4 @@ block content
                     });
 
               td(colspan=7)
-                a#verbose(href='javascript:;') 显示/隐藏订单包含的商品
+                | 可直接打印此页

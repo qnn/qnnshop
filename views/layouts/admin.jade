@@ -9,7 +9,7 @@ html
     != css('application.admin')
     != js('application')
     != js('application.admin')
-  body
+  body(class=printable?'printable':null)
     .container
       .header
         a.logo(href='/') 首页

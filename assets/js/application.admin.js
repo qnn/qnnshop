@@ -6,11 +6,4 @@ $(function(){
       window.location.href = '/SysAdmin';
     });
   });
-  $('#verbose').click(function(){
-    if ($('.v:first').hasClass('hidden')) {
-      $('.v').removeClass('hidden');
-    } else {
-      $('.v').addClass('hidden');
-    }
-  });
 });
