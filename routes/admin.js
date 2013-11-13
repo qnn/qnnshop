@@ -145,7 +145,7 @@ module.exports = function(app, products, configs) {
         res.redirect('/SysAdmin/orders/' + order_id);
       });
     } catch (error) {
-      req.session.messages.push({ error: error instanceof String ? error : '发生未知错误。' });
+      req.session.messages.push({ error: typeof(error) == 'string' ? error : '发生未知错误。' });
       res.redirect('/SysAdmin/orders/' + order_id);
     }
   });
