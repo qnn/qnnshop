@@ -32,7 +32,7 @@ h2.title {
   input[type=radio] {
     margin: 0 8px 0 0;
   }
-  .form-input {
+  .form-input, .form-text {
     width: 500px;
     height: 24px;
     text-indent: 4px;
@@ -46,6 +46,12 @@ h2.title {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+  }
+  .form-text {
+    width: (500px - 5px * 2);
+    height: 50px;
+    padding: 5px;
+    text-indent: 0;
   }
   .form_select {
     width: 165px;
@@ -61,4 +67,9 @@ h2.title {
     text-shadow: -1px -1px #FFF;
     line-height: 16px;
   }
+}
+
+.form-btns {
+  padding-top: 34px;
+  padding-bottom: 34px;
 }

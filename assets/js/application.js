@@ -234,6 +234,14 @@ $(function(){
     var img = $(this).find('img');
     img.attr('src', img.attr('src').replace(/\?.*$/,'') + '?' + Math.random());
   });
+  function f(n) {
+    return n < 10 ? '0' + n : n;
+  }
+  $('.toLocalTime').each(function(){
+    var d = new Date($(this).text());
+    d = d.getFullYear() + '-' + f(d.getMonth() + 1) + '-' + f(d.getDate()) + ' ' + f(d.getHours()) + ':' + f(d.getMinutes()) + ':' + f(d.getSeconds());
+    $(this).text(d)
+  });
   if ($('.account').length == 1) {
     $('.edit-section').click(function(){
       $(this).parent().siblings('.text').addClass('hidden');

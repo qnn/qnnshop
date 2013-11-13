@@ -14,7 +14,7 @@ $(function(){
     if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test($('#password').val())) {
       err.push('密码');
     }
-    if (!/^[0-9]{6}/.test($('#captcha').val())) {
+    if (!/^[0-9]{6}$/.test($('#captcha').val())) {
       err.push('验证码');
     }
     if (err.length > 0) {

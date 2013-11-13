@@ -11,6 +11,9 @@ module.exports = mongoose.model('Order', new Schema({
     price: Number,
     quantity: Number
   }],
+  final_price: { type: Number, default: -1 },
+  buyer_comments: String,
+  seller_comments: String,
   username: String,
   phone: String,
   districts: [String],

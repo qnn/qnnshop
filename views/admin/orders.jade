@@ -7,20 +7,21 @@ extends ../layouts/admin
 block content
   .orders
     - if (is_single)
-      .breadcrumb
+      .breadcrumb.hide_when_print
         | 正在显示订单号为&nbsp;
         strong=orders[0]._id
         | &nbsp;的订单。
         a(href='/SysAdmin/orders') 显示所有订单
         。
+      h2.title 订单详细
     - else
       - if (by_user)
-        .breadcrumb
+        .breadcrumb.hide_when_print
           | 正在显示用户&nbsp;
           strong= orders[0]._user.alias || orders[0]._user.username
           | &nbsp;的所有订单。
           a(href='/SysAdmin/orders') 显示所有订单
-    h2.title 所有订单
+      h2.title 所有订单
     - if (!orders || orders.length == 0)
       .message 没有订单。
     - else
@@ -51,7 +52,8 @@ block content
                 td #{order.username}
                 td #{order.districts.join(' ')} #{order.address}
                 td #{order.phone}
-                td #{order.created_at.toJSON().replace(/T/, ' ').replace(/\..+/, '')}
+                td
+                  span.toLocalTime #{order.created_at.toJSON()}
               - grandTotal = 0
               - each product in order.products
                 - PRODUCT = null
@@ -71,20 +73,47 @@ block content
                     | 单价：
                     span.toCurrency= product.price
                   td 数量：#{product.quantity}
-                  td(colspan=2)
+                  td
                     | 总价：
                     span.toCurrency= total
+              - untouchedGrandTotal = grandTotal
+              - if (order.final_price >= 0)
+                - diff = order.final_price - grandTotal
+                - grandTotal = order.final_price
+                tr
+                  td
+                  td(colspan=5)
+                  td 价格调整
+                  td
+                    | 调幅：
+                    = diff < 0 ? '-' : '+'
+                    &nbsp;
+                    span.toCurrency= Math.abs(diff)
               tr
                 td
                 td(colspan=6)
-                  | 更新时间：#{order.updated_at.toJSON().replace(/T/, ' ').replace(/\..+/, '')}
-                td(colspan=2)
+                  | 更新时间：
+                  span.toLocalTime #{order.updated_at.toJSON()}
+                td
                   | 合计：
                   span.toCurrency= grandTotal
+              - if (is_single)
+                tr
+                  td
+                  td 买家备注：
+                  td(colspan=6)
+                    pre=order.buyer_comments || '(无)'
+                tr
+                  td
+                  td 卖家备注：
+                  td(colspan=6)
+                    pre=order.seller_comments || '(无)'
           tfoot.table-foot  
             tr
-              td(colspan=2)
-                - if (!is_single)
+              - if (is_single)
+                td(colspan=8) 可直接打印此页
+              - else
+                td(colspan=2)
                   .pager
                     .pagination
                       a.first(href='#', data-action='first') «
@@ -102,5 +131,37 @@ block content
                       }
                     });
 
-              td(colspan=7)
-                | 可直接打印此页
+                td(colspan=6) 可直接打印此页
+    - if (is_single)
+      form.form.hide_when_print(action='/SysAdmin/orders/'+orders[0]._id, method='POST')
+        h2.title 编辑订单
+        input(type='hidden', name='_csrf', value=csrf_token)
+        .form-group
+          label(for='status')
+            | 状态
+          select#status.form_select.customizable-select(name='status')
+            - status_exist = false;
+            - each status in configs.statuses
+              - if (status == orders[0].status)
+                - status_exist = true;
+                option(value=status, selected)=status
+              - else
+                option(value=status)=status
+            - if (!status_exist)
+              option(value=orders[0].status, selected)=orders[0].status
+            option(value='') 自定...
+        .form-group
+          label(for='final_price')
+            | 修改合计总价
+          input.form-input#final_price(type='text', name='final_price', placeholder=untouchedGrandTotal.toFixed(2), value=(orders[0].final_price >= 0 ? orders[0].final_price.toFixed(2) : ''))
+          .labeldesc
+            | 如不需调整，请留空。
+        .form-group
+          label(for='seller_comments')
+            | 卖家备注
+          textarea.form-text#seller_comments(name='seller_comments')= orders[0].seller_comments
+        .form-group
+          label(for='password') 当前管理员密码
+          input.form-input#password(type='password', name='admin_password', autocomplete='off')
+        .form-group.form-btns
+          button.hudbtn.primary(type='submit') 保存更改

@@ -1,3 +1,11 @@
+statuses:
+  - 等待买家付款
+  - 等待发货
+  - 等待买家收货
+  - 买家已取消
+  - 卖家已取消
+  - 交易成功
+
 admins:
   - username: caiguanhao
     password: $2a$10$RGioxd1LvP0oCZJXSEakpuSsv95kRIRaDoJKnNJ9H9sK4tfpNFpeC
