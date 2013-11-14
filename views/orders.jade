@@ -68,6 +68,25 @@ block content
                   td.item-price.toCurrency= product.price
                   td.item-total.toCurrency= total
               tr
+                td 买家备注：
+                td(colspan=4)
+                  pre=order.buyer_comments || '(无)'
+              tr
+                td 卖家备注：
+                td(colspan=2)
+                  pre=order.seller_comments || '(无)'
+                - untouchedGrandTotal = grandTotal
+                - if (order.final_price >= 0)
+                  - diff = order.final_price - grandTotal
+                  - grandTotal = order.final_price
+                    td 价格调整
+                    td
+                      = diff < 0 ? '-' : '+'
+                      &nbsp;
+                      span.toCurrency= Math.abs(diff)
+                - else
+                  td(colspan=2)
+              tr
                 th(colspan=3)
                   a(href='/orders/'+order._id+'/cancel') 取消订单
                 th 合计

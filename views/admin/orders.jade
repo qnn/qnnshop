@@ -94,6 +94,15 @@ block content
                 td(colspan=6)
                   | 更新时间：
                   span.toLocalTime #{order.updated_at.toJSON()}
+                  - if (!is_single)
+                    | &nbsp;&nbsp;&nbsp;备注：
+                    - if (!order.buyer_comments && !order.seller_comments)
+                      | 无
+                    - else
+                      - if (order.buyer_comments)
+                        &nbsp;✔买家
+                      - if (order.seller_comments)
+                        &nbsp;✔卖家
                 td
                   | 合计：
                   span.toCurrency= grandTotal

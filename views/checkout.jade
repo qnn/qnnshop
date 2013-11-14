@@ -39,6 +39,14 @@ block content
     .shopping_cart_buttons
       a.hudbtn.left(href='/cart') 返回修改购物车
       .clearfix
+    h2.title 备注
+    .form
+      .form-group
+        label(for='comments')
+          | 买家备注
+        textarea.form-text#comments(name='comments')
+        .labeldesc
+          | 可输入送货要求。最长2万字。
     h2.title 收货信息
     .form
       .form-group

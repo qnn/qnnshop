@@ -336,6 +336,7 @@ module.exports = function(app, products, configs) {
       var district = req.body.district;
       var email = req.body.shipping_user_email;
       var payment = req.body.payment;
+      var comments = req.body.comments;
 
       if (name) name = name.trim();
       if (phone) phone = phone.trim();
@@ -344,12 +345,14 @@ module.exports = function(app, products, configs) {
       if (city) city = city.trim();
       if (district) district = district.trim();
       if (email) email = email.trim();
+      if (comments) comments = comments.trim();
 
       if (!name || !phone || !address) throw ['收货人、联系电话、收货地址均不能为空。'];
       if (!/^[\u4E00-\u9FA5A-Za-z\s]{1,20}$/.test(name)) throw ['不是有效的收货人名字。'];
       if (!/^[0-9+\-]{10,25}$/.test(phone)) throw ['不是有效的收货人联系电话。'];
       if (!/^[\u4E00-\u9FA5A-Za-z\s0-9\-\(\)]{2,100}$/.test(address)) throw ['不是有效的收货人地址。'];
       if (email !== '' && !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) throw ['不是有效的电邮地址。'];
+      if (comments.length > 20000) throw ['买家备注过长，最多能包含20000个字符。'];
 
       var valid_districts = verify_districts(province, city, district);
 
@@ -395,7 +398,8 @@ module.exports = function(app, products, configs) {
           phone: phone,
           districts: valid_districts,
           address: address,
-          email: email
+          email: email,
+          buyer_comments: comments
         });
         new_order.save(function (error) {
           if (error) {
