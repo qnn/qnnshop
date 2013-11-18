@@ -29,11 +29,23 @@ block content
       .ptitle
         h2= product.title
         h5= product.subtitle
-      .pprice
-          span.item 价格:
+      - if (product.original_price)
+        .pprice
+          .original_price
+            span.item 原价:
+            span.price
+              em.toCurrency= product.original_price
+              | 元
+          span.item 优惠价:
           span.price
-            em= product.price
+            em.toCurrency= product.price
             | 元
+      - else
+        .pprice
+            span.item 价格:
+            span.price
+              em.toCurrency= product.price
+              | 元
       .paction
         a.addtocartbtn.hudbtn.primary(href='/cart', data-category=category, data-model=model) 放入购物车
     .clearfix
