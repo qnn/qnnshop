@@ -7,7 +7,7 @@ block content
   - if (cancelable(orders[0].status))
     .orders
       h2.title 取消订单
-      form.form(action='/orders/'+orders[0]._id+'/cancel', method='POST')
+      form#orders_cancel.form(action='/orders/'+orders[0]._id+'/cancel', method='POST')
         input(type='hidden', name='_csrf', value=csrf_token)
         .form-group
           label
@@ -23,7 +23,7 @@ block content
               =reason
           label(for='reason_opts_0')
             input(id='reason_opts_0', type='radio', name='reason_opts', value='其他')
-            | 其他
+            | 其他：
           textarea.form-text#reason(name='reason')
           .labeldesc
             | 最长2万字。

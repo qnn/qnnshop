@@ -18,7 +18,24 @@ block content
     - else
       .table_container.checkout_cart
         - each order in orders
-          table
+          table(class=(order.status == configs.buyer_cancel_status ? 'canceled' : ''))
+            - if (order.status == configs.buyer_cancel_status)
+              thead
+                tr
+                  th(colspan=5)
+                    .left
+                      a.show_canceled(href='javascript:;') 显示这张已取消的订单
+                      | 。
+                    .right
+                      - if (Math.floor((order.updated_at - order.created_at) / 1000) > 2)
+                        | 创建时间：
+                        abbr.timeago(title=order.created_at.toJSON())
+                        | ，更新时间：
+                        abbr.timeago(title=order.updated_at.toJSON())
+                      - else
+                        | 创建时间：
+                        abbr.timeago(title=order.created_at.toJSON())
+                    .clearfix
             tbody
               tr
                 th.tinfo(colspan=5)

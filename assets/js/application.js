@@ -9,6 +9,7 @@
 //= require checkout.js
 //= require product_details.js
 //= require login.js
+//= require orders_cancel.js
 toastr.options = {
   closeButton: true,
   showDuration: 200,
@@ -250,4 +251,8 @@ $(function(){
       $('.form_buttons').removeClass('hidden');
     });
   }
+  $('.show_canceled').click(function(){
+    $(this).parents('table.canceled').removeClass('canceled');
+    $(this).parents('thead').remove();
+  });
 });
