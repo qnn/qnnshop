@@ -1,11 +1,8 @@
-!!! 5
-html
-  head
-    title The page you were looking for doesn't exist (404)
-    meta(name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0')
-    != css('404')
-  body
-    .dialog
-      h1 The page you were looking for doesn't exist. (Error 404)
-      p You may have mistyped the address or the page may have moved.
-    p If you are the application owner check the logs for more information.
+block variables
+  title = "页面找不到（错误404）"
+
+extends layouts/default
+
+block content
+  .message
+    | 抱歉，无法找到您请求的页面。此页面可能已被管理员移动或删除。另外也请检查网址有无拼写错误。

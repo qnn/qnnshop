@@ -1,13 +1,12 @@
-var express = require('express');
+var express  = require('express');
 var mongoose = require('mongoose');
-var assets  = require('connect-assets');
-var fs      = require('fs');
+var assets   = require('connect-assets');
+var fs       = require('fs');
 var passport = require('passport');
-var routes  = require('./routes');
 
 mongoose.connect('mongodb://localhost/qnnshop');
 
-var app     = express();
+var app      = express();
 
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'jade');
@@ -28,11 +27,7 @@ require('js-yaml');
 var products = require('./products');
 var configs = require('./configs');
 
-routes(app, products, configs);
-
-app.use(function(req, res){
-  res.status(404).render('404');
-});
+require('./routes')(app, products, configs);
 
 var SOCKET_FILE = __dirname + '/tmp/sockets/node.socket';
 
