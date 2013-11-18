@@ -20,6 +20,12 @@
       - http://stores.qnnimg.com/products/hg-3342-01.jpg
       - http://stores.qnnimg.com/products/hg-2740-01.jpg
 
+    side_html: |
+      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
+
+    recommendations:
+      - /新皇冠/HG-3342
+
     body: |
       <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
 

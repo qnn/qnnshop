@@ -48,6 +48,9 @@ block content
               | 元
       .paction
         a.addtocartbtn.hudbtn.primary(href='/cart', data-category=category, data-model=model) 放入购物车
+      - if (product.side_html)
+        .psidecontent
+          != product.side_html
     .clearfix
   .pdetails
     .pdselector
@@ -63,3 +66,17 @@ block content
         p 物流配送
       .pdpage.hidden
         p 常见问题
+  - if (product.recommendations instanceof Array)
+    .precommend
+      - each recommendation in product.recommendations
+        - if (recommendation = recommendation.match(/^\/(.*)\/(.*)$/))
+          - category = recommendation[1]
+          - model = recommendation[2]
+          - if (products[category] && products[category][model])
+            - product = products[category][model]
+            .recommendation
+              a(href='/#{category}/#{model}')
+                img(src=product.images[0])
+                br
+                =product.name
+      .clearfix

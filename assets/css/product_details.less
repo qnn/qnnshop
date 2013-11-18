@@ -229,3 +229,35 @@
     }
   }
 }
+
+.precommend {
+  background: #fff;
+  border-top: 1px solid #ccc;
+  .recommendation {
+    @width: 283px;
+    float: left;
+    width: (@width + 2px);
+    height: (@width + 30px);
+    text-align: center;
+    padding: 10px 0 10px 10px;
+    img {
+      width: @width;
+      height: @width;
+      margin-bottom: 3px;
+      border: 1px solid #D5D5D5;
+    }
+    a {
+      font-size: 14px;
+      color: #0014FF;
+      text-decoration: none;
+      &:hover {
+        color: #DD0000;
+        text-decoration: none;
+        img {
+          border: 1px solid #969696;
+        }
+      }
+    }
+  }
+}
+
