@@ -10,7 +10,6 @@ $(function(){
         toastr.error(err.join('、') + '输入错误。');
         return false;
       }
-      return false;
     });
     $('#reason').bind('click change', function(){
       $('#reason_opts_0').prop('checked', true);

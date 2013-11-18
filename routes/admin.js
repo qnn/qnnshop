@@ -80,10 +80,19 @@ module.exports = function(app, products, configs) {
     var order_id = req.params.order_id;
     var by_user = req.query.user;
     if (req.user && req.user.is_admin) {
+      if (req.query.all) req.session.admin_show_all_orders = req.query.all === '1';
+      var show_all = !!req.session.admin_show_all_orders;
+
       var Order = require('../models/order');
       var User = require('../models/user');
       var find = {};
-      if (order_id) find = { _id: order_id };
+      if (order_id) {
+        find = { _id: order_id };
+      } else {
+        if (!show_all && !by_user) {
+          find = { status: { $nin: configs.default_statuses_not_to_show } };
+        }
+      }
       if (by_user) find['_user'] = by_user;
       Order.find(find).populate({ path: '_user', select: 'username alias' }).sort('-created_at').exec(function(error, orders){
         if (order_id) {
@@ -91,15 +100,16 @@ module.exports = function(app, products, configs) {
           res.render('admin/orders', { orders: orders, user: req.user, is_single: true, by_user: by_user, configs: configs });
         } else {
           var items_per_page = 10;
-          var total_pages = Math.ceil(orders.length / items_per_page);
+          var total_items = orders.length;
+          var total_pages = Math.ceil(total_items / items_per_page);
           var current_page = 1;
           if (req.query.page && /^([1-9]|[1-9][0-9]+)$/.test(req.query.page)) {
             if (req.query.page <= total_pages) current_page = req.query.page;
           }
           var start = (current_page - 1) * items_per_page;
           orders = orders.slice(start, start + items_per_page);
-          res.render('admin/orders', { orders: orders, user: req.user, is_single: false, by_user: by_user,
-            current_page: current_page, total_pages: total_pages, configs: configs });
+          res.render('admin/orders', { orders: orders, user: req.user, show_all: show_all, is_single: false, by_user: by_user,
+            current_page: current_page, total_pages: total_pages, total_items: total_items, configs: configs });
         }
       });
     } else {

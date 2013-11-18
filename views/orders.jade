@@ -12,14 +12,16 @@ block content
         | &nbsp;的订单。
         a(href='/orders') 显示所有订单
         。
-    h2.title 我的订单
+      h2.title 订单详细
+    - else
+      h2.title 我的订单（#{total_items}）
     - if (!orders || orders.length == 0)
       .message 没有订单。
     - else
       .table_container.checkout_cart
         - each order in orders
-          table(class=(order.status == configs.buyer_cancel_status ? 'canceled' : ''))
-            - if (order.status == configs.buyer_cancel_status)
+          table(class=(!is_single && order.status == configs.buyer_cancel_status ? 'canceled' : ''))
+            - if (!is_single && order.status == configs.buyer_cancel_status)
               thead
                 tr
                   th(colspan=5)

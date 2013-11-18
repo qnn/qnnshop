@@ -1,3 +1,4 @@
+# 默认的订单状态
 statuses:
   - 等待买家付款
   - 等待卖家发货
@@ -6,10 +7,12 @@ statuses:
   - 卖家已取消
   - 交易成功
 
+# 当订单状态是如下任一状态时，改订单可被用户取消
 cancelable_statuses:
   - 等待买家付款
   - 等待卖家发货
 
+# 取消订单的原因
 reasons_to_cancel:
   - 资料填写错误
   - 发现现在不需要购买
@@ -21,8 +24,16 @@ cod_initial_status: 等待卖家发货
 # 选择其他支付方式的初始订单状态
 payment_initial_status: 等待买家付款
 
+# 买家取消订单后，订单的状态
 buyer_cancel_status: 买家已取消
 
+# 管理员所有订单页默认不显示下列状态的订单
+default_statuses_not_to_show:
+  - 买家已取消
+  - 卖家已取消
+  - 交易成功
+
+# 管理员账户
 admins:
   - username: caiguanhao
     password: $2a$10$RGioxd1LvP0oCZJXSEakpuSsv95kRIRaDoJKnNJ9H9sK4tfpNFpeC

@@ -237,7 +237,8 @@ module.exports = function(app, products, configs) {
           }
         } else {
           var items_per_page = 5;
-          var total_pages = Math.ceil(orders.length / items_per_page);
+          var total_items = orders.length;
+          var total_pages = Math.ceil(total_items / items_per_page);
           var current_page = 1;
           if (req.query.page && /^([1-9]|[1-9][0-9]+)$/.test(req.query.page)) {
             if (req.query.page <= total_pages) current_page = req.query.page;
@@ -245,7 +246,7 @@ module.exports = function(app, products, configs) {
           var start = (current_page - 1) * items_per_page;
           orders = orders.slice(start, start + items_per_page);
           res.render('orders', { orders: orders, user: req.user, configs: configs, is_single: false,
-            current_page: current_page, total_pages: total_pages, cancelable: cancelable });
+            current_page: current_page, total_pages: total_pages, total_items: total_items, cancelable: cancelable });
         }
       });
     } else {
@@ -258,12 +259,12 @@ module.exports = function(app, products, configs) {
     var order_id = req.params.order_id;
     if (req.user && req.user._id) {
       var Order = require('../models/order');
-      Order.findOne({ _user: req.user._id, _id: order_id }, function(error, order){
-        if (error || !order || order.length != 1) return next();
-        var reason_opts = req.body.reason_opts ? req.body.reason_opts.trim() : '';
-        var reason = req.body.reason ? req.body.reason.trim() : '';
-        var password = req.body.password;
+      Order.findOne({ _user: req.user._id, _id: order_id, status: { $in: configs.cancelable_statuses } }, function(error, order){
         try {
+          if (error || !order || !order._id) throw null;
+          var reason_opts = req.body.reason_opts ? req.body.reason_opts.trim() : '';
+          var reason = req.body.reason ? req.body.reason.trim() : '';
+          var password = req.body.password;
           var bcrypt = require('bcrypt');
           if (reason_opts.length > 20000) throw '取消原因过长，最多能包含20000个字符。';
           if (reason.length > 20000) throw '取消原因过长，最多能包含20000个字符。';
@@ -273,10 +274,10 @@ module.exports = function(app, products, configs) {
           order.updated_at = new Date();
           order.save();
           req.session.messages.push({ success: '订单已取消。' });
-          res.redirect('/orders' + order_id);
+          res.redirect('/orders/' + order_id);
         } catch (error) {
           req.session.messages.push({ error: typeof(error) == 'string' ? error : '发生未知错误。' });
-          res.redirect('/orders/' + order_id + '/cancel');
+          res.redirect('/orders/' + order_id);
         }
       });
     } else {

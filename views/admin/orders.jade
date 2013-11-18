@@ -21,7 +21,22 @@ block content
           strong= orders[0]._user.alias || orders[0]._user.username
           | &nbsp;的所有订单。
           a(href='/SysAdmin/orders') 显示所有订单
-      h2.title 所有订单
+          。
+        h2.title 用户所有订单（#{total_items}）
+      - else if (!show_all)
+        .breadcrumb.hide_when_print
+          | 默认不显示状态是&nbsp;
+          strong= configs.default_statuses_not_to_show.join('、')
+          | &nbsp;的订单。
+          a(href='/SysAdmin/orders?all=1') 显示所有订单
+          。
+        h2.title 部分订单（#{total_items}）
+      - else
+        .breadcrumb.hide_when_print
+          | 已显示所有订单。
+          a(href='/SysAdmin/orders?all=0') 显示部分订单
+          。
+        h2.title 所有订单（#{total_items}）
     - if (!orders || orders.length == 0)
       .message 没有订单。
     - else
@@ -136,7 +151,7 @@ block content
                       max_page: #{total_pages},
                       page_string: '第{current_page}/{max_page}页',
                       paged: function(page) {
-                        window.location.href = '/SysAdmin/orders?!{by_user ? "user=" + by_user + "&" : ""}page=' + page;
+                        window.location.href = '/SysAdmin/orders?!{show_all ? "all=1&" : ""}!{by_user ? "user=" + by_user + "&" : ""}page=' + page;
                       }
                     });
 

@@ -15,6 +15,7 @@ html
         a.logo(href='/') 首页
         .user
           - if (current_admin)
+            [管理员]&nbsp;
             = current_admin.username
             &nbsp;|&nbsp;
             a#adminlogout(href='javascript:;') 退出登录
