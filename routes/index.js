@@ -214,16 +214,27 @@ module.exports = function(app, products, configs) {
     res.redirect('/my_account');
   });
 
-  app.get('/orders/:order_id?', function(req, res, next){
+  app.get('/orders/:order_id?/:action?', function(req, res, next){
     var order_id = req.params.order_id;
+    var action = req.params.action;
     if (req.user && req.user._id) {
       var Order = require('../models/order');
       var find = { _user: req.user._id };
       if (order_id) find = { _id: order_id };
+      var cancelable = function(status) {
+        return configs.cancelable_statuses.indexOf(status) > -1;
+      };
       Order.find(find).sort('-created_at').exec(function(error, orders){
+        if (error) return next();
         if (order_id) {
           if (!orders) return next();
-          res.render('orders', { orders: orders, user: req.user, is_single: true });
+          switch (action) {
+          case 'cancel':
+            res.render('orders_cancel', { orders: orders, user: req.user, configs: configs, cancelable: cancelable });
+            break;
+          default:
+            res.render('orders', { orders: orders, user: req.user, is_single: true, cancelable: cancelable });
+          }
         } else {
           var items_per_page = 5;
           var total_pages = Math.ceil(orders.length / items_per_page);
@@ -234,12 +245,42 @@ module.exports = function(app, products, configs) {
           var start = (current_page - 1) * items_per_page;
           orders = orders.slice(start, start + items_per_page);
           res.render('orders', { orders: orders, user: req.user, is_single: false,
-            current_page: current_page, total_pages: total_pages });
+            current_page: current_page, total_pages: total_pages, cancelable: cancelable });
         }
       });
     } else {
-      req.session.returnTo = '/orders' + (order_id ? '/' + order_id : '');
+      req.session.returnTo = '/orders' + (order_id ? '/' + order_id + (action ? '/' + action : '') : '');
       res.redirect('/login');
+    }
+  });
+
+  app.post('/orders/:order_id/cancel', function(req, res, next){
+    var order_id = req.params.order_id;
+    if (req.user && req.user._id) {
+      var Order = require('../models/order');
+      Order.findOne({ _id: order_id }, function(error, order){
+        if (error || !order) return next();
+        var reason_opts = req.body.reason_opts ? req.body.reason_opts.trim() : '';
+        var reason = req.body.reason ? req.body.reason.trim() : '';
+        var password = req.body.password;
+        try {
+          var bcrypt = require('bcrypt');
+          if (reason_opts.length > 20000) throw '取消原因过长，最多能包含20000个字符。';
+          if (reason.length > 20000) throw '取消原因过长，最多能包含20000个字符。';
+          if (!password || !bcrypt.compareSync(password, req.user.password)) throw '密码不正确。';
+          order.status = configs.buyer_cancel_status;
+          order.buyer_comments += '\n取消原因：' + (reason ? reason : reason_opts);
+          order.updated_at = new Date();
+          order.save();
+          req.session.messages.push({ success: '订单已取消。' });
+          res.redirect('/orders' + order_id);
+        } catch (error) {
+          req.session.messages.push({ error: typeof(error) == 'string' ? error : '发生未知错误。' });
+          res.redirect('/orders/' + order_id + '/cancel');
+        }
+      });
+    } else {
+      next();
     }
   });
 
@@ -383,11 +424,11 @@ module.exports = function(app, products, configs) {
         switch (payment) {
         case 'cod':
           payment_method = '货到付款';
-          status = '等待发货';
+          status = configs.cod_initial_status;
           break;
         default:
           payment_method = '';
-          status = '等待买家付款';
+          status = configs.payment_initial_status;
         }
         var new_order = new Order({
           _user: user._id,

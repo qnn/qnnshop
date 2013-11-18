@@ -1,10 +1,27 @@
 statuses:
   - 等待买家付款
-  - 等待发货
+  - 等待卖家发货
   - 等待买家收货
   - 买家已取消
   - 卖家已取消
   - 交易成功
+
+cancelable_statuses:
+  - 等待买家付款
+  - 等待卖家发货
+
+reasons_to_cancel:
+  - 资料填写错误
+  - 发现现在不需要购买
+  - 已去别的地方购买
+
+# 选择货到付款的初始订单状态
+cod_initial_status: 等待卖家发货
+
+# 选择其他支付方式的初始订单状态
+payment_initial_status: 等待买家付款
+
+buyer_cancel_status: 买家已取消
 
 admins:
   - username: caiguanhao

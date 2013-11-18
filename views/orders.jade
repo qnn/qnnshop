@@ -88,7 +88,10 @@ block content
                   td(colspan=2)
               tr
                 th(colspan=3)
-                  a(href='/orders/'+order._id+'/cancel') 取消订单
+                  - if (cancelable(order.status))
+                    a(href='/orders/'+order._id+'/cancel') 取消订单
+                  - else
+                    | 无法取消
                 th 合计
                 th.toCurrency= grandTotal
 

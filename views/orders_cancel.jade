@@ -1,0 +1,38 @@
+block variables
+  title = "取消订单"
+
+extends layouts/default
+
+block content
+  - if (cancelable(orders[0].status))
+    .orders
+      h2.title 取消订单
+      form.form(action='/orders/'+orders[0]._id+'/cancel', method='POST')
+        input(type='hidden', name='_csrf', value=csrf_token)
+        .form-group
+          label
+            | 您确定要取消这张订单吗？
+        .form-group
+          label(for='reason')
+            | 取消原因（可选）
+          - index = 0
+          - each reason in configs.reasons_to_cancel
+            - index++
+            label(for='reason_opts_#{index}')
+              input(id='reason_opts_#{index}', type='radio', name='reason_opts', value=reason)
+              =reason
+          label(for='reason_opts_0')
+            input(id='reason_opts_0', type='radio', name='reason_opts', value='其他')
+            | 其他
+          textarea.form-text#reason(name='reason')
+          .labeldesc
+            | 最长2万字。
+        .form-group
+          label(for='password') 您的账户密码
+          input.form-input#password(type='password', name='password', autocomplete='off')
+        .form-group.form-btns
+          button.hudbtn.primary(type='submit') 确认取消订单
+          button.hudbtn(type='button', onclick="window.location.href='/orders/"+orders[0]._id+"'") 返回订单
+  - else
+    .message
+      | 抱歉，此订单已无法取消。详情请咨询客服。
