@@ -5,11 +5,13 @@
 //= require vendor/jquery.timeago.js
 //= require vendor/toastr.min.js
 //= require vendor/jquery.jqpagination.min.js
+//= require vendor/typeahead.js
 //= require account.js
 //= require checkout.js
 //= require product_details.js
 //= require login.js
 //= require orders_cancel.js
+//= require cart.js
 toastr.options = {
   closeButton: true,
   showDuration: 200,
@@ -103,7 +105,7 @@ $(function(){
             return '<a title="' + name + '" href="' + item.get('path') + '"><img alt="' + name + '" src="' + item.get('image') + '"></a>';
           }
         },
-        { attr: 'name' , label: '商品名称', view: function(item, column){
+        { attr: 'name', label: '商品名称', view: function(item, column){
             return '<a href="' + item.get('path') + '">' + item.get('name') + '</a>';
           }
         },
@@ -114,7 +116,7 @@ $(function(){
           }
         },
         { attr: 'price', label: '单价', view: 'currency' },
-        { attr: 'total' , label: '合计', view: 'currency' },
+        { attr: 'total', label: '合计', view: 'currency' },
         { view: 'remove', text: '删除', label: false }
       ]
     });
@@ -123,8 +125,11 @@ $(function(){
     });
     simpleCart.bind('ready update', function(){
       if (simpleCart.quantity() == 0) {
-        $('.checkout').addClass('hidden');
-        $('.message').removeClass('hidden');
+        $('.cart').addClass('hidden');
+        $('.empty_cart').removeClass('hidden');
+      } else {
+        $('.cart').removeClass('hidden');
+        $('.empty_cart').addClass('hidden');
       }
     });
   }

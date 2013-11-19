@@ -497,6 +497,28 @@ module.exports = function(app, products, configs) {
     });
   });
 
+  app.get('/search/:query?', function(req, res, next){
+    var query = req.params.query;
+    var results = [];
+    for (var category in products) {
+      for (var model in products[category]) {
+        var product = products[category][model];
+        if (product.name.indexOf(query) > -1) {
+          results.push({
+            name: product.name,
+            path: '/' + category + '/' + model
+          });
+          continue;
+        }
+      }
+    }
+    res.format({
+      json: function(){
+        res.send(results);
+      }
+    });
+  });
+
   app.get('/:category/:model', function(req, res, next){
     var category = req.params.category, model = req.params.model;
     if (products[category] && products[category][model]) {
