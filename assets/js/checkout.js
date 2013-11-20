@@ -18,6 +18,9 @@ $(function(){
       if (!/^[0-9]{6}$/.test($('#captcha').val())) {
         err.push('验证码');
       }
+      if ($('#invoice').length == 1 && !/^[\u4E00-\u9FA5A-Za-z\s]{1,20}$/.test($('#invoice').val())) {
+        err.push('发票抬头');
+      }
       if ($('#province').length == 1 && $('#province').val() == '') {
         err_s.push('省份');
       }

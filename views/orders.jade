@@ -106,11 +106,14 @@ block content
                 - else
                   td(colspan=2)
               tr
-                th(colspan=3)
+                th
                   - if (cancelable(order.status))
                     a(href='/orders/'+order._id+'/cancel') 取消订单
                   - else
                     | 无法取消
+                th(colspan=2)
+                  - if (configs.invoice_enabled && order.invoice)
+                    | 发票抬头：#{order.invoice}
                 th 合计
                 th.toCurrency= grandTotal
 

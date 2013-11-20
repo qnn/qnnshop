@@ -110,6 +110,8 @@ block content
                   | 更新时间：
                   span.toLocalTime #{order.updated_at.toJSON()}
                   - if (!is_single)
+                    - if (configs.invoice_enabled && order.invoice)
+                      | &nbsp;&nbsp;&nbsp;发票抬头：#{order.invoice}
                     | &nbsp;&nbsp;&nbsp;备注：
                     - if (!order.buyer_comments && !order.seller_comments)
                       | 无
@@ -132,6 +134,12 @@ block content
                   td 卖家备注：
                   td(colspan=6)
                     pre=order.seller_comments || '(无)'
+                - if (configs.invoice_enabled)
+                  tr
+                    td
+                    td 发票抬头：
+                    td(colspan=6)
+                      pre=order.invoice || '(无)'
           tfoot.table-foot  
             tr
               - if (is_single)

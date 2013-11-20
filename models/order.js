@@ -19,6 +19,7 @@ module.exports = mongoose.model('Order', new Schema({
   districts: [String],
   address: String,
   email: String,
+  invoice: String,
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }
 }));

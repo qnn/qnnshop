@@ -7,7 +7,7 @@ extends layouts/default
 block content
   form#checkout_form.checkout(action='/confirm_checkout', method='POST')
     input(type='hidden', name='_csrf', value=csrf_token)
-    h2.title 购买的产品
+    h2.title 购买的商品
     #shopping_cart.checkout_cart.table_container
       table
         tbody
@@ -46,7 +46,7 @@ block content
           | 买家备注
         textarea.form-text#comments(name='comments')
         .labeldesc
-          | 可输入送货要求。最长2万字。
+          | 如果您有任何要求请在这里提出。最长2万字。
     h2.title 收货信息
     .form
       .form-group
@@ -81,6 +81,14 @@ block content
         input.form-input#shipping_user_email(type='text', name='shipping_user_email', value=current_user ? current_user.defaults.email : '')
         .labeldesc
           | 用于接收网站优惠信息。示例：user@example.com
+      - if (configs.invoice_enabled)
+        .form-group
+          label(for='invoice')
+            | 发票抬头
+            span.important *
+          input.form-input#invoice(type='text', name='invoice', value=current_user ? current_user.defaults.name : '')
+          .labeldesc
+            | 个人发票可填写姓名，公司发票可填写公司名称。由1至20个中文字、英文字母或空格组成。
     h2.title 支付
     .form
       .form-group

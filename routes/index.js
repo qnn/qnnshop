@@ -332,7 +332,7 @@ module.exports = function(app, products, configs) {
   app.post('/checkout', function(req, res, next){
     var user_logged_in_checkout = function(){
       verify_products(req, res, function(verified){
-        res.render('checkout', { products: verified, _data: req.body.data });
+        res.render('checkout', { products: verified, _data: req.body.data, configs: configs });
       });
     };
     var render_login_form = function(){
@@ -379,6 +379,7 @@ module.exports = function(app, products, configs) {
       var email = req.body.shipping_user_email;
       var payment = req.body.payment;
       var comments = req.body.comments;
+      var invoice = '';
 
       if (name) name = name.trim();
       if (phone) phone = phone.trim();
@@ -395,6 +396,10 @@ module.exports = function(app, products, configs) {
       if (!/^[\u4E00-\u9FA5A-Za-z\s0-9\-\(\)]{2,100}$/.test(address)) throw ['不是有效的收货人地址。'];
       if (email !== '' && !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) throw ['不是有效的电邮地址。'];
       if (comments.length > 20000) throw ['买家备注过长，最多能包含20000个字符。'];
+      if (configs.invoice_enabled) {
+        invoice = req.body.invoice ? req.body.invoice.trim() : '';
+        if (!/^[\u4E00-\u9FA5A-Za-z\s]{1,20}$/.test(invoice)) throw ['不是有效的发票抬头。'];
+      }
 
       var valid_districts = verify_districts(province, city, district);
 
@@ -441,7 +446,8 @@ module.exports = function(app, products, configs) {
           districts: valid_districts,
           address: address,
           email: email,
-          buyer_comments: comments
+          buyer_comments: comments,
+          invoice: invoice
         });
         new_order.save(function (error) {
           if (error) {
