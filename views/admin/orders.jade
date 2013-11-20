@@ -110,6 +110,10 @@ block content
                   | 更新时间：
                   span.toLocalTime #{order.updated_at.toJSON()}
                   - if (!is_single)
+                    | &nbsp;&nbsp;&nbsp;快递：
+                    =order.shipping.by || '(无)'
+                    - if (order.shipping.number)
+                      （#{order.shipping.number}）
                     - if (configs.invoice_enabled && order.invoice)
                       | &nbsp;&nbsp;&nbsp;发票抬头：#{order.invoice}
                     | &nbsp;&nbsp;&nbsp;备注：
@@ -134,6 +138,22 @@ block content
                   td 卖家备注：
                   td(colspan=6)
                     pre=order.seller_comments || '(无)'
+                tr
+                  td
+                  td 发货信息：
+                  td(colspan=6)
+                    - if (configs.express_companies.hasOwnProperty(order.shipping.by))
+                      | 快递公司：
+                      a(href=configs.express_companies[order.shipping.by], target='_blank')=order.shipping.by
+                    - else
+                      | 快递公司：
+                      =order.shipping.by || '(无)'
+                    - if (order.shipping.number)
+                      ，单号：
+                      =order.shipping.number
+                      | （
+                      span.toLocalTime #{order.shipping.at.toJSON()}
+                      | ）
                 - if (configs.invoice_enabled)
                   tr
                     td
@@ -171,16 +191,16 @@ block content
         .form-group
           label(for='status')
             | 状态
-          select#status.form_select.customizable-select(name='status')
+          select#status.form_select.customizable-select(name='status', data-property='状态')
             - status_exist = false;
             - each status in configs.statuses
               - if (status == orders[0].status)
                 - status_exist = true;
-                option(value=status, selected)=status
+                option(value=status, selected, data-original)=status
               - else
                 option(value=status)=status
             - if (!status_exist)
-              option(value=orders[0].status, selected)=orders[0].status
+              option(value=orders[0].status, selected, data-original)=orders[0].status || '(空)'
             option(value='') 自定...
         .form-group
           label(for='final_price')
@@ -188,6 +208,26 @@ block content
           input.form-input#final_price(type='text', name='final_price', placeholder=untouchedGrandTotal.toFixed(2), value=(orders[0].final_price >= 0 ? orders[0].final_price.toFixed(2) : ''))
           .labeldesc
             | 如不需调整，请留空。
+        .form-group
+          label(for='shipping_by')
+            | 发货物流快递公司
+          select#shipping_by.form_select.customizable-select(name='shipping_by', data-property='快递公司')
+            - express_company_exist = false;
+            - each express_company_link, express_company_name in configs.express_companies
+              - if (express_company_name == orders[0].shipping.by)
+                - express_company_exist = true;
+                option(value=express_company_name, selected, data-original)=express_company_name
+              - else
+                option(value=express_company_name)=express_company_name
+            - if (!express_company_exist)
+              option(value=orders[0].shipping.by, selected, data-original)=orders[0].shipping.by || '(空)'
+            option(value='') 自定...
+        .form-group
+          label(for='shipping_number')
+            | 快递单号
+          input.form-input#shipping_number(type='text', name='shipping_number', value=orders[0].shipping.number)
+          .labeldesc
+            | 更改快递单号将自动更新发货日期。
         .form-group
           label(for='seller_comments')
             | 卖家备注

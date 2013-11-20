@@ -36,6 +36,14 @@ default_statuses_not_to_show:
 # 启用发票功能
 invoice_enabled: true
 
+# 预设的快递公司
+express_companies:
+  顺丰: http://sf-express.com/
+  韵达: http://www.yundaex.com/
+  圆通: http://www.yto.net.cn/
+  申通: http://www.sto.cn/
+  EMS: http://www.ems.com.cn/
+
 # 管理员账户
 admins:
   - username: caiguanhao

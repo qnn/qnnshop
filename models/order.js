@@ -20,6 +20,11 @@ module.exports = mongoose.model('Order', new Schema({
   address: String,
   email: String,
   invoice: String,
+  shipping: {
+    by: String,
+    number: String,
+    at: { type: Date, default: 0 }
+  },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }
 }));

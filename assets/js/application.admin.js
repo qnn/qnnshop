@@ -8,13 +8,17 @@ $(function(){
   });
   $('.customizable-select').change(function(){
     if ($(this).val() == '') {
-      var prompt = window.prompt('请输入自定状态：', '');
+      var prompt = window.prompt('请输入自定' + $(this).data('property') + '：', '');
       var selected = $(this).find('option:selected');
-      if (prompt) {
-        $('<option value="'+prompt+'">'+prompt+'</option>').insertBefore(selected);
-        $(this).val(prompt);
+      $(this).find('option').prop('selected', false);
+      if (prompt != null) {
+        if (prompt && $(this).find('option[value="'+prompt+'"]').length > 0) {
+          $(this).find('option[value="'+prompt+'"]').prop('selected', true);
+        } else {
+          $('<option value="'+prompt+'">'+(prompt||'(空)')+'</option>').insertBefore(selected).prop('selected', true);
+        }
       } else {
-        $(this).val($(this).find('option:first').attr('value'));
+        $(this).find('option[data-original]').prop('selected', true);
       }
     }
   });

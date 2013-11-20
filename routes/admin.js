@@ -124,6 +124,8 @@ module.exports = function(app, products, configs) {
     try {
       var status = req.body.status ? req.body.status.trim() : '';
       var final_price = req.body.final_price;
+      var shipping_by = req.body.shipping_by ? req.body.shipping_by.trim() : '';
+      var shipping_number = req.body.shipping_number ? req.body.shipping_number.trim() : '';
       var seller_comments = req.body.seller_comments ? req.body.seller_comments.trim() : '';
       var admin_password = req.body.admin_password;
       if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test(admin_password)) throw '密码不正确。';
@@ -140,6 +142,8 @@ module.exports = function(app, products, configs) {
       if (final_price && !/^\d+(\.\d+|)$/.test(final_price)) throw '合计总价必须是数字，如 999.99 。';
       if (final_price === '') final_price = -1;
       if (seller_comments.length > 20000) throw '卖家备注过长，最多能包含20000个字符。';
+      if (shipping_by.length > 10) throw '快递公司名字长度规定在10个字符以下。';
+      if (shipping_number.length > 50) throw '快递单号长度规定在50个字符以下。';
       var Order = require('../models/order');
       Order.findOne({ _id: order_id }, function(err, order){
         if (err || !order) {
@@ -148,6 +152,11 @@ module.exports = function(app, products, configs) {
           order.status = status;
           order.final_price = final_price;
           order.seller_comments = seller_comments;
+          order.shipping.by = shipping_by;
+          if (order.shipping.number != shipping_number) {
+            order.shipping.number = shipping_number;
+            order.shipping.at = new Date();
+          }
           order.updated_at = new Date();
           order.save();
           req.session.messages.push({ success: '成功保存订单。' });
