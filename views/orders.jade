@@ -45,12 +45,19 @@ block content
                     | 订单号：
                     - if (is_single)
                       | #{order.id}
-                    else
+                    - else
                       a(href='/orders/'+order._id)=order._id
                     br
                     | 付款方式：#{order.payment || '未指定'}
                     br
                     | 状态：#{order.status}
+                    - if (configs.express_companies.hasOwnProperty(order.shipping.by))
+                      | （
+                      a(href=configs.express_companies[order.shipping.by], target='_blank')=order.shipping.by
+                      - if (order.shipping.number)
+                        | :
+                        =order.shipping.number
+                      | ）
                   .right
                     - if (Math.floor((order.updated_at - order.created_at) / 1000) > 2)
                       | 创建时间：
