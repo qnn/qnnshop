@@ -8,6 +8,9 @@ html
     != css('application')
     != js('application')
   body
+    noscript
+      .head_warning
+        | 重要：您需要在您的浏览器上启用 JavaScript 才可正常访问本网站。
     .container
       .header
         a.logo(href='/') 首页

@@ -498,17 +498,20 @@ module.exports = function(app, products, configs) {
   });
 
   app.get('/search/:query?', function(req, res, next){
-    var query = req.params.query;
+    var query = req.params.query ? req.params.query.trim().toLowerCase() : '';
     var results = [];
-    for (var category in products) {
-      for (var model in products[category]) {
-        var product = products[category][model];
-        if (product.name.indexOf(query) > -1) {
-          results.push({
-            name: product.name,
-            path: '/' + category + '/' + model
-          });
-          continue;
+    if (query) {
+      for (var category in products) {
+        for (var model in products[category]) {
+          var product = JSON.stringify(products[category][model]).toLowerCase();
+          if (product.indexOf(query) > -1) {
+            results.push({
+              name: products[category][model].name,
+              path: '/' + category + '/' + model
+            });
+            if (results.length >= 5) break;
+            continue;
+          }
         }
       }
     }
