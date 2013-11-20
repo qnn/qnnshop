@@ -136,6 +136,7 @@ $(function(){
   $(".addtocartbtn").click(function(e){
     e.preventDefault();
     var category = $(this).data('category'), model = $(this).data('model');
+    var that = $(this);
     if (category && model) {
       $.getJSON('/'+category+'/'+model, function(product){
         simpleCart.add({ 
@@ -147,6 +148,10 @@ $(function(){
           image: product.image,
           quantity: 1
         });
+        if (that.hasClass('redirects')) {
+          window.location.href = that.attr('href');
+          return;
+        }
         var active_image = $('#pslider .sliderkit-panel-active img');
         var image = active_image.clone();
         image.width(active_image.width()).height(active_image.height());

@@ -48,6 +48,7 @@ block content
               | 元
       .paction
         a.addtocartbtn.hudbtn.primary(href='/cart', data-category=category, data-model=model) 放入购物车
+        a.addtocartbtn.redirects.hudbtn.alt(href='/cart', data-category=category, data-model=model) 立即购买
       - if (product.side_html)
         .psidecontent
           != product.side_html
