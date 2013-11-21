@@ -20,14 +20,15 @@ block content
           input.form-input#password(type='password', name='password', autocomplete='off')
           .labeldesc
             | 如果您未更改密码，初始密码就是您刚才输入的手机/电话号码。
-        .form-group
-          label(for='captcha') 验证码
-          .captcha
-            a.reload_captcha(href='javascript:;')
-              img(src='/captcha.png', width=200, height=50)
-          input.form-input#captcha(type='text', name='captcha', autocomplete='off')
-          .labeldesc
-            | 请输入6位数字的验证码。如果看不清，点击验证码图像更换。
+        - if (captcha_enabled)
+          .form-group
+            label(for='captcha') 验证码
+            .captcha
+              a.reload_captcha(href='javascript:;')
+                img(src='/captcha.png', width=200, height=50)
+            input.form-input#captcha(type='text', name='captcha', autocomplete='off')
+            .labeldesc
+              | 请输入6位数字的验证码。如果看不清，点击验证码图像更换。
       .login_buttons
         button.hudbtn.primary.left(type='submit') 登录
         .clearfix

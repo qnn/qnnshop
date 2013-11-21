@@ -28,10 +28,12 @@ module.exports = function(app, products, configs) {
         req.session.messages.push({ error: '用户名或密码错误。' });
         return done(null, false);
       };
-      if (!req.body.captcha || req.body.captcha != req.session.captcha) {
-        req.session.messages.push({ error: '验证码输入错误。' });
-        req.session.captcha = generate_captcha();
-        return done(null, false);
+      if (app.enabled('captcha')) {
+        if (!req.body.captcha || req.body.captcha != req.session.captcha) {
+          req.session.messages.push({ error: '验证码输入错误。' });
+          req.session.captcha = generate_captcha();
+          return done(null, false);
+        }
       }
       if (!/^[A-Za-z0-9_\-]{3,20}$/.test(username)) return wrong();
       if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test(password)) return wrong();

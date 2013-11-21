@@ -23,6 +23,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(assets({ buildDir: './public' }));
 
+app.configure('production', function(){
+  app.enable('captcha');
+});
+
 require('js-yaml');
 var products = require('./products');
 var configs = require('./configs');
@@ -35,9 +39,9 @@ if (fs.existsSync(SOCKET_FILE)) {
   fs.unlinkSync(SOCKET_FILE);
 }
 
-if ('production' == app.get('env')) {
+app.configure('production', function(){
   app.set('port', SOCKET_FILE);
-}
+});
 
 app.listen(app.get('port'), function(){
   if (fs.existsSync(SOCKET_FILE)) {

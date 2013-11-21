@@ -1,6 +1,7 @@
 module.exports = function(app, products, configs) {
 
   app.use(function(req, res, next){
+    res.locals.captcha_enabled = app.enabled('captcha');
     res.locals.csrf_token = req.csrfToken();
     res.locals.current_user = (req.user && req.user._id) ? req.user : null;
     res.locals.current_admin = (req.user && req.user.is_admin) ? req.user : null;
@@ -73,10 +74,12 @@ module.exports = function(app, products, configs) {
         req.session.messages.push({ error: '手机/电话号码或密码错误。' });
         return done(null, false);
       };
-      if (!req.body.captcha || req.body.captcha != req.session.captcha) {
-        req.session.messages.push({ error: '验证码输入错误。' });
-        req.session.captcha = generate_captcha();
-        return done(null, false);
+      if (app.enabled('captcha')) {
+        if (!req.body.captcha || req.body.captcha != req.session.captcha) {
+          req.session.messages.push({ error: '验证码输入错误。' });
+          req.session.captcha = generate_captcha();
+          return done(null, false);
+        }
       }
       if (!/^[0-9+\-]{10,25}$/.test(username)) return wrong();
       if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test(password)) return wrong();
@@ -342,7 +345,7 @@ module.exports = function(app, products, configs) {
     if ((req.user && req.user._id) || ignore_login) {
       user_logged_in_checkout();
     } else {
-      if (req.body.username && req.body.password && req.body.captcha) {
+      if (req.body.username && req.body.password && (!app.enabled('captcha') || req.body.captcha)) {
         passport.authenticate('local', function(err, user, info) {
           if (err || !user) {
             render_login_form();
@@ -365,9 +368,11 @@ module.exports = function(app, products, configs) {
 
   app.post('/confirm_checkout', function(req, res){
     try {
-      if (!req.body.captcha || req.body.captcha != req.session.captcha) {
-        req.session.captcha = generate_captcha();
-        throw ['验证码输入错误。'];
+      if (app.enabled('captcha')) {
+        if (!req.body.captcha || req.body.captcha != req.session.captcha) {
+          req.session.captcha = generate_captcha();
+          throw ['验证码输入错误。'];
+        }
       }
 
       var name = req.body.shipping_user_name;

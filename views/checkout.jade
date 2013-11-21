@@ -99,14 +99,15 @@ block content
         label.option(for='payment_alipay')
           img(src='/images/alipay.gif', alt='支付宝', width=96, height=37)
           | 使用支付宝支付
-      .form-group
-        label(for='captcha') 验证码
-        .captcha
-          a.reload_captcha(href='javascript:;')
-            img(src='/captcha.png', width=200, height=50)
-        input.form-input#captcha(type='text', name='captcha', autocomplete='off')
-        .labeldesc
-          | 请输入6位数字的验证码。如果看不清，点击验证码图像更换。
+      - if (captcha_enabled)
+        .form-group
+          label(for='captcha') 验证码
+          .captcha
+            a.reload_captcha(href='javascript:;')
+              img(src='/captcha.png', width=200, height=50)
+          input.form-input#captcha(type='text', name='captcha', autocomplete='off')
+          .labeldesc
+            | 请输入6位数字的验证码。如果看不清，点击验证码图像更换。
     .shopping_cart_buttons
       input(type='hidden', name='data', value=_data)
       button.hudbtn.primary.right(type='submit') 继续
