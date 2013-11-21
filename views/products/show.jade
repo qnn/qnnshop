@@ -29,7 +29,7 @@ block content
       .ptitle
         h2= product.title
         h5= product.subtitle
-      - if (product.original_price)
+      - if (product.original_price && product.original_price > product.price)
         .pprice
           .original_price
             span.item 原价:
