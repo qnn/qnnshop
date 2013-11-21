@@ -30,6 +30,9 @@ app.configure('production', function(){
 require('js-yaml');
 var products = require('./products');
 var configs = require('./configs');
+var index_products = require('./lib/index_products');
+var indexed_products = index_products(products);
+app.set('indexed_products', indexed_products);
 
 require('./routes')(app, products, configs);
 

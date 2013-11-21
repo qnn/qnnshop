@@ -512,17 +512,15 @@ module.exports = function(app, products, configs) {
     var query = req.params.query ? req.params.query.trim().toLowerCase() : '';
     var results = [];
     if (query) {
-      for (var category in products) {
-        for (var model in products[category]) {
-          var product = JSON.stringify(products[category][model]).toLowerCase();
-          if (product.indexOf(query) > -1) {
-            results.push({
-              name: products[category][model].name,
-              path: '/' + category + '/' + model
-            });
-            if (results.length >= 5) break;
-            continue;
-          }
+      var indexed_products = app.get('indexed_products');
+      for (var i = 0; i < indexed_products.length; i++) {
+        if (indexed_products[i].data.indexOf(query) > -1) {
+          results.push({
+            name: indexed_products[i].name,
+            path: indexed_products[i].path
+          });
+          if (results.length >= 5) break;
+          continue;
         }
       }
     }
