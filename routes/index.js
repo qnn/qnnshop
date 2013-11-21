@@ -553,8 +553,17 @@ module.exports = function(app, products, configs) {
     }
   });
 
+  app.use(function(err, req, res, next){
+    switch (err.status) {
+    case 403:
+      return res.status(403).render('errors/403');
+    default:
+      return next();
+    }
+  });
+
   app.use(function(req, res){
-    res.status(404).render('404');
+    res.status(404).render('errors/404');
   });
 
 };
