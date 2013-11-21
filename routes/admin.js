@@ -76,6 +76,104 @@ module.exports = function(app, products, configs) {
     res.send(200);
   });
 
+  app.get('/SysAdmin/orders/export', function(req, res, next){
+    if (req.user && req.user.is_admin) {
+      res.render('admin/orders_export');
+    } else {
+      req.session.returnTo = '/SysAdmin/orders/export';
+      res.redirect('/SysAdmin/login');
+    }
+  });
+
+  app.get('/SysAdmin/orders/export.xlsx', function(req, res, next){
+    var currency_format = "&quot;￥&quot;#,##0.00;&quot;￥&quot;\\-#,##0.00";
+    var Order = require('../models/order');
+    Order.find({}).sort('-created_at').exec(function(error, orders){
+      var data = [[
+        { value: "每日发货详细数据表", colSpan: 14, hAlign: 'center', fontSize: 18, bold: true }
+      ], [
+        { colWidth: 5,  hAlign: 'center', value: "序号" },
+        { colWidth: 26, hAlign: 'center', value: "订单号" },
+        { colWidth: 20, hAlign: 'center', value: "商品名称" },
+        { colWidth: 5,  hAlign: 'center', value: "数量" },
+        { colWidth: 13, hAlign: 'center', value: "单价" },
+        { colWidth: 13, hAlign: 'center', value: "金额" },
+        { colWidth: 10, hAlign: 'center', value: "发票抬头" },
+        { colWidth: 10, hAlign: 'center', value: "收货人" },
+        { colWidth: 20, hAlign: 'center', value: "收货地址" },
+        { colWidth: 14, hAlign: 'center', value: "联系电话" },
+        { colWidth: 14, hAlign: 'center', value: "备注" },
+        { colWidth: 9,  hAlign: 'center', value: "快递公司" },
+        { colWidth: 14, hAlign: 'center', value: "快递单号" },
+        { colWidth: 17, hAlign: 'center', value: "创建日期" }
+      ]];
+      for (var i = 0; i < orders.length; i++) {
+        var order = orders[i];
+        var l = order.products.length;
+        var grandTotal = 0;
+        for (var j = 0; j < l; j++) {
+          var product = order.products[j];
+          var cat = product.category, model = product.model;
+          var total = product.quantity * product.price;
+          data.push([
+            { value: j == 0 ? i + 1 : '' },
+            { value: j == 0 ? order._id + '' : '' },
+            { value: products[cat] && products[cat][model] ? products[cat][model].name : '(商品已下架)' },
+            { value: product.quantity },
+            { value: product.price, formatCode: currency_format, hAlign: 'right' },
+            { value: total, formatCode: currency_format, hAlign: 'right' },
+            { value: j == 0 ? (order.invoice || '(无)') : '' },
+            { value: j == 0 ? order.username : '', forceString: true },
+            { value: j == 0 ? order.address : '',  forceString: true },
+            { value: j == 0 ? order.phone : '',    forceString: true },
+            { value: j == 0 ? (order.buyer_comments || '(无)') : '' },
+            { value: j == 0 ? (order.shipping.by || '(无)') : '' },
+            { value: j == 0 ? (order.shipping.number || '(无)') : '', forceString: true },
+            { value: j == 0 ? order.created_at : '', formatCode: "yyyy-mm-dd HH:mm" }
+          ]);
+          grandTotal += total;
+        }
+        var blank_arr = function(n){
+          var arr = [];
+          for (var i = 0; i < n; i++) arr.push({ value: '' });
+          return arr;
+        };
+        if (order.final_price >= 0 || l > 1) {
+          if (order.final_price >= 0) {
+            var diff = order.final_price - grandTotal
+            grandTotal = order.final_price
+            var blank = blank_arr(14);
+            blank[4] = { value: '价格调整', hAlign: 'right' };
+            blank[5] = { value: diff, formatCode: currency_format, hAlign: 'right' };
+            data.push(blank);
+          }
+          var blank = blank_arr(14);
+          blank[4] = { value: '合计', hAlign: 'right' };
+          blank[5] = { value: grandTotal, formatCode: currency_format, hAlign: 'right' };
+          data.push(blank);
+        }
+      }
+      var xlsx = require('node-xlsx');
+      var buffer = xlsx.build({ worksheets: [{
+        name: "发货数据表", 
+        data: data
+      }] }, {
+        defaultFontName: '宋体',
+        defaultFontSize: 10,
+        defaultVAlign: 'center',
+        defaultCellBorders: { left: '000', right: '000', top: '000', bottom: '000' },
+        page: {
+          margins: { left: 0.5, right: 0.5, top: 0.5, bottom: 0.5, header: 0.1, footer: 0.1 },
+          paper_size: 9, // A4
+          orientation: 'landscape'
+        }
+      });
+      res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.set('Content-Disposition', 'attachment; filename=' + encodeURIComponent('发货数据表') + '.xlsx');
+      res.send(buffer);
+    });
+  });
+
   app.get('/SysAdmin/orders/:order_id?', function(req, res, next){
     var order_id = req.params.order_id;
     var by_user = req.query.user;

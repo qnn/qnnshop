@@ -23,7 +23,8 @@
     "less": "1.4.x",
     "jade": "0.35.x",
     "connect-assets": "2.5.x",
-    "marked": "0.2.10"
+    "marked": "0.2.10",
+    "node-xlsx": "git://github.com/caiguanhao/node-xlsx.git"
   },
   "devDependencies": {
     "nodemon": "*"
