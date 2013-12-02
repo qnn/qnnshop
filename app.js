@@ -29,6 +29,13 @@ app.configure('production', function(){
 
 require('js-yaml');
 var products = require('./products');
+for (var category in products) {
+  for (var model in products[category]) {
+    products[category][model]['category'] = category;
+    products[category][model]['model'] = model;
+    products[category][model]['path'] = '/' + category + '/' + model;
+  }
+}
 var configs = require('./configs');
 var index_products = require('./lib/index_products');
 var indexed_products = index_products(products);

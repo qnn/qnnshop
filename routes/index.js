@@ -314,10 +314,6 @@ module.exports = function(app, products, configs) {
         if (products[category] && products[category][model]) {
           var output = products[category][model];
           if (item.price != output.price) continue;
-          output['category'] = category;
-          output['model'] = model;
-          output['image'] = output['images'] ? output['images'][0] : null;
-          output['path'] = '/' + category + '/' + model;
           output['quantity'] = quantity;
           verified.push(output);
         }
@@ -536,12 +532,7 @@ module.exports = function(app, products, configs) {
     if (products[category] && products[category][model]) {
       res.format({
         json: function(){
-          var output = products[category][model];
-          output['category'] = category;
-          output['model'] = model;
-          output['image'] = output['images'] ? output['images'][0] : null;
-          output['path'] = '/' + category + '/' + model;
-          res.send(output);
+          res.send(products[category][model]);
         },
         html: function(){
           var markdown = require('marked');

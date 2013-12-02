@@ -82,9 +82,9 @@ block content
                 - path = '/' + product.category + '/' + product.model
                 tr.itemRow
                   td.item-image
-                    - if (PRODUCT && PRODUCT.images)
+                    - if (PRODUCT && PRODUCT.image)
                       a(title=PRODUCT.title, href=path)
-                        img(alt=PRODUCT.title, src=PRODUCT.images[0])
+                        img(alt=PRODUCT.title, src=PRODUCT.image)
                   td.item-name
                     - if (PRODUCT)
                       a(href=path, title=PRODUCT.title)= PRODUCT.name
