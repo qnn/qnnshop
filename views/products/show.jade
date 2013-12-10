@@ -64,9 +64,9 @@ block content
       .pdpage
         != markdown(product.body).replace(/\n/g, '')
       .pdpage.hidden
-        p 物流配送
+        p 暂无物流配送信息
       .pdpage.hidden
-        p 常见问题
+        p 暂无常见问题
   - if (product.recommendations instanceof Array)
     .precommend
       - each recommendation in product.recommendations
