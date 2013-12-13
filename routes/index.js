@@ -217,9 +217,12 @@ module.exports = function(app, products, configs) {
     res.redirect('/my_account');
   });
 
-  app.get('/orders/:order_id/callback', function(req, res, next){
-    console.log(req.query);
-    
+  app.get('/orders/:order_id/success', function(req, res, next){
+    var log = function(what) {
+      require('fs').appendFile(__dirname + '/log', JSON.stringify(what) + '\n', function(){});
+    };
+    log(req.query);
+
     // first verification
     var blacklist = [ 'sign_type', 'sign' ];
     var query = [];
@@ -231,15 +234,11 @@ module.exports = function(app, products, configs) {
     query.sort();
     query = query.join('&') + configs.secrets.alipayconfigs.key;
     var md5 = require('crypto').createHash('md5').update(query, 'UTF-8').digest('hex');
-    
-    if (md5 !== req.query.sign) {
-      res.send();
-      return;
-    }
-    
     var user_hash = req.query.extra_common_param;
-    if (!user_hash) {
-      res.send();
+
+    if (md5 !== req.query.sign || !user_hash) {
+      req.session.messages.push({ error: '支付过程出现错误，如有问题请咨询客服。' });
+      res.redirect('/orders/' + order_id);
       return;
     }
 
@@ -251,57 +250,39 @@ module.exports = function(app, products, configs) {
       try {
         if (error || !order || !order._id) throw null;
         var order_user_hash = require('crypto').createHash('md5').update(order._user._id + order._user.password, 'UTF-8').digest('hex');
+        log([order_user_hash, user_hash]);
         if (order_user_hash !== user_hash) throw null;
 
-        var update_order = function() {
-          var payment_details = '------------------------------\n';
-          var statuses = function(s, st) {
-            return s.hasOwnProperty(st) ? s[st] + '（' + st + '）' : st;
-          };
-          payment_details += '支付宝交易号：' + req.query.trade_no + '\n';
-          payment_details += '交易状态：' + statuses({
-            TRADE_FINISHED: '交易完成',
-            TRADE_SUCCESS: '支付成功',
-            WAIT_BUYER_PAY: '交易创建',
-            TRADE_CLOSED: '交易关闭'
-          }, req.query.trade_status) + '\n';
-          payment_details += '商品名称：' + req.query.subject + '\n';
-          payment_details += '商品描述：' + req.query.body + '\n';
-          payment_details += '交易金额：' + req.query.total_fee + '\n';
-          payment_details += '交易创建时间：' + req.query.gmt_create + '\n';
-          payment_details += '交易付款时间：' + req.query.gmt_payment + '\n';
-          payment_details += '交易关闭时间：' + req.query.gmt_close + '\n';
-          payment_details += '卖家支付宝ID：' + req.query.seller_id + '\n';
-          payment_details += '买家支付宝ID：' + req.query.buyer_id + '\n';
-          payment_details += '卖家支付宝账号：' + req.query.seller_email + '\n';
-          payment_details += '买家支付宝账号：' + req.query.buyer_email + '\n';
-          payment_details += '------------------------------\n';
-          order.status = configs.status_if_user_paid;
-          if (!order.payment_details) order.payment_details = '';
-          order.payment_details += payment_details;
-          order.save();
+        var payment_details = '---- ' + (new Date).toJSON().replace(/\.\d+/,'') + ' ----\n';
+        var statuses = function(s, st) {
+          return s.hasOwnProperty(st) ? s[st] + '（' + st + '）' : st;
         };
-
-        // third verification
-        var notify_id = req.query.notify_id;
-        var https = require('https');
-        https.get(configs.alipayconfigs.gateway + '?service=notify_verify&partner=' + configs.secrets.alipayconfigs.pid + '&notify_id=' + notify_id, function(response) {
-          var data = '';
-          response.on('data', function(chunk) {
-            data += chunk;
-          });
-          response.on('end', function() {
-            console.log(data);
-            if (/true/i.test(data)) {
-              update_order();
-            }
-            res.send();
-          });
-        }).on('error', function() {
-          res.send();
-        });
+        payment_details += '支付宝交易号：' + req.query.trade_no + '\n';
+        payment_details += '交易状态：' + statuses({
+          TRADE_FINISHED: '交易完成',
+          TRADE_SUCCESS: '支付成功',
+          WAIT_BUYER_PAY: '交易创建',
+          TRADE_CLOSED: '交易关闭'
+        }, req.query.trade_status) + '\n';
+        payment_details += '交易金额：' + req.query.total_fee + '\n';
+        payment_details += '卖家支付宝ID：' + req.query.seller_id + '\n';
+        payment_details += '买家支付宝ID：' + req.query.buyer_id + '\n';
+        payment_details += '卖家支付宝账号：' + req.query.seller_email + '\n';
+        payment_details += '买家支付宝账号：' + req.query.buyer_email + '\n';
+        payment_details += '商品名称：' + req.query.subject + '\n';
+        payment_details += '商品描述：' + req.query.body + '\n';
+        payment_details += '------------------------------\n';
+        order.status = configs.status_if_user_paid;
+        if (!order.payment_details) order.payment_details = '';
+        order.payment_details += payment_details;
+        log(order.payment_details);
+        order.save();
+        req.session.messages.push({ success: '交易成功。' });
+        res.redirect('/orders/' + order_id);
       } catch (error) {
-        res.send();
+        log(error);
+        req.session.messages.push({ error: '支付过程出现错误，如有问题请咨询客服。' });
+        res.redirect('/orders/' + order_id);
       }
     });
   });
@@ -390,7 +371,10 @@ module.exports = function(app, products, configs) {
           if (order.payment !== configs.alipay) throw null;
 
           var price = 0;
-          var body = '购买的商品：';
+          var body = '收货人：' + order.username + '（联系电话：' + order.phone + '）\n';
+          body += '地址：' + order.districts.join(' ') + ' ' + order.address + '\n';
+          body += '备注：' + (order.buyer_comments || '(无)') + '\n';
+          body += '购买的商品：';
           for (var i = 0; i < order.products.length; i++) {
             var total = order.products[i].price * order.products[i].quantity;
             price += total;
@@ -421,8 +405,7 @@ module.exports = function(app, products, configs) {
               [ 'body', body ],
               [ 'total_fee', parseFloat(price).toFixed(2) ],
 
-              [ 'notify_url', configs.alipayconfigs.notify_url ],
-              [ 'return_url', configs.alipayconfigs.return_url ],
+              [ 'return_url', configs.alipayconfigs.return_url.replace('{{id}}', order._id) ],
               [ 'show_url', configs.alipayconfigs.show_url.replace('{{id}}', order._id) ],
 
               [ 'anti_phishing_key', key ],

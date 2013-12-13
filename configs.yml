@@ -1,8 +1,7 @@
 alipayconfigs:
   gateway: https://mapi.alipay.com/gateway.do
   subject: "全能商城qnnshop.com订单:{{id}}"
-  notify_url: "http://www.qnnshop.com/orders/{{id}}/callback"
-  return_url: "http://www.qnnshop.com/orders/{{id}}"
+  return_url: "http://www.qnnshop.com/orders/{{id}}/success"
   show_url: "http://www.qnnshop.com/orders/{{id}}"
 
 # 默认的订单状态
