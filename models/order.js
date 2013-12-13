@@ -4,6 +4,7 @@ module.exports = mongoose.model('Order', new Schema({
   _user: { type: Schema.ObjectId, ref: 'User' },
   status: String,
   payment: String,
+  payment_details: String,
   products: [{
     title: String,
     category: String,

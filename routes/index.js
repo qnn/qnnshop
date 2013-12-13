@@ -217,6 +217,95 @@ module.exports = function(app, products, configs) {
     res.redirect('/my_account');
   });
 
+  app.get('/orders/:order_id/callback', function(req, res, next){
+    console.log(req.query);
+    
+    // first verification
+    var blacklist = [ 'sign_type', 'sign' ];
+    var query = [];
+    for (var key in req.query) {
+      if (blacklist.indexOf(key) === -1) {
+        query.push(key + '=' + req.query[key]);
+      }
+    }
+    query.sort();
+    query = query.join('&') + configs.secrets.alipayconfigs.key;
+    var md5 = require('crypto').createHash('md5').update(query, 'UTF-8').digest('hex');
+    
+    if (md5 !== req.query.sign) {
+      res.send();
+      return;
+    }
+    
+    var user_hash = req.query.extra_common_param;
+    if (!user_hash) {
+      res.send();
+      return;
+    }
+
+    // second verification
+    var order_id = req.params.order_id;
+    var Order = require('../models/order');
+    var User = require('../models/user');
+    Order.findOne({ _id: order_id, status: { $in: configs.payable_statuses } }).populate('_user').exec(function(error, order){
+      try {
+        if (error || !order || !order._id) throw null;
+        var order_user_hash = require('crypto').createHash('md5').update(order._user._id + order._user.password, 'UTF-8').digest('hex');
+        if (order_user_hash !== user_hash) throw null;
+
+        var update_order = function() {
+          var payment_details = '------------------------------\n';
+          var statuses = function(s, st) {
+            return s.hasOwnProperty(st) ? s[st] + '（' + st + '）' : st;
+          };
+          payment_details += '支付宝交易号：' + req.query.trade_no + '\n';
+          payment_details += '交易状态：' + statuses({
+            TRADE_FINISHED: '交易完成',
+            TRADE_SUCCESS: '支付成功',
+            WAIT_BUYER_PAY: '交易创建',
+            TRADE_CLOSED: '交易关闭'
+          }, req.query.trade_status) + '\n';
+          payment_details += '商品名称：' + req.query.subject + '\n';
+          payment_details += '商品描述：' + req.query.body + '\n';
+          payment_details += '交易金额：' + req.query.total_fee + '\n';
+          payment_details += '交易创建时间：' + req.query.gmt_create + '\n';
+          payment_details += '交易付款时间：' + req.query.gmt_payment + '\n';
+          payment_details += '交易关闭时间：' + req.query.gmt_close + '\n';
+          payment_details += '卖家支付宝ID：' + req.query.seller_id + '\n';
+          payment_details += '买家支付宝ID：' + req.query.buyer_id + '\n';
+          payment_details += '卖家支付宝账号：' + req.query.seller_email + '\n';
+          payment_details += '买家支付宝账号：' + req.query.buyer_email + '\n';
+          payment_details += '------------------------------\n';
+          order.status = configs.status_if_user_paid;
+          if (!order.payment_details) order.payment_details = '';
+          order.payment_details += payment_details;
+          order.save();
+        };
+
+        // third verification
+        var notify_id = req.query.notify_id;
+        var https = require('https');
+        https.get(configs.alipayconfigs.gateway + '?service=notify_verify&partner=' + configs.secrets.alipayconfigs.pid + '&notify_id=' + notify_id, function(response) {
+          var data = '';
+          response.on('data', function(chunk) {
+            data += chunk;
+          });
+          response.on('end', function() {
+            console.log(data);
+            if (/true/i.test(data)) {
+              update_order();
+            }
+            res.send();
+          });
+        }).on('error', function() {
+          res.send();
+        });
+      } catch (error) {
+        res.send();
+      }
+    });
+  });
+
   app.get('/orders/:order_id?/:action?', function(req, res, next){
     var order_id = req.params.order_id;
     var action = req.params.action;
@@ -235,8 +324,11 @@ module.exports = function(app, products, configs) {
           case 'cancel':
             res.render('orders_cancel', { orders: orders, user: req.user, configs: configs, cancelable: cancelable });
             break;
-          default:
+          case undefined:
             res.render('orders', { orders: orders, user: req.user, configs: configs, is_single: true, cancelable: cancelable });
+            break;
+          default:
+            next();
           }
         } else {
           var items_per_page = 5;
@@ -281,6 +373,95 @@ module.exports = function(app, products, configs) {
         } catch (error) {
           req.session.messages.push({ error: typeof(error) == 'string' ? error : '发生未知错误。' });
           res.redirect('/orders/' + order_id);
+        }
+      });
+    } else {
+      next();
+    }
+  });
+
+  app.post('/orders/:order_id/alipay', function(req, res, next){
+    var order_id = req.params.order_id;
+    if (req.user && req.user._id) {
+      var Order = require('../models/order');
+      Order.findOne({ _user: req.user._id, _id: order_id, status: { $in: configs.payable_statuses } }, function(error, order){
+        try {
+          if (error || !order || !order._id) throw null;
+          if (order.payment !== configs.alipay) throw null;
+
+          var price = 0;
+          var body = '购买的商品：';
+          for (var i = 0; i < order.products.length; i++) {
+            var total = order.products[i].price * order.products[i].quantity;
+            price += total;
+            body += order.products[i].title + '（单价：' + parseFloat(order.products[i].price).toFixed(2) + '元，数量：' + order.products[i].quantity + '）、';
+          }
+          body = body.replace(/、$/, '') + '。';
+          if (order.final_price >= 0) {
+            var diff = order.final_price - price;
+            price = order.final_price;
+            if (diff != 0) {
+              body += '价格调整：' + (diff > 0 ? '+' : '-') + parseFloat(Math.abs(diff)).toFixed(2) + '元。';
+            }
+          }
+          body += '订单合计' + price + '元。';
+
+          var process = function(key) {
+            var user_hash = require('crypto').createHash('md5').update(req.user._id + req.user.password, 'UTF-8').digest('hex');
+            var query = [
+              [ '_input_charset', 'utf-8' ],
+              [ 'partner', configs.secrets.alipayconfigs.pid ],
+              [ 'seller_email', configs.secrets.alipayconfigs.seller_email ],
+              [ 'payment_type', '1' ],
+
+              [ 'service', 'create_direct_pay_by_user' ],
+
+              [ 'out_trade_no', order._id ],
+              [ 'subject', configs.alipayconfigs.subject.replace('{{id}}', order._id) ],
+              [ 'body', body ],
+              [ 'total_fee', parseFloat(price).toFixed(2) ],
+
+              [ 'notify_url', configs.alipayconfigs.notify_url ],
+              [ 'return_url', configs.alipayconfigs.return_url ],
+              [ 'show_url', configs.alipayconfigs.show_url.replace('{{id}}', order._id) ],
+
+              [ 'anti_phishing_key', key ],
+              [ 'exter_invoke_ip', req.ip ],
+              [ 'extra_common_param', user_hash ]
+            ];
+            query.sort(function(a, b) {
+              return a[0] > b[0] ? 1 : -1;
+            });
+            var sign = [];
+            for (var i = 0; i < query.length; i++) {
+              sign.push(query[i][0] + '=' + query[i][1]);
+            }
+            sign = sign.join('&') + configs.secrets.alipayconfigs.key;
+            var md5 = require('crypto').createHash('md5').update(sign, 'UTF-8').digest('hex');
+            query.push([ 'sign', md5 ]);
+            query.push([ 'sign_type', 'MD5' ]);
+            for (var i = 0; i < query.length; i++) {
+              query[i] = query[i][0] + '=' + encodeURIComponent(query[i][1]);
+            }
+            query = query.join('&')
+            var url = configs.alipayconfigs.gateway + '?' + query;
+            res.send({ redirect: url });
+          };
+
+          var https = require('https');
+          https.get(configs.alipayconfigs.gateway + '?service=query_timestamp&_input_charset=utf-8&partner=' + configs.secrets.alipayconfigs.pid, function(response) {
+            var data = '';
+            response.on('data', function(chunk) {
+              data += chunk;
+            });
+            response.on('end', function() {
+              process(/<encrypt_key>(.*)<\/encrypt_key>/.exec(data)[1]);
+            });
+          }).on('error', function() {
+            next();
+          });
+        } catch (error) {
+          next();
         }
       });
     } else {
@@ -406,7 +587,7 @@ module.exports = function(app, products, configs) {
 
       switch (payment) {
       case 'cod': break;
-      case 'alipay': throw ['此种支付方式已暂停使用。'];
+      case 'alipay': break;
       default: throw ['请选择支付方式。'];
       }
     } catch (errors) {
@@ -432,6 +613,10 @@ module.exports = function(app, products, configs) {
         case 'cod':
           payment_method = '货到付款';
           status = configs.cod_initial_status;
+          break;
+        case 'alipay':
+          payment_method = configs.alipay;
+          status = configs.payment_initial_status;
           break;
         default:
           payment_method = '';

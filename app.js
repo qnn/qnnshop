@@ -37,6 +37,8 @@ for (var category in products) {
   }
 }
 var configs = require('./configs');
+var secrets = require('./secrets');
+configs.secrets = secrets;
 var index_products = require('./lib/index_products');
 var indexed_products = index_products(products);
 app.set('indexed_products', indexed_products);

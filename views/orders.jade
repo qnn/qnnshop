@@ -51,6 +51,8 @@ block content
                     | 付款方式：#{order.payment || '未指定'}
                     br
                     | 状态：#{order.status}
+                    - if (order.payment == configs.alipay && order.status == configs.payment_initial_status)
+                      a.hudbtn.primary.tbtn.alipay_now(href='/orders/'+order._id+'/alipay') 立即支付
                     - if (configs.express_companies.hasOwnProperty(order.shipping.by))
                       | （
                       a(href=configs.express_companies[order.shipping.by], target='_blank')=order.shipping.by
