@@ -374,21 +374,21 @@ module.exports = function(app, products, configs) {
           if (order.payment !== configs.alipay) throw null;
 
           var price = 0;
-          var body = '收货人：' + order.username + '（联系电话：' + order.phone + '）\n';
-          body += '地址：' + order.districts.join(' ') + ' ' + order.address + '\n';
-          body += '备注：' + (order.buyer_comments || '(无)') + '\n';
+          var body = '收货人：' + order.username + '；联系电话：' + order.phone + '；';
+          body += '地址：' + order.districts.join(' ') + ' ' + order.address + '；';
+          body += '备注：' + (order.buyer_comments || '(无)') + '；';
           body += '购买的商品：';
           for (var i = 0; i < order.products.length; i++) {
             var total = order.products[i].price * order.products[i].quantity;
             price += total;
             body += order.products[i].title + '（单价：' + parseFloat(order.products[i].price).toFixed(2) + '元，数量：' + order.products[i].quantity + '）、';
           }
-          body = body.replace(/、$/, '') + '。';
+          body = body.replace(/、$/, '') + '；';
           if (order.final_price >= 0) {
             var diff = order.final_price - price;
             price = order.final_price;
             if (diff != 0) {
-              body += '价格调整：' + (diff > 0 ? '+' : '-') + parseFloat(Math.abs(diff)).toFixed(2) + '元。';
+              body += '价格调整：' + (diff > 0 ? '+' : '-') + parseFloat(Math.abs(diff)).toFixed(2) + '元；';
             }
           }
           body += '订单合计' + price + '元。';

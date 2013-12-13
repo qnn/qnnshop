@@ -17,7 +17,7 @@ $(function(){
       alert('暂时无法完成您的请求，请稍候再试。');
       window.location.reload();
     }).success(function(data){
-      $.blockUI({ css: { top: '50px' }, message: '<div class="buiinfo"><pre>' + data.payment_details + '</pre><a class="hudbtn primary" href="javascript:$.unblockUI();">关闭</a></div>' });
+      $.blockUI({ css: { top: '50px' }, message: '<div class="buiinfo"><p class="buicontent">' + data.payment_details.replace(/\n/g, '<br>') + '</p><a class="hudbtn primary" href="javascript:$.unblockUI();">关闭</a></div>' });
     });
   });
 });
