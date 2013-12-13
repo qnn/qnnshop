@@ -7,7 +7,7 @@ module.exports = function(app, products, configs) {
     res.locals.current_admin = (req.user && req.user.is_admin) ? req.user : null;
     res.locals.products = products;
     if (!req.session.messages) req.session.messages = [];
-    res.locals.messages = req.session.messages;
+    res.locals.session = req.session;
     next();
   });
 
@@ -304,6 +304,9 @@ module.exports = function(app, products, configs) {
           switch (action) {
           case 'cancel':
             res.render('orders_cancel', { orders: orders, user: req.user, configs: configs, cancelable: cancelable });
+            break;
+          case 'payment_details':
+            res.send({ payment_details: orders[0].payment_details });
             break;
           case undefined:
             res.render('orders', { orders: orders, user: req.user, configs: configs, is_single: true, cancelable: cancelable });
@@ -623,7 +626,11 @@ module.exports = function(app, products, configs) {
             render_errors(res, ['创建订单时出错。']);
           } else {
             req.session.messages.push({ success: '成功创建订单。' });
-            res.redirect('/orders');
+            req.logIn(user, function(error){
+              res.locals.current_user = (req.user && req.user._id) ? req.user : null;
+              req.session.empty_cart = true;
+              res.redirect('/orders/'+new_order._id);
+            });
           }
         });
       };

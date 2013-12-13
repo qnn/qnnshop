@@ -31,9 +31,9 @@ html
             a(href='/SysAdmin/orders/export') 导出订单
         li.clearfix
       block content
-      - if (messages && messages.length > 0)
+      - if (session && session.messages && session.messages.length > 0)
         - var msgs = ''
-        - while (message = messages.pop())
+        - while (message = session.messages.pop())
           - for (msg in message)
             - if (message[msg])
               - msgs += 'toastr["' + msg + '"](unescape("' + escape(message[msg]) + '"));'

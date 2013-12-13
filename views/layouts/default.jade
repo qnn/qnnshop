@@ -47,14 +47,17 @@ html
           a.first.products(href='/') 全能产品库
         li.clearfix
       block content
-      - if (messages && messages.length > 0)
+      - if (session && session.messages && session.messages.length > 0)
         - var msgs = ''
-        - while (message = messages.pop())
+        - while (message = session.messages.pop())
           - for (msg in message)
             - if (message[msg])
               - msgs += 'toastr["' + msg + '"](unescape("' + escape(message[msg]) + '"));'
         - if (msgs)
           != '<script>' + msgs + '</script>'
+      - if (session.empty_cart)
+        != '<script>if(simpleCart)simpleCart.empty();</script>'
+        - session.empty_cart = null;
       != '<script>window.csrf_token="' + csrf_token + '";</script>'
       .footer
         .footer-body

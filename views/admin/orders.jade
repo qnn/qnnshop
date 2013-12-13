@@ -140,6 +140,11 @@ block content
                     pre=order.seller_comments || '(无)'
                 tr
                   td
+                  td 付款详情：
+                  td(colspan=6)
+                    pre=order.payment_details || '(无)'
+                tr
+                  td
                   td 发货信息：
                   td(colspan=6)
                     - if (configs.express_companies.hasOwnProperty(order.shipping.by))

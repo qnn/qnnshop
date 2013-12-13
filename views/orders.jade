@@ -49,6 +49,8 @@ block content
                       a(href='/orders/'+order._id)=order._id
                     br
                     | 付款方式：#{order.payment || '未指定'}
+                    - if (order.payment_details)
+                      a.hudbtn.primary.tbtn.show_payment_details(href='/orders/'+order._id+'/payment_details') 查看交易记录
                     br
                     | 状态：#{order.status}
                     - if (order.payment == configs.alipay && order.status == configs.payment_initial_status)
