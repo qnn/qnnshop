@@ -3,6 +3,13 @@ QNNSHOP
 
 QNN Shop Application.
 
+NOTE: You may need to create a /secrets.yml containing following content for Alipay to work properly.
+
+    alipayconfigs:
+      seller_email: "example@example.com"
+      pid: "208*************"
+      key: "********************************"
+
 NGINX
 -----
 
