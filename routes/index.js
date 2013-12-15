@@ -218,10 +218,10 @@ module.exports = function(app, products, configs) {
   });
 
   app.get('/orders/:order_id/success', function(req, res, next){
-    var log = function(what) {
-      require('fs').appendFile(__dirname + '/log', JSON.stringify(what) + '\n', function(){});
-    };
-    log(req.query);
+    // var log = function(what) {
+    //   require('fs').appendFile(__dirname + '/log', JSON.stringify(what) + '\n', function(){});
+    // };
+    // log(req.query);
 
     // first verification
     var blacklist = [ 'sign_type', 'sign' ];
@@ -250,7 +250,7 @@ module.exports = function(app, products, configs) {
       try {
         if (error || !order || !order._id) throw null;
         var order_user_hash = require('crypto').createHash('md5').update(order._user._id + order._user.password, 'UTF-8').digest('hex');
-        log([order_user_hash, user_hash]);
+        // log([order_user_hash, user_hash]);
         if (order_user_hash !== user_hash) throw null;
 
         var payment_details = '---- ' + (new Date).toJSON().replace(/\.\d+/,'') + ' ----\n';
@@ -275,12 +275,12 @@ module.exports = function(app, products, configs) {
         order.status = configs.status_if_user_paid;
         if (!order.payment_details) order.payment_details = '';
         order.payment_details += payment_details;
-        log(order.payment_details);
+        // log(order.payment_details);
         order.save();
         req.session.messages.push({ success: '交易成功。' });
         res.redirect('/orders/' + order_id);
       } catch (error) {
-        log(error);
+        // log(error);
         req.session.messages.push({ error: '支付过程出现错误，如有问题请咨询客服。' });
         res.redirect('/orders/' + order_id);
       }
