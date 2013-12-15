@@ -2,6 +2,7 @@ var mongoose = require('mongoose'), Schema = mongoose.Schema;
 
 module.exports = mongoose.model('Order', new Schema({
   _user: { type: Schema.ObjectId, ref: 'User' },
+  id_str: String, // same as _id, but searchable
   status: String,
   payment: String,
   payment_details: String,

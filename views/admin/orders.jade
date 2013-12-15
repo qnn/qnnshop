@@ -37,6 +37,8 @@ block content
           a(href='/SysAdmin/orders?all=0') 显示部分订单
           。
         h2.title 所有订单（#{total_items}）
+    .orderids.hide_when_print
+      input#searchorderno.typeahead(type='text', placeholder='输入订单号快速查找订单，使用Tab键自动补全')
     - if (!orders || orders.length == 0)
       .message 没有订单。
     - else

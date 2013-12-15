@@ -621,6 +621,7 @@ module.exports = function(app, products, configs) {
           buyer_comments: comments,
           invoice: invoice
         });
+        new_order.id_str = new_order._id;
         new_order.save(function (error) {
           if (error) {
             render_errors(res, ['创建订单时出错。']);

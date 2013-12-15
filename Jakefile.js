@@ -98,3 +98,16 @@ task('list', function(){
     forever.stderr.on('data', STDOUT.write);
   }, arguments);
 });
+
+desc('migrate_id_str');
+task('migrate_id_str', function(){
+  require('./app');
+  var Order = require('./models/order');
+  Order.find({ id_str: null }).exec(function(err, orders){
+    for (var i = 0; i < orders.length; i++) {
+      orders[i].id_str = orders[i]._id;
+      orders[i].save();
+    }
+    console.log('complete. ctrl-c to exit.');
+  });
+});

@@ -249,6 +249,7 @@ module.exports = function(app, products, configs) {
         if (err || !order) {
           req.session.messages.push({ error: '无法保存订单。' });
         } else {
+          order.id_str = order_id;
           order.status = status;
           order.final_price = final_price;
           order.seller_comments = seller_comments;
@@ -266,6 +267,26 @@ module.exports = function(app, products, configs) {
     } catch (error) {
       req.session.messages.push({ error: typeof(error) == 'string' ? error : '发生未知错误。' });
       res.redirect('/SysAdmin/orders/' + order_id);
+    }
+  });
+
+  app.get('/SysAdmin/orderids/:order_id?', function(req, res, next){
+    var order_id = req.params.order_id;
+    var by_user = req.query.user;
+    if (req.user && req.user.is_admin) {
+      var find = {};
+      if (order_id) order_id = order_id.replace(/[^A-Za-z0-9]+/g, '');
+      if (order_id) find = { id_str: new RegExp(order_id) };
+      var Order = require('../models/order');
+      Order.find(find, '_id').limit(10).sort('-created_at').exec(function(error, orders){
+        if (error || !orders || orders.length === 0) {
+          res.send([]);
+        } else {
+          res.send(orders);
+        }
+      });
+    } else {
+      res.send([]);
     }
   });
 

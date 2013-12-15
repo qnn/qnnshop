@@ -1,5 +1,5 @@
 $(function(){
-  $('#cartac').typeahead({                                
+  $('#cartac').typeahead({
     name: 'products',
     prefetch: '/search',
     remote: '/search/%QUERY',

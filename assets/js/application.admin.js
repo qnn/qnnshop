@@ -22,4 +22,14 @@ $(function(){
       }
     }
   });
+  $('#searchorderno').typeahead({
+    name: 'orderids',
+    remote: '/SysAdmin/orderids/%QUERY',
+    valueKey: '_id',
+    limit: 10,
+    rateLimitWait: 0
+  }).bind('typeahead:selected typeahead:autocompleted', function(event, object, name) {
+    window.location.href='/SysAdmin/orders/' + object._id;
+  });
+  $('#searchorderno').typeahead('setQuery', '');
 });
