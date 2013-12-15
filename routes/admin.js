@@ -278,15 +278,17 @@ module.exports = function(app, products, configs) {
       if (order_id) order_id = order_id.replace(/[^A-Za-z0-9]+/g, '');
       if (order_id) find = { id_str: new RegExp(order_id) };
       var Order = require('../models/order');
-      Order.find(find, '_id').limit(10).sort('-created_at').exec(function(error, orders){
+      Order.find(find, '_id').lean().limit(10).sort('-created_at').exec(function(error, orders){
         if (error || !orders || orders.length === 0) {
           res.send([]);
         } else {
-          res.send(orders);
+          res.send(orders.map(function(order){
+            return order._id;
+          }));
         }
       });
     } else {
-      res.send([]);
+      res.send([ '请刷新页面再试。' ]);
     }
   });
 

@@ -25,11 +25,12 @@ $(function(){
   $('#searchorderno').typeahead({
     name: 'orderids',
     remote: '/SysAdmin/orderids/%QUERY',
-    valueKey: '_id',
     limit: 10,
     rateLimitWait: 0
   }).bind('typeahead:selected typeahead:autocompleted', function(event, object, name) {
-    window.location.href='/SysAdmin/orders/' + object._id;
+    if (object.value && /^[a-fA-F0-9]+$/.test(object.value)) {
+      window.location.href='/SysAdmin/orders/' + object.value;
+    }
   });
   $('#searchorderno').typeahead('setQuery', '');
 });
