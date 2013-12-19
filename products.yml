@@ -23,7 +23,7 @@ safe:
       <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
 
     recommendations:
-      - /新皇冠/HG-3342
+      - /safe/hg-3342
 
     body: |
       <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
@@ -72,28 +72,203 @@ safe:
       <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
 
     recommendations:
-      - /safe/ai-5842
+      - /safe/iv-3342
 
     body: |
       <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
 
-  HG-3342:
-    name: 新皇冠HG-3342
+  ai-3340:
+    name: AI-3340
 
-    title: 保险柜十大品牌全能新皇冠HG-3342
+    title: AI-3340
     subtitle: 保险柜十大品牌
 
-    price: 2010
+    original_price: 1300
+    price: 998
 
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
-    weight: 42.2公斤
+    weight: 33.8公斤
 
-    image: http://stores.qnnimg.com/products-small/hg-3342.jpg
+    image: /images/safe/ai-3340.jpg
 
     slides:
-      - http://stores.qnnimg.com/products/hg-3342-01.jpg
-      - http://stores.qnnimg.com/products/hg-2740-01.jpg
+      - /images/safe/ai-3340.jpg
+
+
+    side_html: |
+      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
+
+    recommendations:
+      - /safe/ai-3340
 
     body: |
-      <img alt="保险柜十大品牌HG-3342功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
+      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
+
+  lg-2535:
+    name: LG-2535
+
+    title: LG-2535
+    subtitle: 保险柜十大品牌
+
+    original_price: 1300
+    price: 998
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: /images/safe/lg-2535.jpg
+
+    slides:
+      - /images/safe/lg-2535.jpg
+
+
+    side_html: |
+      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
+
+    recommendations:
+      - /safe/lg-2535
+
+    body: |
+      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
+
+  cx-1625:
+    name: CX-1625
+
+    title: CX-1625
+    subtitle: 保险柜十大品牌
+
+    original_price: 1300
+    price: 998
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: /images/safe/cx-1625.jpg
+
+    slides:
+      - /images/safe/cx-1625.jpg
+
+
+    side_html: |
+      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
+
+    recommendations:
+      - /safe/cx-1625
+
+    body: |
+      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
+
+  jd-7645:
+    name: JD-7645
+
+    title: JD-5842
+    subtitle: 保险柜十大品牌
+
+    original_price: 1300
+    price: 998
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: /images/safe/jd-7645.jpg
+
+    slides:
+      - /images/safe/jd-7645.jpg
+
+
+    side_html: |
+      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
+
+    recommendations:
+      - /safe/jd-7645
+
+    body: |
+      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
+
+  iv-3342:
+    name: IV-3342
+
+    title: IV-3342
+    subtitle: 保险柜十大品牌
+
+    original_price: 1300
+    price: 998
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: /images/safe/iv-3342.jpg
+
+    slides:
+      - /images/safe/iv-3342.jpg
+
+
+    side_html: |
+      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
+
+    recommendations:
+      - /safe/iv-3342
+
+    body: |
+      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
+
+  cki-253530:
+    name: CKI-253530
+
+    title: CKI-253530
+    subtitle: 保险柜十大品牌
+
+    original_price: 1300
+    price: 998
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: /images/safe/cki-253530.jpg
+
+    slides:
+      - /images/safe/cki-253530.jpg
+
+
+    side_html: |
+      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
+
+    recommendations:
+      - /safe/cki-253530
+
+    body: |
+      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
+
+  cx-2046:
+    name: CX-2046
+
+    title: CX-2046
+    subtitle: 保险柜十大品牌
+
+    original_price: 1300
+    price: 998
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: /images/safe/cx-2046.jpg
+
+    slides:
+      - /images/safe/cx-2046.jpg
+
+
+    side_html: |
+      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
+
+    recommendations:
+      - /safe/cx-2046
+
+    body: |
+      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
