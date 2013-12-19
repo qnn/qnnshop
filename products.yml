@@ -1,5 +1,5 @@
-新皇冠:
-  HG-2740:
+safe:
+  hg-2740:
     name: 新皇冠HG-2740
 
     title: 保险柜十大品牌全能新皇冠HG-2740
@@ -24,6 +24,55 @@
 
     recommendations:
       - /新皇冠/HG-3342
+
+    body: |
+      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
+
+  hg-3342:
+    name: 新皇冠HG-3342
+
+    title: 保险柜十大品牌全能新皇冠HG-3342
+    subtitle: 保险柜十大品牌
+
+    price: 2010
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 42.2公斤
+
+    image: http://stores.qnnimg.com/products-small/hg-3342.jpg
+
+    slides:
+      - http://stores.qnnimg.com/products/hg-3342-01.jpg
+      - http://stores.qnnimg.com/products/hg-2740-01.jpg
+
+    body: |
+      <img alt="保险柜十大品牌HG-3342功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
+
+  ai-5842:
+    name: AI-5842
+
+    title: AI-5842
+    subtitle: 保险柜十大品牌
+
+    original_price: 1300
+    price: 998
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: /images/safe/ai-5842.jpg
+
+    slides:
+      - /images/safe/ai-5842.jpg
+
+
+    side_html: |
+      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
+
+    recommendations:
+      - /safe/ai-5842
 
     body: |
       <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
