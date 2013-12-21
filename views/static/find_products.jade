@@ -1,0 +1,55 @@
+block variables
+  title = "产品库"
+
+extends ../layouts/default
+
+block content
+  #typeselector
+    - esc = function(name) { return name.replace(/[\~\!\@\$\%\^\&\*\(\)\_\+\-\=\,\.\/\'\;\:\"\?\>\<\[\]\\\{\}\|\`\#]+/g, '-'); }
+    - filters = {}
+    - each category, category_key in products
+      - each product, model in category
+        - if (product.filter)
+          - each value, filter in product.filter
+            - filters[filter] = filters[filter] || []
+            - each item in value.split('、')
+              - if (filters[filter].indexOf(item) === -1)
+                - filters[filter].push(item)
+    table.filtertable
+      - firstrow = 1
+      - each values, item in filters
+        tr
+          td.itemtd=item
+          td.valtd
+            - if (firstrow)
+              .hint.none_if_mobile
+                | 点选项目进行筛选，再次点击取消。
+                a.showall.hidden(data-filter='*', href='#') 显示全部
+              - firstrow = 0
+            - each val in values.sort()
+              a(data-filter='.'+esc(val), href='#')=val
+  #productfilter.productfilter.filtered
+    - each category, category_key in products
+      - each product, model in category
+        - filter = ''
+        - if (product.filter)
+          - each value in product.filter
+            - filter+=value.replace(/、/g, ' ') + ' '
+        - filter = esc(filter)
+        .pfitem.filtered_item(class=filter)
+          a(href=product.path)
+            .pfimg
+              img(alt=product.name, data-src=product.image)
+            .pfname=product.name
+            .pfprices
+              - if (product.original_price && product.original_price > product.price)
+                em.pforigprice.toCurrency= product.original_price
+              em.pfprice.toCurrency= product.price
+            .pfmask
+              .pfdesc
+                =product.title
+                br
+                =product.subtitle
+                br
+                =product.description
+    .clearfix

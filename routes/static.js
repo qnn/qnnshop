@@ -4,4 +4,8 @@ module.exports = function(app, products, configs) {
     res.render('static/' + req.params.static, { belongs_to: req.params.static });
   });
 
+  app.get('/products', function(req, res) {
+    res.render('static/find_products', { products: products, belongs_to: 'products' });
+  });
+
 };

@@ -8,6 +8,12 @@ safe:
     original_price: 2046
     price: 1846
 
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
@@ -36,6 +42,12 @@ safe:
 
     price: 2010
 
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 密码+钥匙开启、单独指纹开启、指纹+钥匙开启
+
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
     weight: 42.2公斤
@@ -57,6 +69,12 @@ safe:
 
     original_price: 1300
     price: 998
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 31-50cm
+      锁具: 单独指纹开启、指纹+钥匙开启
 
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
@@ -86,6 +104,12 @@ safe:
     original_price: 1300
     price: 998
 
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 51-80cm
+      锁具: 指纹+钥匙开启
+
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
@@ -113,6 +137,12 @@ safe:
 
     original_price: 1300
     price: 998
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 81cm以上
+      锁具: 指纹+钥匙开启
 
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
@@ -142,6 +172,12 @@ safe:
     original_price: 1300
     price: 998
 
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 81cm以上
+      锁具: 指纹+钥匙开启
+
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
@@ -169,6 +205,12 @@ safe:
 
     original_price: 1300
     price: 998
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 81cm以上
+      锁具: 指纹+钥匙开启
 
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
@@ -198,6 +240,12 @@ safe:
     original_price: 1300
     price: 998
 
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 81cm以上
+      锁具: 指纹+钥匙开启
+
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
@@ -226,6 +274,12 @@ safe:
     original_price: 1300
     price: 998
 
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 81cm以上
+      锁具: 指纹+钥匙开启
+
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
@@ -253,6 +307,12 @@ safe:
 
     original_price: 1300
     price: 998
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 81cm以上
+      锁具: 指纹+钥匙开启
 
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
