@@ -2,7 +2,7 @@ $(function(){
   if ($('#account_form').length == 1) {
     $('#account_form').submit(function(){
       var err = [];
-      var pwdRegex = /^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/;
+      var pwdRegex = /^[A-Za-z0-9!@#$%^&*+\-.]{6,16}$/;
       if ($('#alias').val() !== '' && !/^[\u4E00-\u9FA5A-Za-z0-9_\-]{1,20}$/.test($('#alias').val())) {
         err.push('显示名');
       }

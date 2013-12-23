@@ -3,7 +3,7 @@ $(function(){
     $('#orders_cancel').submit(function(){
       var err = [];
       if ($('#reason').length == 1 && $('#reason').val().length > 20000) err.push('取消原因');
-      if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test($('#password').val())) {
+      if (!/^[A-Za-z0-9!@#$%^&*+\-.]{6,16}$/.test($('#password').val())) {
         err.push('密码');
       }
       if (err.length > 0) {

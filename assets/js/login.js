@@ -11,7 +11,7 @@ $(function(){
     if ($('#admin_username').length == 1 && !/^[A-Za-z0-9_\-]{3,20}$/.test($('#admin_username').val())) {
       err.push('用户名');
     }
-    if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test($('#password').val())) {
+    if (!/^[A-Za-z0-9!@#$%^&*+\-.]{6,16}$/.test($('#password').val())) {
       err.push('密码');
     }
     if ($('#captcha').length == 1 && !/^[0-9]{6}$/.test($('#captcha').val())) {

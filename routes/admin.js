@@ -36,7 +36,7 @@ module.exports = function(app, products, configs) {
         }
       }
       if (!/^[A-Za-z0-9_\-]{3,20}$/.test(username)) return wrong();
-      if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test(password)) return wrong();
+      if (!/^[A-Za-z0-9!@#$%^&*+\-.]{6,16}$/.test(password)) return wrong();
       var show_wrong = true, user = null;
       for (var i = 0; i < configs.admins.length; i++) {
         if (configs.admins[i].username == username) {
@@ -228,7 +228,7 @@ module.exports = function(app, products, configs) {
       var shipping_number = req.body.shipping_number ? req.body.shipping_number.trim() : '';
       var seller_comments = req.body.seller_comments ? req.body.seller_comments.trim() : '';
       var admin_password = req.body.admin_password;
-      if (!/^[A-Za-z0-9!@#$%^&*+\-]{6,16}$/.test(admin_password)) throw '密码不正确。';
+      if (!/^[A-Za-z0-9!@#$%^&*+\-.]{6,16}$/.test(admin_password)) throw '密码不正确。';
       var bcrypt = require('bcrypt');
       var password = null;
       for (var i = 0; i < configs.admins.length; i++) {
