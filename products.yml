@@ -18,310 +18,49 @@ safe:
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
 
+    image: http://shop.qnnimg.com/products/jd-3340-01.jpg
+	
     slides:
-      - http://stores.qnnimg.com/shop/jd-3340.jpg
+      - http://shop.qnnimg.com/products/jd-3340-01.jpg
+      - http://shop.qnnimg.com/products/jd-3340-02.jpg
+      - http://shop.qnnimg.com/products/jd-3340-03.jpg
+      - http://shop.qnnimg.com/products/jd-3340-04.jpg
 
     recommendations:
       - /safe/hg-3342
 
     body: |
-      <img src="http://stores.qnnimg.com/shop/jd-3340-gs.jpg">
+      <img src="http://shop.qnnimg.com/products/jd-3340-gs.jpg">
 
-  hg-3342:
-    name: 新皇冠HG-3342
+  ia-53:
+    name: ia-53
 
-    title: 保险柜十大品牌全能新皇冠HG-3342
-    subtitle: 保险柜十大品牌
+    title: ia-53
+    subtitle: ia-53
 
-    price: 2010
+    original_price: 1745
+    price: 698
 
     filter:
       使用范围: 家居使用、企业使用、酒店使用
       类别: 保管箱、3C认证保险柜、办公文件柜、配件
       高度: 30cm以下
-      锁具: 密码+钥匙开启、单独指纹开启、指纹+钥匙开启
-
-    size: (高)290x(宽)450x(深)270mm
-    thickness: 门10mm，箱4-6mm
-    weight: 42.2公斤
-
-    image: http://stores.qnnimg.com/products-small/hg-3342.jpg
-
-    slides:
-      - http://stores.qnnimg.com/products/hg-3342-01.jpg
-      - http://stores.qnnimg.com/products/hg-2740-01.jpg
-
-    body: |
-      <img alt="保险柜十大品牌HG-3342功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
-
-  ai-5842:
-    name: AI-5842
-
-    title: AI-5842
-    subtitle: 保险柜十大品牌
-
-    original_price: 1300
-    price: 998
-
-    filter:
-      使用范围: 家居使用、企业使用、酒店使用
-      类别: 保管箱、3C认证保险柜、办公文件柜、配件
-      高度: 31-50cm
-      锁具: 单独指纹开启、指纹+钥匙开启
+      锁具: 单独密码开启
 
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
 
-    image: /images/safe/ai-5842.jpg
-
+    image: http://shop.qnnimg.com/products/ia-53-01.jpg
+	
     slides:
-      - /images/safe/ai-5842.jpg
-
-
-    side_html: |
-      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
+      - http://shop.qnnimg.com/products/ia-53-01.jpg
+      - http://shop.qnnimg.com/products/ia-53-02.jpg
+      - http://shop.qnnimg.com/products/ia-53-03.jpg
+      - http://shop.qnnimg.com/products/ia-53-04.jpg
 
     recommendations:
-      - /safe/iv-3342
+      - /safe/hg-3342
 
     body: |
-      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
-
-  ai-3340:
-    name: AI-3340
-
-    title: AI-3340
-    subtitle: 保险柜十大品牌
-
-    original_price: 1300
-    price: 998
-
-    filter:
-      使用范围: 家居使用、企业使用、酒店使用
-      类别: 保管箱、3C认证保险柜、办公文件柜、配件
-      高度: 51-80cm
-      锁具: 指纹+钥匙开启
-
-    size: (高)290x(宽)450x(深)270mm
-    thickness: 门10mm，箱4-6mm
-    weight: 33.8公斤
-
-    image: /images/safe/ai-3340.jpg
-
-    slides:
-      - /images/safe/ai-3340.jpg
-
-
-    side_html: |
-      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
-
-    recommendations:
-      - /safe/ai-3340
-
-    body: |
-      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
-
-  lg-2535:
-    name: LG-2535
-
-    title: LG-2535
-    subtitle: 保险柜十大品牌
-
-    original_price: 1300
-    price: 998
-
-    filter:
-      使用范围: 家居使用、企业使用、酒店使用
-      类别: 保管箱、3C认证保险柜、办公文件柜、配件
-      高度: 81cm以上
-      锁具: 指纹+钥匙开启
-
-    size: (高)290x(宽)450x(深)270mm
-    thickness: 门10mm，箱4-6mm
-    weight: 33.8公斤
-
-    image: /images/safe/lg-2535.jpg
-
-    slides:
-      - /images/safe/lg-2535.jpg
-
-
-    side_html: |
-      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
-
-    recommendations:
-      - /safe/lg-2535
-
-    body: |
-      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
-
-  cx-1625:
-    name: CX-1625
-
-    title: CX-1625
-    subtitle: 保险柜十大品牌
-
-    original_price: 1300
-    price: 998
-
-    filter:
-      使用范围: 家居使用、企业使用、酒店使用
-      类别: 保管箱、3C认证保险柜、办公文件柜、配件
-      高度: 81cm以上
-      锁具: 指纹+钥匙开启
-
-    size: (高)290x(宽)450x(深)270mm
-    thickness: 门10mm，箱4-6mm
-    weight: 33.8公斤
-
-    image: /images/safe/cx-1625.jpg
-
-    slides:
-      - /images/safe/cx-1625.jpg
-
-
-    side_html: |
-      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
-
-    recommendations:
-      - /safe/cx-1625
-
-    body: |
-      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
-
-  jd-7645:
-    name: JD-7645
-
-    title: JD-5842
-    subtitle: 保险柜十大品牌
-
-    original_price: 1300
-    price: 998
-
-    filter:
-      使用范围: 家居使用、企业使用、酒店使用
-      类别: 保管箱、3C认证保险柜、办公文件柜、配件
-      高度: 81cm以上
-      锁具: 指纹+钥匙开启
-
-    size: (高)290x(宽)450x(深)270mm
-    thickness: 门10mm，箱4-6mm
-    weight: 33.8公斤
-
-    image: /images/safe/jd-7645.jpg
-
-    slides:
-      - /images/safe/jd-7645.jpg
-
-
-    side_html: |
-      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
-
-    recommendations:
-      - /safe/jd-7645
-
-    body: |
-      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
-
-  iv-3342:
-    name: IV-3342
-
-    title: IV-3342
-    subtitle: 保险柜十大品牌
-
-    original_price: 1300
-    price: 998
-
-    filter:
-      使用范围: 家居使用、企业使用、酒店使用
-      类别: 保管箱、3C认证保险柜、办公文件柜、配件
-      高度: 81cm以上
-      锁具: 指纹+钥匙开启
-
-    size: (高)290x(宽)450x(深)270mm
-    thickness: 门10mm，箱4-6mm
-    weight: 33.8公斤
-
-    image: /images/safe/iv-3342.jpg
-
-    slides:
-      - /images/safe/iv-3342.jpg
-
-
-    side_html: |
-      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
-
-    recommendations:
-      - /safe/iv-3342
-
-    body: |
-      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
-
-  cki-253530:
-    name: CKI-253530
-
-    title: CKI-253530
-    subtitle: 保险柜十大品牌
-
-    original_price: 1300
-    price: 998
-
-    filter:
-      使用范围: 家居使用、企业使用、酒店使用
-      类别: 保管箱、3C认证保险柜、办公文件柜、配件
-      高度: 81cm以上
-      锁具: 指纹+钥匙开启
-
-    size: (高)290x(宽)450x(深)270mm
-    thickness: 门10mm，箱4-6mm
-    weight: 33.8公斤
-
-    image: /images/safe/cki-253530.jpg
-
-    slides:
-      - /images/safe/cki-253530.jpg
-
-
-    side_html: |
-      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
-
-    recommendations:
-      - /safe/cki-253530
-
-    body: |
-      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
-
-  cx-2046:
-    name: CX-2046
-
-    title: CX-2046
-    subtitle: 保险柜十大品牌
-
-    original_price: 1300
-    price: 998
-
-    filter:
-      使用范围: 家居使用、企业使用、酒店使用
-      类别: 保管箱、3C认证保险柜、办公文件柜、配件
-      高度: 81cm以上
-      锁具: 指纹+钥匙开启
-
-    size: (高)290x(宽)450x(深)270mm
-    thickness: 门10mm，箱4-6mm
-    weight: 33.8公斤
-
-    image: /images/safe/cx-2046.jpg
-
-    slides:
-      - /images/safe/cx-2046.jpg
-
-
-    side_html: |
-      <img style="border: 1px solid #CCC;" src="http://stores.qnnimg.com/products-small/hg-2740.jpg" width="330" height="330">
-
-    recommendations:
-      - /safe/cx-2046
-
-    body: |
-      <img alt="保险柜十大品牌HG-2740功能特征" height="1142" src="http://stores.qnnimg.com/products/hg-gn.jpg" width="538">
+      <img src="http://shop.qnnimg.com/products/ia-53-gs.jpg">
