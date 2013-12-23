@@ -27,7 +27,7 @@ safe:
       - http://shop.qnnimg.com/products/jd-3340-04.jpg
 
     recommendations:
-      - /safe/hg-3342
+      - /safe/jd-3340
 
     body: |
       <img src="http://shop.qnnimg.com/products/jd-3340-gs.jpg">
@@ -60,7 +60,172 @@ safe:
       - http://shop.qnnimg.com/products/ia-53-04.jpg
 
     recommendations:
-      - /safe/hg-3342
+      - /safe/jd-3340
 
     body: |
       <img src="http://shop.qnnimg.com/products/ia-53-gs.jpg">
+	  
+  ibox-30:
+    name: ibox-30
+
+    title: ibox-30
+    subtitle: ibox-30
+
+    original_price: 758
+    price: 348
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/ibox-30-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/ibox-30-01.jpg
+      - http://shop.qnnimg.com/products/ibox-30-02.jpg
+      - http://shop.qnnimg.com/products/ibox-30-03.jpg
+      - http://shop.qnnimg.com/products/ibox-30-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/ibox-30-gs.jpg">
+	  
+  jd-5842:
+    name: jd-5842
+
+    title: jd-5842
+    subtitle: jd-5842
+
+    original_price: 1968
+    price: 998
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/jd-5842-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/jd-5842-01.jpg
+      - http://shop.qnnimg.com/products/jd-5842-02.jpg
+      - http://shop.qnnimg.com/products/jd-5842-03.jpg
+      - http://shop.qnnimg.com/products/jd-5842-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/jd-5842-gs.jpg">
+	  
+  jd-4538:
+    name: jd-4538
+
+    title: jd-4538
+    subtitle: jd-4538
+
+    original_price: 1698
+    price: 799
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/jd-4538-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/jd-4538-01.jpg
+      - http://shop.qnnimg.com/products/jd-4538-02.jpg
+      - http://shop.qnnimg.com/products/jd-4538-03.jpg
+      - http://shop.qnnimg.com/products/jd-4538-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/jd-4538-gs.jpg">
+
+  ibox-2535:
+    name: ibox-2535
+
+    title: ibox-2535
+    subtitle: ibox-2535
+
+    original_price: 698
+    price: 318
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/ibox-2535-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/ibox-2535-01.jpg
+      - http://shop.qnnimg.com/products/ibox-2535-02.jpg
+      - http://shop.qnnimg.com/products/ibox-2535-03.jpg
+      - http://shop.qnnimg.com/products/ibox-2535-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/ibox-2535-gs.jpg">
+
+  iv-3342:
+    name: iv-3342
+
+    title: iv-3342
+    subtitle: iv-3342
+
+    original_price: 1898
+    price: 498
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/iv-3342-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/iv-3342-01.jpg
+      - http://shop.qnnimg.com/products/iv-3342-02.jpg
+      - http://shop.qnnimg.com/products/iv-3342-03.jpg
+      - http://shop.qnnimg.com/products/iv-3342-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/iv-3342-gs.jpg">
