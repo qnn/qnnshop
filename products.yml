@@ -625,3 +625,168 @@ safe:
 
     body: |
       <img src="http://shop.qnnimg.com/products/itg-3342-gs.jpg">
+	  
+  cx-2535:
+    name: cx-2535
+
+    title: cx-2535
+    subtitle: cx-2535
+
+    original_price: 598
+    price: 398
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/cx-2535-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/cx-2535-01.jpg
+      - http://shop.qnnimg.com/products/cx-2535-02.jpg
+      - http://shop.qnnimg.com/products/cx-2535-03.jpg
+      - http://shop.qnnimg.com/products/cx-2535-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/cx-2535-gs.jpg">
+	  
+  itg-5840:
+    name: itg-5840
+
+    title: itg-5840
+    subtitle: itg-5840
+
+    original_price: 2100
+    price: 987
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/itg-5840-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/itg-5840-01.jpg
+      - http://shop.qnnimg.com/products/itg-5840-02.jpg
+      - http://shop.qnnimg.com/products/itg-5840-03.jpg
+      - http://shop.qnnimg.com/products/itg-5840-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/itg-5840-gs.jpg">
+	  
+  lg-2535:
+    name: lg-2535
+
+    title: lg-2535
+    subtitle: lg-2535
+
+    original_price: 698
+    price: 398
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/lg-2535-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/lg-2535-01.jpg
+      - http://shop.qnnimg.com/products/lg-2535-02.jpg
+      - http://shop.qnnimg.com/products/lg-2535-03.jpg
+      - http://shop.qnnimg.com/products/lg-2535-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/lg-2535-gs.jpg">
+	  
+  cki-204335:
+    name: cki-204335
+
+    title: cki-204335
+    subtitle: cki-204335
+
+    original_price: 628
+    price: 288
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/cki-204335-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/cki-204335-01.jpg
+      - http://shop.qnnimg.com/products/cki-204335-02.jpg
+      - http://shop.qnnimg.com/products/cki-204335-03.jpg
+      - http://shop.qnnimg.com/products/cki-204335-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/cki-204335-gs.jpg">
+	  
+  my-2043:
+    name: my-2043
+
+    title: my-2043
+    subtitle: my-2043
+
+    original_price: 628
+    price: 338
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/my-2043-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/my-2043-01.jpg
+      - http://shop.qnnimg.com/products/my-2043-02.jpg
+      - http://shop.qnnimg.com/products/my-2043-03.jpg
+      - http://shop.qnnimg.com/products/my-2043-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/my-2043-gs.jpg">
