@@ -3,6 +3,28 @@ alipayconfigs:
   subject: "全能商城qnnshop.com订单:{{id}}"
   return_url: "http://www.qnnshop.com/orders/{{id}}/success"
   show_url: "http://www.qnnshop.com/orders/{{id}}"
+  successful_payment:
+    success: 交易成功，我们会在48小时内发货。
+    options:
+      positionClass: "toast-top-full-width"
+      timeOut: 180000 # 时间，毫秒
+  failed_payment:
+    error: 支付过程出现错误，如有问题请咨询客服。
+    options:
+      positionClass: "toast-top-full-width"
+      timeOut: 180000 # 时间，毫秒
+
+# __init__ 是默认，不同状态的各设置会覆盖 __init__ 直接下属对应的属性。
+successfully_creating_order:
+  __init__:
+    success: 成功创建订单。
+    options:
+      positionClass: "toast-top-full-width" # 样式，位于页顶
+      timeOut: 180000 # 时间，毫秒
+  等待买家付款:
+    success: 成功创建订单。请为您的订单付款。
+  等待卖家发货:
+    success: 成功创建订单。我们会在48小时内发货。
 
 # 默认的订单状态
 statuses:

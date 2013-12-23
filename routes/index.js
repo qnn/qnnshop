@@ -286,11 +286,11 @@ module.exports = function(app, products, configs) {
         order.payment_details += payment_details;
         // log(order.payment_details);
         order.save();
-        req.session.messages.push({ success: '交易成功。' });
+        req.session.messages.push(configs.alipayconfigs.successful_payment);
         res.redirect('/orders/' + order_id);
       } catch (error) {
         // log(error);
-        req.session.messages.push({ error: '支付过程出现错误，如有问题请咨询客服。' });
+        req.session.messages.push(configs.alipayconfigs.failed_payment);
         res.redirect('/orders/' + order_id);
       }
     });
@@ -635,7 +635,14 @@ module.exports = function(app, products, configs) {
           if (error) {
             render_errors(res, ['创建订单时出错。']);
           } else {
-            req.session.messages.push({ success: '成功创建订单。' });
+            var success = JSON.parse(JSON.stringify(configs.successfully_creating_order));
+            var output = success.__init__;
+            if (success.hasOwnProperty(status)) {
+              for (var prop in success[status]) {
+                output[prop] = success[status][prop];
+              }
+            }
+            req.session.messages.push(output);
             req.logIn(user, function(error){
               res.locals.current_user = (req.user && req.user._id) ? req.user : null;
               req.session.empty_cart = true;

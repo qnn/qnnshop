@@ -61,11 +61,14 @@ html
         - var msgs = ''
         - while (message = session.messages.pop())
           - for (msg in message)
-            - if (message[msg])
+            - if (msg === 'options') 
+              - for (opt in message[msg])
+                - msgs = 'toastr.options.' + opt + '=' + (typeof(message[msg][opt]) === 'string' ? '"' + message[msg][opt] + '"' : message[msg][opt]) + ';' + msgs;
+            - else if (message[msg])
               - msgs += 'toastr["' + msg + '"](unescape("' + escape(message[msg]) + '"));'
         - if (msgs)
-          != '<script>' + msgs + '</script>'
-      - if (session.empty_cart)
+          != '<script>if(toastr){' + msgs + '}</script>'
+      - if (session && session.empty_cart)
         != '<script>if(simpleCart)simpleCart.empty();</script>'
         - session.empty_cart = null;
       != '<script>window.csrf_token="' + csrf_token + '";</script>'
