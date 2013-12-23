@@ -428,14 +428,14 @@ safe:
     body: |
       <img src="http://shop.qnnimg.com/products/ik-25h-gs.jpg">
 	  
-  iv-3342:
-    name: iv-3342
+  ai-6842:
+    name: ai-6842
 
-    title: iv-3342
-    subtitle: iv-3342
+    title: ai-6842
+    subtitle: ai-6842
 
-    original_price: 1898
-    price: 498
+    original_price: 2100
+    price: 1369
 
     filter:
       使用范围: 家居使用、企业使用、酒店使用
@@ -447,16 +447,181 @@ safe:
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
 
-    image: http://shop.qnnimg.com/products/iv-3342-01.jpg
+    image: http://shop.qnnimg.com/products/ai-6842-01.jpg
 	
     slides:
-      - http://shop.qnnimg.com/products/iv-3342-01.jpg
-      - http://shop.qnnimg.com/products/iv-3342-02.jpg
-      - http://shop.qnnimg.com/products/iv-3342-03.jpg
-      - http://shop.qnnimg.com/products/iv-3342-04.jpg
+      - http://shop.qnnimg.com/products/ai-6842-01.jpg
+      - http://shop.qnnimg.com/products/ai-6842-02.jpg
+      - http://shop.qnnimg.com/products/ai-6842-03.jpg
+      - http://shop.qnnimg.com/products/ai-6842-04.jpg
 
     recommendations:
       - /safe/jd-3340
 
     body: |
-      <img src="http://shop.qnnimg.com/products/iv-3342-gs.jpg">
+      <img src="http://shop.qnnimg.com/products/ai-6842-gs.jpg">
+	  
+  ig-4538:
+    name: ig-4538
+
+    title: ig-4538
+    subtitle: ig-4538
+
+    original_price: 1798
+    price: 698
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/ig-4538-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/ig-4538-01.jpg
+      - http://shop.qnnimg.com/products/ig-4538-02.jpg
+      - http://shop.qnnimg.com/products/ig-4538-03.jpg
+      - http://shop.qnnimg.com/products/ig-4538-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/ig-4538-gs.jpg">
+	  
+  id-3340:
+    name: id-3340
+
+    title: id-3340
+    subtitle: id-3340
+
+    original_price: 1498
+    price: 598
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/id-3340-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/id-3340-01.jpg
+      - http://shop.qnnimg.com/products/id-3340-02.jpg
+      - http://shop.qnnimg.com/products/id-3340-03.jpg
+      - http://shop.qnnimg.com/products/id-3340-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/id-3340-gs.jpg">
+	  
+  cki-253525:
+    name: cki-253525
+
+    title: cki-253525
+    subtitle: cki-253525
+
+    original_price: 486
+    price: 248
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/cki-253525-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/cki-253525-01.jpg
+      - http://shop.qnnimg.com/products/cki-253525-02.jpg
+      - http://shop.qnnimg.com/products/cki-253525-03.jpg
+      - http://shop.qnnimg.com/products/cki-253525-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/cki-253525-gs.jpg">
+	  
+  asafe-2045:
+    name: asafe-2045
+
+    title: asafe-2045
+    subtitle: asafe-2045
+
+    original_price: 975
+    price: 428
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/asafe-2045-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/asafe-2045-01.jpg
+      - http://shop.qnnimg.com/products/asafe-2045-02.jpg
+      - http://shop.qnnimg.com/products/asafe-2045-03.jpg
+      - http://shop.qnnimg.com/products/asafe-2045-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/asafe-2045-gs.jpg">
+	  
+  itg-3342:
+    name: itg-3342
+
+    title: itg-3342
+    subtitle: itg-3342
+
+    original_price: 1396
+    price: 548
+
+    filter:
+      使用范围: 家居使用、企业使用、酒店使用
+      类别: 保管箱、3C认证保险柜、办公文件柜、配件
+      高度: 30cm以下
+      锁具: 单独密码开启
+
+    size: (高)290x(宽)450x(深)270mm
+    thickness: 门10mm，箱4-6mm
+    weight: 33.8公斤
+
+    image: http://shop.qnnimg.com/products/itg-3342-01.jpg
+	
+    slides:
+      - http://shop.qnnimg.com/products/itg-3342-01.jpg
+      - http://shop.qnnimg.com/products/itg-3342-02.jpg
+      - http://shop.qnnimg.com/products/itg-3342-03.jpg
+      - http://shop.qnnimg.com/products/itg-3342-04.jpg
+
+    recommendations:
+      - /safe/jd-3340
+
+    body: |
+      <img src="http://shop.qnnimg.com/products/itg-3342-gs.jpg">
