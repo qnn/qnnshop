@@ -227,7 +227,7 @@ $(function(){
         }).trigger('change');
       });
       $('#district_selector').append(province);
-      if (Object.keys(districts).length == 1) defaults = [Object.keys(districts)[0]];
+      if (!defaults && Object.keys(districts).length == 1) defaults = [Object.keys(districts)[0]];
       if (defaults[0]) {
         province.val(defaults[0]).trigger('change');
         if (defaults[1]) {

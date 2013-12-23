@@ -7,7 +7,7 @@ $(function(){
     limit: 10
   }).bind('typeahead:selected', function(event, object, name) {
     $.getJSON(object.path, function(product){
-      simpleCart.add({ 
+      simpleCart.add({
         name: product.name,
         category: product.category,
         model: product.model,

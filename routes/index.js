@@ -533,7 +533,9 @@ module.exports = function(app, products, configs) {
           });
         })(req, res, next);
       } else {
-        render_login_form();
+        verify_products(req, res, function(verified){
+          render_login_form();
+        });
       }
     }
   });
