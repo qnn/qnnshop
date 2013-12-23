@@ -1,0 +1,104 @@
+block variables
+  title = "所有用户"
+  printable = true
+  belongs_to = "users"
+
+extends ../layouts/admin
+
+block content
+  .orders
+    - if (is_single)
+      .breadcrumb.hide_when_print
+        | 正在显示ID为&nbsp;
+        strong=users[0]._id
+        | &nbsp;的用户。
+        a(href='/SysAdmin/users') 显示所有用户
+        。
+      h2.title 用户详细
+    - else
+      h2.title 所有用户（#{total_items}）
+    - if (!users || users.length == 0)
+      .message 没有用户。
+    - else
+      .orders_table
+        table.table
+          thead.table-head
+            tr
+              th ID
+              th 用户名
+              th 禁止
+              th 别称
+              th 收货人
+              th 地址
+              th 联系电话
+              th Email
+              th 创建时间
+              th 登录时间
+          tbody.table-body
+            - each user in users
+              tr
+                td
+                  - if (is_single)
+                    span.fw #{user.id}
+                  - else
+                    a.fw(href='/SysAdmin/users/'+user._id)=user._id
+                td=user.username
+                td
+                  - if (user.banned)
+                    span.redtext 是
+                  - else
+                    | 否
+                td=user.alias || '(无)'
+                td=user.defaults.name || '(无)'
+                td #{user.defaults.districts.join(' ')} #{user.defaults.address}
+                td=user.defaults.phone || '(无)'
+                td=user.defaults.email || '(无)'
+                td
+                  span.toLocalTime #{user.created_at.toJSON()}
+                td
+                  - if (user.last_logged_in_at && user.last_logged_in_at.length > 0)
+                    span.toLocalTime #{user.last_logged_in_at[0].toJSON()}
+          tfoot.table-foot
+            tr
+              - if (is_single)
+                td(colspan=10) 可直接打印此页
+              - else
+                td(colspan=2)
+                  .pager
+                    .pagination
+                      a.first(href='#', data-action='first') «
+                      a.previous(href='#', data-action='previous') ‹
+                      input(type='text', readonly='readonly', data-max-page='40')
+                      a.next(href='#', data-action='next') ›
+                      a.last(href='#', data-action='last') »
+                  script.
+                    $('.pagination').jqPagination({
+                      current_page: #{current_page},
+                      max_page: #{total_pages},
+                      page_string: '第{current_page}/{max_page}页',
+                      paged: function(page) {
+                        window.location.href = '/SysAdmin/users?page=' + page;
+                      }
+                    });
+
+                td(colspan=8) 可直接打印此页
+    - if (is_single)
+      form.form.hide_when_print(action='/SysAdmin/users/'+users[0]._id, method='POST')
+        h2.title 编辑用户
+        input(type='hidden', name='_csrf', value=csrf_token)
+        .form-group
+          label(for='action')
+            | 命令
+          select#action.form_select.need_confirm(name='action')
+            option(value='view_user_orders') 列出用户订单
+            option(value='reset_password') 重置密码为初始密码（与用户名一样的密码）
+            - if (users[0].banned)
+              option(value='allow_user') 允许用户登录
+            - else
+              option(value='ban_user') 禁止用户登录，并强制用户立即退出登录
+            option(value='remove_user', data-confirm='确定要永久删除这个用户及其订单吗？此操作无法恢复。') 删除用户及其订单（小心，无法恢复）
+        .form-group
+          label(for='password') 当前管理员密码
+          input.form-input#password(type='password', name='admin_password', autocomplete='off')
+        .form-group.form-btns
+          button.hudbtn.primary(type='submit') 执行命令

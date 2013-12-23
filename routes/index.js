@@ -89,12 +89,17 @@ module.exports = function(app, products, configs) {
         if (!user) return wrong();
         var bcrypt = require('bcrypt');
         if (!bcrypt.compareSync(password, user.password)) return wrong();
+        if (user.banned) {
+          req.session.messages.push({ error: '用户已被管理员禁止登录。' });
+          return done(null, false);
+        }
         if (user.last_logged_in_at instanceof Array) {
           user.last_logged_in_at.unshift(new Date);
           user.last_logged_in_at.splice(3);
         } else {
           user.last_logged_in_at = [new Date];
         }
+        user.force_log_out = false;
         user.save();
         req.session.messages.push({ success: '成功登录。' });
         return done(null, user);
@@ -107,7 +112,11 @@ module.exports = function(app, products, configs) {
   passport.deserializeUser(function(username, done) {
     var User = require('../models/user');
     User.findOne({ username: username }, function(err, user) {
-      done(err, user);
+      if (!err && user && user.force_log_out) {
+        done(err, null);
+      } else {
+        done(err, user);
+      }
     });
   });
 

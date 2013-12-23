@@ -292,4 +292,96 @@ module.exports = function(app, products, configs) {
     }
   });
 
+  app.get('/SysAdmin/users/:user_id?', function(req, res, next){
+    var user_id = req.params.user_id;
+    if (req.user && req.user.is_admin) {
+      var Order = require('../models/order');
+      var User = require('../models/user');
+      var find = {};
+      if (user_id) {
+        find = { _id: user_id };
+      }
+      User.find(find).sort('-created_at').exec(function(error, users){
+        if (user_id) {
+          if (!users) return next();
+          res.render('admin/users', { users: users, is_single: true, configs: configs });
+        } else {
+          var items_per_page = 10;
+          var total_items = users.length;
+          var total_pages = Math.ceil(total_items / items_per_page);
+          var current_page = 1;
+          if (req.query.page && /^([1-9]|[1-9][0-9]+)$/.test(req.query.page)) {
+            if (req.query.page <= total_pages) current_page = req.query.page;
+          }
+          var start = (current_page - 1) * items_per_page;
+          users = users.slice(start, start + items_per_page);
+          res.render('admin/users', { users: users, is_single: false,
+            current_page: current_page, total_pages: total_pages, total_items: total_items, configs: configs });
+        }
+      });
+    } else {
+      req.session.returnTo = '/SysAdmin/users' + (user_id ? '/' + user_id : '');
+      res.redirect('/SysAdmin/login');
+    }
+  });
+
+  app.post('/SysAdmin/users/:user_id', function(req, res, next){
+    if (!req.user || !req.user.is_admin) return next();
+    var user_id = req.params.user_id;
+    try {
+      var User = require('../models/user');
+      User.findOne({ _id: user_id }, function(err, user){
+        if (err || !user) {
+          req.session.messages.push({ error: '找不到该用户。' });
+        } else {
+          switch (req.body.action) {
+          case 'view_user_orders':
+            res.redirect('/SysAdmin/orders?user=' + user_id);
+            return;
+          case 'reset_password':
+            var bcrypt = require('bcrypt');
+            var salt = bcrypt.genSaltSync(10);
+            var hash = bcrypt.hashSync(user.username, salt);
+            if (salt && hash) {
+              user.password = hash;
+              user.force_log_out = true;
+              user.save();
+              req.session.messages.push({ success: '成功更改密码。' });
+            } else {
+              req.session.messages.push({ error: '无法更改用户密码。' });
+            }
+            break;
+          case 'allow_user':
+            user.banned = false;
+            user.save();
+            req.session.messages.push({ success: '已设置允许用户登录。' });
+            break;
+          case 'ban_user':
+            user.banned = true;
+            user.force_log_out = true;
+            user.save();
+            req.session.messages.push({ success: '已设置禁止用户登录。' });
+            break;
+          case 'remove_user':
+            var Order = require('../models/order');
+            Order.remove({ _user: user_id }, function(err) {
+              if (err) {
+                res.redirect('/SysAdmin/users/' + user_id);
+              } else {
+                user.remove();
+                req.session.messages.push({ success: '已删除用户及其订单。' });
+                res.redirect('/SysAdmin/users');
+              }
+            });
+            return;
+          }
+          res.redirect('/SysAdmin/users/' + user_id);
+        }
+      });
+    } catch (error) {
+      req.session.messages.push({ error: typeof(error) == 'string' ? error : '发生未知错误。' });
+      res.redirect('/SysAdmin/users/' + user_id);
+    }
+  });
+
 };

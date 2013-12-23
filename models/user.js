@@ -4,6 +4,9 @@ module.exports = mongoose.model('User', new Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
 
+  banned: { type: Boolean, default: false }, // set by admin, disallow user to log in or not
+  force_log_out: { type: Boolean, default: false }, // set by admin, whether user should log out now
+
   alias: String,
 
   defaults: {

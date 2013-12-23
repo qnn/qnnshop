@@ -1,6 +1,7 @@
 block variables
   title = "所有订单"
   printable = true
+  belongs_to = "orders"
 
 extends ../layouts/admin
 
@@ -18,7 +19,8 @@ block content
       - if (by_user)
         .breadcrumb.hide_when_print
           | 正在显示用户&nbsp;
-          strong= orders[0]._user.alias || orders[0]._user.username
+          strong
+            a(href='/SysAdmin/users/'+orders[0]._user._id)= orders[0]._user.alias || orders[0]._user.username
           | &nbsp;的所有订单。
           a(href='/SysAdmin/orders') 显示所有订单
           。
