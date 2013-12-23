@@ -1,12 +1,12 @@
 safe:
-  hg-2740:
-    name: 新皇冠HG-2740
+  jd-3340:
+    name: jd-3340
 
-    title: 保险柜十大品牌全能新皇冠HG-2740
-    subtitle: 保险柜十大品牌
+    title: jd-3340
+    subtitle: jd-3340
 
-    original_price: 2046
-    price: 1846
+    original_price: 1498
+    price: 498
 
     filter:
       使用范围: 家居使用、企业使用、酒店使用
@@ -17,8 +17,6 @@ safe:
     size: (高)290x(宽)450x(深)270mm
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
-
-    image: http://stores.qnnimg.com/products-small/hg-2740.jpg
 
     slides:
       - http://stores.qnnimg.com/products/hg-2740-01.jpg
