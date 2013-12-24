@@ -92,13 +92,14 @@ block content
     h2.title 支付
     .form
       .form-group
-        input#payment_cod(type='radio', name='payment', value='cod', checked)
-        label.option(for='payment_cod') 货到付款
-      .form-group
-        input#payment_alipay(type='radio', name='payment', value='alipay')
+        input#payment_alipay(type='radio', name='payment', value='alipay', checked)
         label.option(for='payment_alipay')
           img(src='/images/alipay.gif', alt='支付宝', width=96, height=37)
           | 使用支付宝支付
+      - if (configs.cod_enabled)
+        .form-group
+          input#payment_cod(type='radio', name='payment', value='cod')
+          label.option(for='payment_cod') 货到付款
       - if (captcha_enabled)
         .form-group
           label(for='captcha') 验证码

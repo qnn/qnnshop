@@ -582,9 +582,9 @@ module.exports = function(app, products, configs) {
 
       var valid_districts = verify_districts(province, city, district);
 
-      switch (payment) {
-      case 'cod': break;
-      case 'alipay': break;
+      switch (true) {
+      case configs.cod_enabled && payment === 'cod': break;
+      case payment === 'alipay': break;
       default: throw ['请选择支付方式。'];
       }
     } catch (errors) {
@@ -606,12 +606,12 @@ module.exports = function(app, products, configs) {
       }
       var create_new_order = function(user) {
         var payment_method, status;
-        switch (payment) {
-        case 'cod':
+        switch (true) {
+        case configs.cod_enabled && payment === 'cod':
           payment_method = '货到付款';
           status = configs.cod_initial_status;
           break;
-        case 'alipay':
+        case payment === 'alipay':
           payment_method = configs.alipay;
           status = configs.payment_initial_status;
           break;

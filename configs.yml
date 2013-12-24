@@ -26,6 +26,9 @@ successfully_creating_order:
   等待卖家发货:
     success: 成功创建订单。我们会在48小时内发货。
 
+# 是否启用货到付款
+cod_enabled: true
+
 # 默认的订单状态
 statuses:
   - 等待买家付款
@@ -83,3 +86,5 @@ express_companies:
 admins:
   - username: caiguanhao
     password: $2a$10$RGioxd1LvP0oCZJXSEakpuSsv95kRIRaDoJKnNJ9H9sK4tfpNFpeC
+  - username: qnnadmin
+    password: $2a$10$.u0VI6xoSaIVoyL/C7UleObYf1S60GX42eXhl5YML7IGKchTM.WZ6
