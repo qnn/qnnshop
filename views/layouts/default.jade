@@ -4,6 +4,7 @@ doctype 5
 html
   head
     meta(charset='UTF-8')
+    meta(name='cgh-csrf-token', content=csrf_token)
     title= title
     != css('application')
     != js('application')
@@ -71,7 +72,6 @@ html
       - if (session && session.empty_cart)
         != '<script>if(simpleCart)simpleCart.empty();</script>'
         - session.empty_cart = null;
-      != '<script>window.csrf_token="' + csrf_token + '";</script>'
       .footer
         .footer-body
           .nboxes

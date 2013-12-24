@@ -4,6 +4,7 @@ doctype 5
 html
   head
     meta(charset='UTF-8')
+    meta(name='cgh-csrf-token', content=csrf_token)
     title= title
     != css('application')
     != css('application.admin')
@@ -41,7 +42,6 @@ html
               - msgs += 'toastr["' + msg + '"](unescape("' + escape(message[msg]) + '"));'
         - if (msgs)
           != '<script>' + msgs + '</script>'
-      != '<script>window.csrf_token="' + csrf_token + '";</script>'
       .copy
         | &copy; 1999-2013 广东安能保险柜制造有限公司
         = ' '
