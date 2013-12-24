@@ -263,11 +263,11 @@ safe:
     body: |
       <img src="http://shop.qnnimg.com/products/kb-3842-gs.jpg">
 
-  jy-2545:
-    name: 全能保险柜jy-2545
+  jy-2543:
+    name: 全能保险柜jy-2543
 
-    title: 全能保险柜jy-2545
-    subtitle: 全能保险柜jy-2545
+    title: 全能保险柜jy-2543
+    subtitle: 全能保险柜jy-2543
 
     original_price: 768
     price: 368
@@ -282,19 +282,19 @@ safe:
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
 
-    image: http://shop.qnnimg.com/products/jy-2545-01.jpg
+    image: http://shop.qnnimg.com/products/jy-2543-01.jpg
 	
     slides:
-      - http://shop.qnnimg.com/products/jy-2545-01.jpg
-      - http://shop.qnnimg.com/products/jy-2545-02.jpg
-      - http://shop.qnnimg.com/products/jy-2545-03.jpg
-      - http://shop.qnnimg.com/products/jy-2545-04.jpg
+      - http://shop.qnnimg.com/products/jy-2543-01.jpg
+      - http://shop.qnnimg.com/products/jy-2543-02.jpg
+      - http://shop.qnnimg.com/products/jy-2543-03.jpg
+      - http://shop.qnnimg.com/products/jy-2543-04.jpg
 
     recommendations:
       - /safe/jd-3340
 
     body: |
-      <img src="http://shop.qnnimg.com/products/jy-2545-gs.jpg">
+      <img src="http://shop.qnnimg.com/products/jy-2543-gs.jpg">
 	  
   sz-3842:
     name: 全能保险柜sz-3842
@@ -801,7 +801,7 @@ safe:
     price: 1280
 
     filter:
-      使用范围: 家居使用、企业使用
+      使用范围: 企业使用
       类别: 办公文件柜
       高度: 81cm以上
       锁具: 单独密码开启
@@ -834,7 +834,7 @@ safe:
     price: 3036
 
     filter:
-      使用范围: 家居使用、企业使用
+      使用范围: 企业使用
       类别: 办公文件柜
       高度: 81cm以上
       锁具: 单独密码开启
@@ -867,7 +867,7 @@ safe:
     price: 2100
 
     filter:
-      使用范围: 家居使用、企业使用
+      使用范围: 企业使用
       类别: 办公文件柜
       高度: 30cm以下
       锁具: 单独密码开启
@@ -933,7 +933,7 @@ safe:
     price: 2100
 
     filter:
-      使用范围: 家居使用、企业使用
+      使用范围: 企业使用
       类别: 办公文件柜
       高度: 81cm以上
       锁具: 密码+钥匙开启
@@ -1032,7 +1032,7 @@ safe:
     price: 2196
 
     filter:
-      使用范围: 家居使用、企业使用
+      使用范围: 企业使用
       类别: 办公文件柜
       高度: 51-80cm
       锁具: 单独密码开启
