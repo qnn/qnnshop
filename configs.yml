@@ -27,7 +27,7 @@ successfully_creating_order:
     success: 成功创建订单。我们会在48小时内发货。
 
 # 是否启用货到付款
-cod_enabled: true
+cod_enabled: false
 
 # 默认的订单状态
 statuses:
