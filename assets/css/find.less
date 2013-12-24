@@ -95,6 +95,8 @@
         text-decoration: none;
         .pfmask {
           opacity: 0.7;
+          -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+          filter: alpha(opacity=70);
         }
       }
       .pfimg {
@@ -128,6 +130,8 @@
         transition: opacity 0.25s;
         -moz-transition: opacity 0.25s;
         -webkit-transition: opacity 0.25s;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        filter: alpha(opacity=0);
       }
       .pfprices {
         padding: 2px 0;

@@ -1,6 +1,6 @@
 module.exports = function(app, products, configs) {
 
-  app.use(function(req, res, next){
+  var setLocals = function(req, res) {
     res.locals.captcha_enabled = app.enabled('captcha');
     res.locals.csrf_token = req.csrfToken();
     res.locals.current_user = (req.user && req.user._id) ? req.user : null;
@@ -8,6 +8,11 @@ module.exports = function(app, products, configs) {
     res.locals.products = products;
     if (!req.session.messages) req.session.messages = [];
     res.locals.session = req.session;
+    res.locals.configs = configs;
+  };
+
+  app.use(function(req, res, next){
+    setLocals(req, res);
     next();
   });
 
@@ -725,12 +730,12 @@ module.exports = function(app, products, configs) {
     var category = req.params.category, model = req.params.model;
     if (products[category] && products[category][model]) {
       res.format({
-        json: function(){
-          res.send(products[category][model]);
-        },
         html: function(){
           var markdown = require('marked');
           res.render('products/show', { category: category, model: model, markdown: markdown });
+        },
+        json: function(){
+          res.send(products[category][model]);
         }
       });
     } else {
@@ -738,17 +743,23 @@ module.exports = function(app, products, configs) {
     }
   });
 
+  // Error-handling middleware
   app.use(function(err, req, res, next){
+    setLocals(req, res);
     switch (err.status) {
     case 403:
-      return res.status(403).render('errors/403');
+      res.status(403);
+      res.render('errors/403');
+      return;
     default:
-      return next();
+      next();
+      return;
     }
   });
 
   app.use(function(req, res){
-    res.status(404).render('errors/404');
+    res.status(404);
+    res.render('errors/404');
   });
 
 };

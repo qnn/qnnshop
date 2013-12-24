@@ -157,30 +157,37 @@ $(function(){
           window.location.href = that.attr('href');
           return;
         }
-        var active_image = $('#pslider .sliderkit-panel-active img');
-        var image = active_image.clone();
-        image.width(active_image.width()).height(active_image.height());
-        image.css({ position: 'absolute', 'z-index': 9999 });
-        image.appendTo('body');
-        image.animate({
-          path: new $.path.bezier({
-            start: {
-              x: active_image.offset().left,
-              y: active_image.offset().top,
-              angle: -90
-            },
-            end: {
-              x: $('#headerCart').offset().left,
-              y: $('#headerCart').offset().top,
-              angle: 180,
-              length: 0.25
-            }
-          })
-        }, 600, function(){
-          $(this).remove();
+        var success = function() {
           toastr['success']('成功添加商品到购物车。');
-        });
-        image.addClass('cartAnimation');
+        };
+        if (Modernizr.csstransforms) {
+          var active_image = $('#pslider .sliderkit-panel-active img');
+          var image = active_image.clone();
+          image.width(active_image.width()).height(active_image.height());
+          image.css({ position: 'absolute', 'z-index': 9999 });
+          image.appendTo('body');
+          image.animate({
+            path: new $.path.bezier({
+              start: {
+                x: active_image.offset().left,
+                y: active_image.offset().top,
+                angle: -90
+              },
+              end: {
+                x: $('#headerCart').offset().left,
+                y: $('#headerCart').offset().top,
+                angle: 180,
+                length: 0.25
+              }
+            })
+          }, 600, function(){
+            $(this).remove();
+            success();
+          });
+          image.addClass('cartAnimation');
+        } else {
+          success();
+        }
       });
     }
   });
@@ -199,7 +206,7 @@ $(function(){
     var defaults = $('#district_selector').data('districts');
     if (defaults) defaults = defaults.split(',');
     $.getJSON('/js/districts.tree.json', function(districts){
-      var province = $('<select />', { id: 'province', name: 'province', class: 'form_select' });
+      var province = $('<select />', { id: 'province', name: 'province', 'class': 'form_select' });
       province.append('<option value="">请选择地区</option>');
       $.each(districts, function(a, b){
         province.append('<option value="' + a + '">' + a + '</option>');
@@ -208,7 +215,7 @@ $(function(){
         $('option[value=""]', this).remove();
         $(this).nextAll().remove();
         var p = $(this).val();
-        var city = $('<select />', { id: 'city', name: 'city', class: 'form_select' });
+        var city = $('<select />', { id: 'city', name: 'city', 'class': 'form_select' });
         $.each(districts[p], function(a, b){
           city.append('<option value="' + a + '">' + a + '</option>');
         });
@@ -218,7 +225,7 @@ $(function(){
           $(this).nextAll().remove();
           var p = $(this).data('province'), c = $(this).val();
           if (districts[p][c] instanceof Array && districts[p][c].length > 0) {
-            var district = $('<select />', { id: 'district', name: 'district', class: 'form_select' });
+            var district = $('<select />', { id: 'district', name: 'district', 'class': 'form_select' });
             $.each(districts[p][c], function(a, b){
               district.append('<option value="' + b + '">' + b + '</option>');
             });
@@ -227,7 +234,14 @@ $(function(){
         }).trigger('change');
       });
       $('#district_selector').append(province);
-      if (!defaults && Object.keys(districts).length == 1) defaults = [Object.keys(districts)[0]];
+      // ie compat
+      var values = [];
+      for (var prop in districts) {
+        if (districts.hasOwnProperty(prop)) {
+          values.push(prop);
+        }
+      }
+      if (!defaults && values.length === 1) defaults = [values[0]];
       if (defaults[0]) {
         province.val(defaults[0]).trigger('change');
         if (defaults[1]) {
