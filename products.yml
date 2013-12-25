@@ -891,10 +891,10 @@ safe:
       <img src="http://shop.qnnimg.com/products/bmg-8001a-gs.jpg">
 	  
   bmg-8001b-s:
-    name: 全能保险柜bmg-8001b-s
+    name: 全能保险柜bmg-8002b-s
 
-    title: 全能保险柜bmg-8001b-s
-    subtitle: 全能保险柜bmg-8001b-s
+    title: 全能保险柜bmg-8002b-s
+    subtitle: 全能保险柜bmg-8002b-s
 
     original_price: 3100
     price: 2100
@@ -909,13 +909,13 @@ safe:
     thickness: 门10mm，箱4-6mm
     weight: 33.8公斤
 
-    image: http://shop.qnnimg.com/products/bmg-8001b-s-01.jpg
+    image: http://shop.qnnimg.com/products/bmg-8002b-s-01.jpg
 	
     slides:
-      - http://shop.qnnimg.com/products/bmg-8001b-s-01.jpg
-      - http://shop.qnnimg.com/products/bmg-8001b-s-02.jpg
-      - http://shop.qnnimg.com/products/bmg-8001b-s-03.jpg
-      - http://shop.qnnimg.com/products/bmg-8001b-s-04.jpg
+      - http://shop.qnnimg.com/products/bmg-8002b-s-01.jpg
+      - http://shop.qnnimg.com/products/bmg-8002b-s-02.jpg
+      - http://shop.qnnimg.com/products/bmg-8002b-s-03.jpg
+      - http://shop.qnnimg.com/products/bmg-8002b-s-04.jpg
 
     recommendations:
       - /safe/jd-3340
