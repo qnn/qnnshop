@@ -3,6 +3,12 @@ QNNSHOP
 
 QNN Shop Application.
 
+Please note that this repository is not being actively maintained.
+
+![qnnshop](https://f.cloud.github.com/assets/1284703/2060111/b81b9fd0-8bfa-11e3-9668-db957531dd57.jpg)
+
+---
+
 NOTE: You may need to create a /secrets.yml containing following content for Alipay to work properly.
 
     alipayconfigs:
